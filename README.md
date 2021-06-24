@@ -1,2 +1,2 @@
 # RESTroom
-Our Scratch Project. Codenamed RESTrrom
+Our Scratch Project. Codenamed RESTroom
