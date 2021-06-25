@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env webpack serve --open --hot & nodemon server/server.js",
+    "dev": "cross-env webpack serve --open --hot && nodemon server/server.js",
     "build": "webpack --config webpack.config.js --mode production"
   },
   "keywords": [],
@@ -22,8 +22,12 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.14",
     "node": "^16.3.0",
     "nodemon": "^2.0.7",
     "react": "^17.0.2",
