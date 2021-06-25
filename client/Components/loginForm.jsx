@@ -39,14 +39,18 @@ const useStyles = makeStyles({
 export default function LoginForm() {
   const classes = useStyles();
 
-
-  const [count, setCount] = useState(0);
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  //const [count, setCount] = useState(0);
+  
 
   function clickHandler(e){
-    setCount(count+1);
-    console.log(`clicked ${count} times`);
-    // e.preventDefault();
+    console.log(`Username is ${username} and Password is ${password}`);
+    e.preventDefault();
+  }
+
+  const validateForm = function() {
+    return username.length > 0 && password.length > 0;
   }
 
   return (
@@ -54,13 +58,20 @@ export default function LoginForm() {
     <h1>Login:</h1>
     <Box className={classes.box}>
       
-        <TextField placeholder = "username" required/>
+        <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
         <br></br>
-        <TextField placeholder = "password" required/> 
+        <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} /> 
         <br></br>
-        <Button type ="submit" className={classes.button} onClick={clickHandler}>PRESS THIS, YOU FOOL!!!</Button>
+        <Button 
+          type ="submit" 
+          className={classes.button} 
+          disabled={!validateForm()} 
+          onClick={clickHandler}
+          >PRESS THIS, YOU FOOL!!!</Button>
      
     </Box>
+      <br></br>
+      <a href="#">Sign up!?</a>
     </div>
 )
 };
