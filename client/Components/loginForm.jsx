@@ -20,18 +20,18 @@ const useStyles = makeStyles({
   box: {
       display: 'grid',
       placeItems: 'center',
-      paddingBottom: '10%'
+      paddingBottom: '10%', 
   }, 
   div: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    background: 'grey',
+    background: '#B6D0E2',
     margin: '0 40% 0 40%',
     width: 'clamp(100, 200, 300)',
     borderRadius: '5%',
-    boxShadow: '10px 5px 5px red'
+    boxShadow: '10px 5px 5px #FE6B8B'
   }
 });
 
@@ -59,13 +59,15 @@ export default function LoginForm() {
   return (
     <div className={classes.div}>
     <h1>{checked? "Sign Up": "Login"}</h1>
+    <Switch onChange={() => setUser(!isUser)}></Switch>
+        <p>{isUser? "User": "Host"}</p>
     <Box className={classes.box}>
       <Collapse in={!checked} orientation={'horizontal'}>
-      <Switch onChange={() => setUser(!isUser)}></Switch>
-        <p>{isUser? "User": "Host"}</p>
         <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
         <br></br>
+        <br></br>
         <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} /> 
+        <br></br>
         <br></br>
         <Button 
           type ="submit" 
@@ -79,8 +81,6 @@ export default function LoginForm() {
     
       <a onClick={() => setChecked(!checked)}>{checked? 'Back to Login':'Sign up!?'}</a>
       <Collapse in={checked} orientation={'horizontal'}>
-        <Switch onChange={() => setUser(!isUser)}></Switch>
-        <p>{isUser? "User": "Host"}</p>
         <br></br>
         <br></br>
         <TextField placeholder ="username"></TextField>
