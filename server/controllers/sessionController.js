@@ -16,7 +16,7 @@ sessionController.isLoggedIn = async (req, res, next) => {
     if (currentUser.length > 0) {
       next();
     }else {
-      return res.redirect('/signup')
+      return res.redirect('/usersignup')
     }
 
   }catch(err){
@@ -31,19 +31,15 @@ sessionController.isLoggedIn = async (req, res, next) => {
 */
 sessionController.startSession = async (req, res, next) => {
   //write code here
-  const ssidCook = {cookieId: req.cookies.ssid};
-  
+  console.log('sessionController.startSession',res.locals.id)
+  // const ssidCook = {cookieId: req.cookies.ssid};
+  //const ssidCook = {cookieId: res.locals._id};
   try {
-    const doc = new Session(ssidCook);
-    res.locals.session = await doc.save();
-    //next();
-    // const temp = await Session.find()
-    console.log(res.locals.session)
-    //return res.redirect('/secret')
-    next();
-  }catch(err){
-    console.log('startSession', err)
-    next(err);
+    await Session.create({cookieId: res.locals.id});
+    next()
+  }
+  catch (err) {
+    next('Error in sessionController.startSession: ' + JSON.stringify(err));
   }
 
 };
