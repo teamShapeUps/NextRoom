@@ -44,6 +44,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   //const [count, setCount] = useState(0);
   const [checked, setChecked] = useState(false);
+  const [isUser, setUser] = useState(false);
   
 
   function clickHandler(e){
@@ -60,6 +61,8 @@ export default function LoginForm() {
     <h1>{checked? "Sign Up": "Login"}</h1>
     <Box className={classes.box}>
       <Collapse in={!checked} orientation={'horizontal'}>
+      <Switch onChange={() => setUser(!isUser)}></Switch>
+        <p>{isUser? "User": "Host"}</p>
         <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
         <br></br>
         <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} /> 
@@ -76,7 +79,8 @@ export default function LoginForm() {
     
       <a onClick={() => setChecked(!checked)}>{checked? 'Back to Login':'Sign up!?'}</a>
       <Collapse in={checked} orientation={'horizontal'}>
-        <Switch></Switch>
+        <Switch onChange={() => setUser(!isUser)}></Switch>
+        <p>{isUser? "User": "Host"}</p>
         <br></br>
         <br></br>
         <TextField placeholder ="username"></TextField>
