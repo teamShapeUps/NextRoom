@@ -20,16 +20,23 @@ const useStyles = makeStyles({
   box: {
       display: 'grid',
       placeItems: 'center',
-      paddingBottom: '10%', 
+      paddingBottom: '10%',
+      width: 'clamp(300px, 300px, 300px)', 
   }, 
+  title: {
+    display: "grid",
+    placeItems: 'center',
+    paddingTop: "5%",
+  },
+
   div: {
     display: 'flex',
+    marginTop: '5%', 
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     background: '#B6D0E2',
     margin: '0 40% 0 40%',
-    width: 'clamp(100, 200, 300)',
     borderRadius: '5%',
     boxShadow: '10px 5px 5px #FE6B8B'
   }
@@ -57,6 +64,8 @@ export default function LoginForm() {
   }
 
   return (
+    <section className={classes.title}>
+      <h1>Potty Over Here</h1>
     <div className={classes.div}>
     <h1>{checked? "Sign Up": "Login"}</h1>
     <Switch onChange={() => setUser(!isUser)}></Switch>
@@ -93,5 +102,6 @@ export default function LoginForm() {
       </Collapse>
       </Box>
     </div>
+    </section>
 )
 };
