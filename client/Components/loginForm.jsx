@@ -1,7 +1,7 @@
 // login form
 import React, { Component, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Box, TextField } from "@material-ui/core";
+import { Button, Box, TextField, Collapse, Switch } from "@material-ui/core";
 
 const useStyles = makeStyles({
   button: {
@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   box: {
       display: 'grid',
       placeItems: 'center',
+      paddingBottom: '10%'
   }, 
   div: {
     display: 'flex',
@@ -42,6 +43,7 @@ export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   //const [count, setCount] = useState(0);
+  const [checked, setChecked] = useState(false);
   
 
   function clickHandler(e){
@@ -55,9 +57,9 @@ export default function LoginForm() {
 
   return (
     <div className={classes.div}>
-    <h1>Login:</h1>
+    <h1>{checked? "Sign Up": "Login"}</h1>
     <Box className={classes.box}>
-      
+      <Collapse in={!checked} orientation={'horizontal'}>
         <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
         <br></br>
         <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} /> 
@@ -68,10 +70,24 @@ export default function LoginForm() {
           disabled={!validateForm()} 
           onClick={clickHandler}
           >PRESS THIS, YOU FOOL!!!</Button>
-     
-    </Box>
+      </Collapse>
+    
       <br></br>
-      <a href="#">Sign up!?</a>
+    
+      <a onClick={() => setChecked(!checked)}>{checked? 'Back to Login':'Sign up!?'}</a>
+      <Collapse in={checked} orientation={'horizontal'}>
+        <Switch></Switch>
+        <br></br>
+        <br></br>
+        <TextField placeholder ="username"></TextField>
+        <br></br>
+        <br></br>
+        <TextField placeholder ="password"></TextField>
+        <br></br>
+        <br></br>
+        <Button className={classes.button}>Create New User</Button>
+      </Collapse>
+      </Box>
     </div>
 )
 };
