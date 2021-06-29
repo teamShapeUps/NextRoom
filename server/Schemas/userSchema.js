@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const { MongoClient } = require('mongodb')
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
-
+const geocoder = require ('../utils/geocoder')
 const MONGO_URI1 ='mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
 // console.log(process.env)
 mongoose.connect(process.env.MONGO_URI, {
@@ -36,6 +36,10 @@ const hostSchema = new Schema({
 
 const bathroomSchema = new Schema ({
     hostId: { type: String },
+    address: { 
+      type: String,
+    required: [true, 'Please add an address']
+  }, 
     available: { type: Boolean, default: true},
     ratings: { type: Array },
     reviews : { type: Array },
@@ -44,14 +48,19 @@ const bathroomSchema = new Schema ({
       type: {
         type: String,
         enum: ['Point'],
-        required: true
+        // required: true
         },
       coordinates: {
         type: [Number],
-        required: true
-      }
+        // required: true
+      },
+      formattedAddress: String
     },
-    address: { type: String},
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+   
     coordinates: { type: String },
     zipcode: { type: String }
     
@@ -60,11 +69,29 @@ const bathroomSchema = new Schema ({
 const appointmentSchema = new Schema({
 bathroomId: { type: String }
 })
+
+// Geocode & create location
+  bathroomSchema.pre('save', async function (next){
+    const location = await geocoder.geocode(this.address);
+    this.location = {
+      type: 'point',
+      coordinates: [location[0].longitude, location[0].latitude],
+      formattedAddress: location[0].formattedAddress
+    }
+    console.log(location)
+
+    //Do not save address
+    this.address = undefined;
+    next()
+  })
+
    const User = mongoose.model('user', userSchema);
    const Host = mongoose.model('host', hostSchema); 
     const Bathroom = mongoose.model('bathroom', bathroomSchema)
     const Appointment = mongoose.model('appointment', appointmentSchema)
   
+
+
 
     userSchema.pre('save', async function(next){
 
@@ -116,7 +143,7 @@ bathroomId: { type: String }
         }
       };
   
-
+      
 
 
   
