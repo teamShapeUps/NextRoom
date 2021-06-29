@@ -4,6 +4,12 @@ import React, {useEffect, useState} from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import ToiletCard from './toiletCard.jsx';
 
+// toilet dependency injection goes here:
+
+// const toiletTestSet = [
+//   [,],
+// ];
+
 const useStyles = makeStyles({
   map: {
     margin: 'auto',
