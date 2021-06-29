@@ -1,5 +1,5 @@
 
-const Session = require('../Schemas/sessionSchema');
+const { Session } = require('../Schemas/sessionSchema');
 
 const sessionController = {};
 
@@ -30,16 +30,15 @@ sessionController.isLoggedIn = async (req, res, next) => {
 * startSession - create and save a new Session into the database.
 */
 sessionController.startSession = async (req, res, next) => {
-  //write code here
-  console.log('sessionController.startSession',res.locals.id)
+  // console.log('sessionController.startSession',res.locals.id)
   // const ssidCook = {cookieId: req.cookies.ssid};
   //const ssidCook = {cookieId: res.locals._id};
   try {
-    await Session.create({cookieId: res.locals.id});
-    next()
+     const session = await Session.create({cookieID: res.locals.id});
+     if(session) return next()
   }
   catch (err) {
-    next('Error in sessionController.startSession: ' + JSON.stringify(err));
+    next( {log:'Error in sessionController.startSession: ' + JSON.stringify(err["message"])}  );
   }
 
 };

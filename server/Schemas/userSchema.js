@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { MongoClient } = require('mongodb')
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const SALT_WORK_FACTOR = 10;
 
 const MONGO_URI1 ='mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
 // console.log(process.env)
@@ -24,7 +24,8 @@ const userSchema = new Schema({
  bio: { type: String },
  rating: { type: Number, default: 0},
  ratings: { type: Array, default: []},
- reviews: { type: Array }
+ reviews: { type: Array },
+ profilepicture: { type: String }
  
 })
 
@@ -35,9 +36,24 @@ const hostSchema = new Schema({
 
 const bathroomSchema = new Schema ({
     hostId: { type: String },
-    available: { type: Boolean},
+    available: { type: Boolean, default: true},
     ratings: { type: Array },
     reviews : { type: Array },
+    pictures : { type: String },
+    location : { 
+      type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+        },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
+    address: { type: String},
+    coordinates: { type: String },
+    zipcode: { type: String }
     
 })
 

@@ -9,7 +9,7 @@ const UserController = {
             
             res.locals.user = await newUser.save();
             res.locals.id = res.locals.user.id
-            console.log(res.locals.user.id)
+            console.log(res.locals.user._id)
             if(response) res.send(newUser)
             next();
         }
@@ -20,12 +20,13 @@ const UserController = {
         }
     },
     async newHost(req, res, next) {
-        const { username, password } = req.body;
+        const { username, password, response } = req.body;
         
         try {
             const newUser = await Host.create({username: username, password: password});
             // res.status(200).send(newUser)
             res.locals.host = await newUser.save();
+            if(response) res.send(newUser)
             next()
 
         }
@@ -67,6 +68,8 @@ const UserController = {
             })
         }
     },
+
+ 
      rateUser (req, res, next) {
         const { username, rating } = req.body;
         const reducer = (accumulator, currentValue) => accumulator + currentValue;

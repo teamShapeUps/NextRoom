@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controllers/userController')
 const cookieController = require('../controllers/cookieController')
 const sessionController = require('../controllers/sessionController')
+const bathroomController = require ('../controllers/bathroomController')
 const app = express();
 
 app.post('/usersignup',
@@ -39,10 +40,32 @@ sessionController.startSession, (req,res)=>{
 }
 )
 
-app.put('/rateuser',
-userController.rateUser,
+app.post('/addbathroom',
+bathroomController.addBathroom,
 (req, res) => {
-    res.send('rated')
+    res.status(200).json(res.locals.bathrooms)
 })
+// app.put('/addbathroompic',
+// bathroomController.)
+
+// app.put('/rateuser',
+// userController.rateUser,
+// (req, res) => {
+//     res.send('rated')
+// })
+
+app.use("*",(req,res)=>{
+    res.status(404).send("Page Not Found!")
+})
+
+app.use((err,req,res,next)=>{
+    const defaultErr ={
+        log:"Caught unknown Middleware"
+    }
+const errorObj = Object.assign({},defaultErr,err)
+console.log(errorObj)
+return res.status(500).send("Server Error")
+
+});
 
 module.exports = app;
