@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 // import { makeStyles } from "@material-ui/core/styles";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import ToiletCard from './toiletCard.jsx';
 
 const useStyles = makeStyles({
   map: {
@@ -9,6 +10,11 @@ const useStyles = makeStyles({
     padding: '10px',
     height: '400px',
     width: '400px',
+  },
+  popup: {
+    margin: 'auto',
+    height: '100px',
+    width: '100px',
   }
 });
 
@@ -34,7 +40,8 @@ return (
   />
   <Marker position={coords}>
     <Popup>
-      A pretty CSS3 popup. <br /> Easily customizable.
+      {/* A pretty CSS3 popup. <br /> Easily customizable. */}
+      <ToiletCard />
     </Popup>
   </Marker>
 </MapContainer>
