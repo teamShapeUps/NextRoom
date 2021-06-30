@@ -16,6 +16,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { ExitToApp, FormatPaint, DirectionsRun } from '@material-ui/icons';
+import {Link} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersistentDrawerLeft() {
+export default function MenuDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -134,7 +135,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           {['Potty Time', 'gARffiti'].map((text, index) => (
-            <ListItem button key={text}>
+            <ListItem button key={text} component={Link} to='/user'>
               <ListItemIcon>{text === "Potty Time"? <DirectionsRun />:<FormatPaint />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -143,7 +144,7 @@ export default function PersistentDrawerLeft() {
         <Divider />
         <List>
           {['Log Out'].map((text, index) => (
-            <ListItem button key={text}>
+            <ListItem button key={text} component={Link} to="/">
               <ListItemIcon>{<ExitToApp />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
