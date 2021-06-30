@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
-// import React, {useEffect, useState} from "react";
+import React from "react";
 // import { makeStyles } from "@material-ui/core/styles";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
 import ToiletCard from './toiletCard.jsx';
 
@@ -28,6 +28,9 @@ const useStyles = makeStyles({
 export default function Map() {
 
   const classes = useStyles();
+
+  // default coordinates
+  const coords = [40.785091, -73.968285];
 
   // const [coords, setCoords] = useState([40.785091, -73.968285]);
 
