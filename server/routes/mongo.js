@@ -5,6 +5,7 @@ const sessionController = require('../controllers/sessionController')
 const bathroomController = require ('../controllers/bathroomController')
 const app = express();
 
+
 app.post('/usersignup',
  userController.newUser,
  cookieController.setSSIDCookie,
@@ -20,10 +21,11 @@ cookieController.setSSIDCookie,
 sessionController.startSession,
 (req,res)=>{
     // res.send('user signup')
-    res.status(200).json(res.locals.host)
+    res.status(200).json(res.locals.user)
 })
 
 app.post('/userlogin', 
+sessionController.isLoggedIn,
 userController.verifyUser,
 cookieController.setSSIDCookie,
 sessionController.startSession,
@@ -32,6 +34,7 @@ sessionController.startSession,
 )
 
 app.post('/hostlogin', 
+sessionController.isLoggedIn,
 userController.verifyHost,
 cookieController.setSSIDCookie,
 sessionController.startSession, (req,res)=>{

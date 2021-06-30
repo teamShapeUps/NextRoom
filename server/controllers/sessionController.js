@@ -9,14 +9,15 @@ const sessionController = {};
 */
 sessionController.isLoggedIn = async (req, res, next) => {
   // 
+  console.log('cookies', req.cookies);
   const ssidCook = {cookieId: req.cookies.ssid};
   try{
     const currentUser = await Session.find(ssidCook);
-    console.log('isLoggedIn ', currentUser)
     if (currentUser.length > 0) {
-      next();
+      res.locals.user = true;
+      return res.status(200).json(res.locals)
     }else {
-      return res.redirect('/usersignup')
+      return next();
     }
 
   }catch(err){
@@ -34,7 +35,7 @@ sessionController.startSession = async (req, res, next) => {
   // const ssidCook = {cookieId: req.cookies.ssid};
   //const ssidCook = {cookieId: res.locals._id};
   try {
-     const session = await Session.create({cookieID: res.locals.id});
+     const session = await Session.create({cookieID: res.locals.user._id});
      if(session) return next()
   }
   catch (err) {

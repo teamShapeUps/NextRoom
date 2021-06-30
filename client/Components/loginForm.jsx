@@ -75,21 +75,89 @@ export default function LoginForm() {
   //const [count, setCount] = useState(0);
   const [checked, setChecked] = useState(false);
   const [isUser, setUser] = useState(false);
+  const [createUsername, setCreateUsername] =useState("");
+  const [createPassword, setCreatePassword] =useState("");
+
+
   
 
-  function clickHandler(e){
-    console.log(`Username is ${username} and Password is ${password}`);
+  function loginClickHandler(){
+    //handle authentication here
+    //console.log(`Username is ${username} and Password is ${password}`);
+    const userInfo = {username, password};
     e.preventDefault();
-    history.push('/user');
+    if(isUser){
+      fetch('/mongo/userlogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      })
+      .then(response => response.json())
+      .then(response => {
+        if(response) history.push('/user')
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+    } else {
+      fetch('/mongo/hostlogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      })
+      .then(response => response.json())
+      .then(response => {
+        if(response) history.push('/host')
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+    } 
   }
 
   const validateForm = function() {
     return username.length > 0 && password.length > 0;
   }
 
-  const handleCreateUser = function(){
-    console.log('Create User Clicked')
+  const handleCreate = function(){
+    const userInfo = {username: createUsername, password: createPassword};
+    console.log(userInfo);
+    if(isUser){
+      fetch('/mongo/usersignup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      })
+      .then(response => response.json())
+      .then(response => {
+        if(response) history.push('/user')
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+    } else {
+      fetch('/mongo/hostsignup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      })
+      .then(response => response.json())
+      .then(response => {
+        if(response) history.push('/host')
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
   }
+}
 
 
   return (
@@ -115,7 +183,7 @@ export default function LoginForm() {
           type ="submit" 
           className={classes.button} 
           disabled={!validateForm()} 
-          onClick={clickHandler}
+          onClick={loginClickHandler}
           >PRESS THIS, YOU FOOL!!!</Button>
       </Collapse>
     
@@ -125,13 +193,13 @@ export default function LoginForm() {
       <Collapse in={checked} orientation={'horizontal'}>
         <br></br>
         <br></br>
-        <TextField placeholder ="username"></TextField>
+        <TextField placeholder ="username" onChange={(e) => setCreateUsername(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <TextField placeholder ="password"></TextField>
+        <TextField placeholder ="password" onChange={(e) => setCreatePassword(e.target.value)}></TextField>
         <br></br>
         <br></br>
-        <Button className={classes.button} onClick={handleCreateUser}>Create New User</Button>
+        <Button className={classes.button} onClick={handleCreate}>Create New User</Button>
       </Collapse>
       </Box>
     </div>

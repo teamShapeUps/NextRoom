@@ -3,7 +3,7 @@ const {User,Host} = require ('../Schemas/userSchema')
 const UserController = {
     async newUser(req, res, next) {
         const { username, password, response } = req.body;
-        
+
         try {
             const newUser = await User.create({username: username, password: password});
             
@@ -20,15 +20,14 @@ const UserController = {
         }
     },
     async newHost(req, res, next) {
-        const { username, password, response } = req.body;
+        const { username, password } = req.body;
         
         try {
-            const newUser = await Host.create({username: username, password: password});
+            const newUser = await Host.create({"username" : username, "password" :password});
             // res.status(200).send(newUser)
-            res.locals.host = await newUser.save();
-            if(response) res.send(newUser)
-            next()
-
+            res.locals.user = await newUser.save();
+            if(newUser) return next()
+            
         }
         catch (err){
             next({
@@ -59,8 +58,8 @@ const UserController = {
             const host = await Host.findOne({ username: username, password: password })
             if(!host) return res.status(400).send('Host not found')
             // res.send(host)
-            res.locals.host = host;
-            next()
+            res.locals.user = host;
+            return next()
         }
         catch {
             next({
