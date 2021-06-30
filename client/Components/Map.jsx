@@ -3,13 +3,14 @@ import React from "react";
 // import { makeStyles } from "@material-ui/core/styles";
 import { MapContainer, TileLayer, Popup } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
-import ToiletCard from './toiletCard.jsx';
+import ToiletMarker from './toiletMarker.jsx';
+// import ToiletCard from './toiletCard.jsx';
 
 // toilet dependency injection goes here:
 
-// const toiletTestSet = [
-//   [,],
-// ];
+const toiletTestSet = [
+  [,],
+];
 
 const useStyles = makeStyles({
   map: {
@@ -67,11 +68,7 @@ return (
     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   />
-  <UserMarker position={coords}>
-    <Popup>
-      {/* A pretty CSS3 popup. <br /> Easily customizable. */}
-      <ToiletCard />
-    </Popup>
-  </UserMarker>
+  {/* <UserMarker position={coords} /> */}
+  <ToiletMarker position={coords} />
 </MapContainer>
 )}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Marker, Popup, useMap } from 'react-leaflet';
+//for testing only
+import ToiletCard from './toiletCard.jsx';
 
 export default function UserMarker(props) {
 
@@ -29,7 +31,7 @@ export default function UserMarker(props) {
 
   return (
     <Marker position={coords}>
-      <Popup>You are here</Popup>
+      <Popup><ToiletCard /></Popup>
     </Marker>
   )
 };
