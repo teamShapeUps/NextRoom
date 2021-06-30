@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+
 // schema is:
 // bathroomId,
 // bathroomCoords,
@@ -36,6 +37,9 @@ export default function ToiletCard (props) {
     const classes = useStyles();
 
     return (
+      <>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
@@ -60,5 +64,6 @@ export default function ToiletCard (props) {
         </Button>
       </CardActions>
     </Card>
+    </>
     )
 }
