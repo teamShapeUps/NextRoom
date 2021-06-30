@@ -43,7 +43,7 @@ sessionController.startSession, (req,res)=>{
 app.post('/addbathroom',
 bathroomController.addBathroom,
 (req, res) => {
-    res.status(200).json(res.locals.bathrooms)
+    res.status(200).json(res.locals.bathroom)
 })
 // app.put('/addbathroompic',
 // bathroomController.)
@@ -53,6 +53,14 @@ bathroomController.addBathroom,
 // (req, res) => {
 //     res.send('rated')
 // })
+
+app.get('/getbathrooms',
+bathroomController.getHostBathrooms,
+(req,res)=>{
+    console.log(res.locals.bathrooms)
+    res.status(200).send(res.locals.bathrooms)
+})
+
 
 app.use("*",(req,res)=>{
     res.status(404).send("Page Not Found!")

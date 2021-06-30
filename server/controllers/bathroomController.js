@@ -1,13 +1,14 @@
-const { Bathroom } = require ('../Schemas/userSchema')
+const { Bathroom ,Host} = require ('../Schemas/userSchema')
 
 const bathroomController = {
     async addBathroom(req, res, next) {
-        const {address, zipcode, response} = req.body;
+        const {address, zipcode, response, hostId} = req.body;
         
         console.log("request is", req.body)
+        console.log("req.sessionID is", req.sessionID)
         try {
         const newBathroom = await Bathroom.create({
-            // hostId: res.locals.host._id,
+            hostId: hostId,
             address: address,
             zipcode: zipcode
         })
@@ -23,6 +24,28 @@ const bathroomController = {
         }
     },
 
+    async getHostBathrooms (req, res, next) {
+        const { _id } = req.body
+        
+        // console.log("hostId", hostId)
+        try{
+        const hostBathrooms = await Bathroom.find({ hostId: _id}, (err, bathrooms) => {
+            if (err) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
+            console.log('bathrooms', bathrooms)
+       return bathrooms
+        })
+        .exec()
+        console.log(hostBathrooms)
+        res.locals.bathrooms = hostBathrooms
+        // res.locals.bathrooms = userBathrooms
+        next()
+        }
+        catch {
+            next({
+                log: "bathroomController.getHostBathrooms"
+            })
+        }
+    },
 
     async deleteBathroom (req,res,next){
         try{
