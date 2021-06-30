@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env webpack serve --open --hot && nodemon server/server.js",
+    "dev": "cross-env webpack serve --open --hot & nodemon server/server.js",
     "build": "webpack --config webpack.config.js --mode production"
   },
   "keywords": [],
@@ -25,8 +25,9 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "clsx": "^1.1.1",
     "bcrypt": "^5.0.1",
+    "clsx": "^1.1.1",
+    "cookie-parser": "^1.4.5",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
