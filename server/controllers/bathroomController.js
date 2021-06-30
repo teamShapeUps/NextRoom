@@ -2,7 +2,7 @@ const { Bathroom ,Host} = require ('../Schemas/userSchema')
 
 const bathroomController = {
     async addBathroom(req, res, next) {
-        const {address, zipcode, response, hostId} = req.body;
+        const {address, zipcode, response, hostId, imageFileName} = req.body;
         
         console.log("request is", req.body)
         console.log("req.sessionID is", req.sessionID)
@@ -10,7 +10,8 @@ const bathroomController = {
         const newBathroom = await Bathroom.create({
             hostId: hostId,
             address: address,
-            zipcode: zipcode
+            zipcode: zipcode,
+            imageFileName: imageFileName
         })
         //res.locals.bathrooms = await newBathroom.save()
         if (response) res.send(newBathroom)
@@ -47,6 +48,32 @@ const bathroomController = {
         }
     },
 
+    async addbathroompic(req, res, next) {
+        const { pic } = req.body;
+        try{
+            const bathroom = await Bathroom.find({ hostId: _id}, (err, bathroom) => {
+                if (err) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
+                console.log('bathroom', bathroom)
+           return bathroom
+            })
+            .exec()
+            const pics = bathroom[pictures]
+            pics.push(pic)
+            bathroom.overwrite({pictures: pics})
+            await bathroom.save()
+            console.log(bathroom)
+            res.locals.bathroomPics = pics
+            // res.locals.bathrooms = userBathrooms
+            next()
+            }
+            catch {
+                next({
+                    log: "bathroomController.getHostBathrooms"
+                })
+            }
+
+},
+
     async getNearBathrooms (req, res, next) {
         const {longitude, latitude} = req.body;
         try {
@@ -76,9 +103,7 @@ const bathroomController = {
             console.log("deleteBathroom ", error)
         }
     }
-// async addbathroompic(req, res, next) {
-//     const bathroom = await Bathroom 
-// }
+
 }
 
 module.exports = bathroomController

@@ -46,7 +46,7 @@ module.exports = {
         contentBase: "./client",
         historyApiFallback: true,
         proxy: {
-            "/api": "http://localhost:3000",
+            "/mongo": "http://localhost:3000",
         },
     },
     resolve: {

@@ -6,7 +6,7 @@ const saltRounds = 10;
 const UserController = {
     async newUser(req, res, next) {
         const { username, password, response } = req.body;
-        
+
         try {
             const hash = await bcrypt.hash(password, saltRounds);
             const newUser = await User.create({username: username, password: hash});
@@ -24,7 +24,7 @@ const UserController = {
         }
     },
     async newHost(req, res, next) {
-        const { username, password, response } = req.body;
+        const { username, password } = req.body;
         
         try {
             const hash = await bcrypt.hash(password, saltRounds);
@@ -46,7 +46,7 @@ const UserController = {
         const { username, password } = req.body;
         const user = await User.findOne({ username: username})
         if(user === null) return res.status(400).send('User not found')
-        res.locals.id = user._id
+        // res.locals.id = user._id
         try {
             if (await bcrypt.compare(password , user.password)){
                 res.locals.user = user
@@ -65,13 +65,10 @@ const UserController = {
         const { username, password } = req.body;
         const host = await Host.findOne({ username: username, password: password })
         if(host === null) return res.status(400).send('Host not found')
-        res.locals.id = host._id
         try {
             if (await bcrypt.compare(password , host.password)){
-                // res.send(host)
-                res.locals.host = host;
+                res.locals.user = host;
                 next();
-            
         }else {
             return res.status(400).send('incorrect password')
         }

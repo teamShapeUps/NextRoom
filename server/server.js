@@ -1,16 +1,15 @@
 const dotenv = require('dotenv')
 dotenv.config({ path: './.env'})
-const mongoRouter = require ('./routes/mongo')
+
+const mongoRouter = require ('./routes/mongo.js')
 const express = require('express')
 const app = express()
 const path = require('path')
-const userController = require('./controllers/userController')
-// const {User,Host} = require ('./Schemas/UserSchema')
-const cookieController = require('./controllers/cookieController')
-const sessionController = require('./controllers/sessionController')
-// console.log(User)
+const cookieParser = require('cookie-parser')
+
 const PORT = 3000;
 
+app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }))
 
