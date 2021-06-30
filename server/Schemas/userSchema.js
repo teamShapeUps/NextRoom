@@ -35,6 +35,10 @@ const hostSchema = new Schema({
 
 const bathroomSchema = new Schema ({
     hostId: { type: String },
+    title: String,
+    header: String,
+    description: String,
+    imageFileName: String,
     address: { 
       type: String,
     required: [true, 'Please add an address']
