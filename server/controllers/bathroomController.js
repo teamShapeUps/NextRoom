@@ -47,6 +47,26 @@ const bathroomController = {
         }
     },
 
+    async getNearBathrooms (req, res, next) {
+        const {longitude, latitude} = req.body;
+        try {
+            const bathrooms = await Bathroom.find({
+              $near: [longitude, latitude],
+              $maxDistance: .10},
+            (err, bathroom) => {
+                if (err) return next('Error in bathroomController.getNearBathrooms' + JSON.stringify(err))
+                return bathroom
+            })
+            .exec()
+            console.log(bathrooms)
+            res.locals.nearBathrooms = bathrooms
+            next()
+        }
+        catch(err) {
+            next(err)
+        }
+    },
+
     async deleteBathroom (req,res,next){
         try{
             const deletedBathroom = Bathroom.deleteOne({

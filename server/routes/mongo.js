@@ -61,6 +61,12 @@ bathroomController.getHostBathrooms,
     res.status(200).send(res.locals.bathrooms)
 })
 
+app.get('/getnearbathrooms', 
+bathroomController.getNearBathrooms,
+(req, res) => {
+    res.status(200).send(res.locals.nearBathrooms)
+}
+)
 
 app.use("*",(req,res)=>{
     res.status(404).send("Page Not Found!")
