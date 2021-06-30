@@ -19,14 +19,15 @@ import Typography from '@material-ui/core/Typography';
 // toiletAddress
 // toiletAddress2
 export default function ToiletCard (props) {
-  const {bathroomId,
-    bathroomCoords,
+  const {
     imageUrl,
     imageTitle,
     descriptionTitle,
     descriptionBody,
     toiletAddress,
     toiletAddress2} = props.bathroom;
+
+    console.log(`props.bathroom of tempToiletCard is ${JSON.stringify(props.bathroom, null, 2)}`)
 
     const useStyles = makeStyles({
       root: {
@@ -45,7 +46,7 @@ export default function ToiletCard (props) {
         <CardMedia
           component="img"
           alt={imageTitle}
-          height="140"
+          height="240"
           image={imageUrl}
           title={imageTitle}
         />

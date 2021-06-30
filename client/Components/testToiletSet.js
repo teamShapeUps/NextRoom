@@ -8,7 +8,7 @@
 // toiletAddress
 // toiletAddress2
 
-export default testToiletSet = [
+const testToiletSet = [
   {
     bathroomId: 1,
     bathroomCoords: [40.7415095, -73.9569751],
@@ -70,3 +70,5 @@ export default testToiletSet = [
     toiletAddress2: `Walk In Freezer`,
   },
 ];
+
+export default testToiletSet;

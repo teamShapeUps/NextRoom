@@ -25,13 +25,13 @@ export default function UserMarker(props) {
   useEffect(() => {
     map.locate().on('locationfound', function(e) {
       setCoords(e.latlng);
-      map.panTo(e.latlng, map.getZoom());
+      map.flyTo(e.latlng, map.getZoom());
     })
   }, []);
 
   return (
     <Marker position={coords}>
-      <Popup><ToiletCard /></Popup>
+      {/* <Popup><ToiletCard /></Popup> */}
     </Marker>
   )
 };

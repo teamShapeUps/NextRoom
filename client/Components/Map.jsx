@@ -1,23 +1,22 @@
 import { makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 // import { makeStyles } from "@material-ui/core/styles";
 import { MapContainer, TileLayer, Popup } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
 import ToiletMarker from './toiletMarker.jsx';
-// import ToiletCard from './toiletCard.jsx';
+import testToiletCard from './toiletCard.jsx';
 
 // toilet dependency injection goes here:
 
-const toiletTestSet = [
-  [,],
-];
+import testToiletSet from './testToiletSet.js';
+
 
 const useStyles = makeStyles({
   map: {
     margin: 'auto',
     padding: '10px',
-    height: '400px',
-    width: '400px',
+    height: '500px',
+    width: '500px',
   },
   popup: {
     margin: 'auto',
@@ -32,6 +31,16 @@ export default function Map() {
 
   // default coordinates
   const coords = [40.785091, -73.968285];
+
+  const bathrooms = testToiletSet;
+
+  const bathroomComponents = [];
+
+  useEffect(() => {
+    for (const bathroom of bathrooms) {
+      bathroomComponents.push(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
+    }
+  }, bathrooms)
 
   // const [coords, setCoords] = useState([40.785091, -73.968285]);
 
@@ -63,12 +72,13 @@ export default function Map() {
   // }, coords);
 
 return (
-<MapContainer className={classes.map} center={coords} zoom={13} scrollWheelZoom={true}>
+<MapContainer className={classes.map} center={coords} zoom={15} scrollWheelZoom={true}>
   <TileLayer
     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   />
   <UserMarker position={coords} />
+  {bathroomComponents}
   {/* <ToiletMarker position={coords} /> */}
 </MapContainer>
 )}
