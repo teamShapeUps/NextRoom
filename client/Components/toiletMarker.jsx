@@ -25,7 +25,7 @@ export default function ToiletMarker(props) {
   return (
     <Marker icon={iconToilet} position={coords}>
       <Popup>
-        <TempToiletCard bathroom={props} />
+        <TempToiletCard bathroom={props.bathroom} />
       </Popup>
     </Marker>
   )

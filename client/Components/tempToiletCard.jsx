@@ -27,44 +27,27 @@ export default function ToiletCard (props) {
     toiletAddress,
     toiletAddress2} = props.bathroom;
 
-    console.log(`props.bathroom of tempToiletCard is ${JSON.stringify(props.bathroom, null, 2)}`)
+    console.log(`props.bathroom of tempToiletCard is ${JSON.stringify(props.bathroom, null, 2)}`);
+
+    console.log(`descriptionBody is ${descriptionBody}`)
 
     const useStyles = makeStyles({
-      root: {
+      card: {
         maxWidth: 245,
+        height: 145,
       },
     });
 
     const classes = useStyles();
 
     return (
-      <>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-      <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt={imageTitle}
-          height="240"
-          image={imageUrl}
-          title={imageTitle}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {descriptionTitle}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {descriptionBody}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Reserve
-        </Button>
-      </CardActions>
-    </Card>
-    </>
+      <div className={classes.card}>
+      <div>{imageUrl}</div>
+      <div>{imageTitle}</div>
+      <div>{descriptionTitle}</div>
+      <div>{descriptionBody}</div>
+      <div>{toiletAddress}</div>
+      <div>{toiletAddress2}</div>
+      </div>      
     )
 }
