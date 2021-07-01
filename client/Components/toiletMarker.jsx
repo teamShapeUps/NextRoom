@@ -7,12 +7,12 @@ const L = window.L;
 const iconToilet = new L.Icon({
   iconUrl: require('./toiletIcon.svg'),
   iconRetinaUrl: require('./toiletIcon.svg'),
-  iconAnchor: [0,0], // was null
-  popupAnchor: [0, 0], // was null
+  iconAnchor: [21.912265, 64], // was null
+  popupAnchor: [0, -64], // was null
   shadowUrl: null,
   shadowSize: null,
   shadowAnchor: null,
-  iconSize: 43, // used to be new L.Point(60, 75)
+  iconSize: [43.82453, 64.3] // used to be new L.Point(60, 75)
   // className: 'leaflet-div-icon'
 });
 
