@@ -4,12 +4,13 @@ import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Popup } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
 import ToiletMarker from './toiletMarker.jsx';
-import testToiletCard from './toiletCard.jsx';
+// import testToiletCard from './toiletCard.jsx';
 
 // toilet dependency injection goes here:
 
 import testToiletSet from './testToiletSet.js';
 
+const L = window.L;
 
 const useStyles = makeStyles({
   map: {
@@ -40,7 +41,22 @@ export default function Map() {
     for (const bathroom of bathrooms) {
       bathroomComponents.push(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
     }
-  }, bathrooms)
+  }, bathrooms);
+
+  const mapDrag = function () {
+    const map = useMapEvents({
+      ondragend() {
+        (e) => getNewBathrooms(e);
+      }
+    })
+  }
+
+  const getNewBathrooms = function(e) {
+    const map = e.target;
+    const latlng = map.getCenter();
+    const latlngArr = [latlng.lat, latlng.lng];
+    console.log(`New center coords are $${JSON.stringify(latlngArr)}`);
+  }
 
   // const [coords, setCoords] = useState([40.785091, -73.968285]);
 
