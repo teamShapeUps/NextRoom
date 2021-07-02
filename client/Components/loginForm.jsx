@@ -81,7 +81,7 @@ export default function LoginForm() {
 
   
 
-  function loginClickHandler(){
+  function loginClickHandler(e){
     //handle authentication here
     //console.log(`Username is ${username} and Password is ${password}`);
     const userInfo = {username, password};
@@ -110,6 +110,7 @@ export default function LoginForm() {
         body: JSON.stringify(userInfo),
       })
       .then(response => response.json())
+      .then(response => console.log('response from back', response))
       .then(response => {
         if(response) history.push('/host')
       })
