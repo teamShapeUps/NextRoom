@@ -10,7 +10,7 @@ import ToiletMarker from './toiletMarker.jsx';
 
 import testToiletSet from './testToiletSet.js';
 
-const L = window.L;
+// const L = window.L;
 
 const useStyles = makeStyles({
   map: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function Map() {
+export default function UserMap() {
 
   const classes = useStyles();
 
