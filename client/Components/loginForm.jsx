@@ -110,6 +110,7 @@ export default function LoginForm() {
         body: JSON.stringify(userInfo),
       })
       .then(response => response.json())
+      .then(response => console.log('response from back', response))
       .then(response => {
         if(response) history.push('/host')
       })

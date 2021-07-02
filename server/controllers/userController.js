@@ -8,6 +8,7 @@ const UserController = {
         const { username, password, response } = req.body;
 
         try {
+            console.log('in controller');
             const hash = await bcrypt.hash(password, saltRounds);
             const newUser = await User.create({username: username, password: hash});
             
@@ -30,8 +31,8 @@ const UserController = {
             const hash = await bcrypt.hash(password, saltRounds);
             const newUser = await Host.create({username: username, password: hash});
             // res.status(200).send(newUser)
-            res.locals.host = await newUser.save();
-            res.locals.id = res.locals.host.id
+            res.locals.user = await newUser.save();
+            //res.locals.id = res.locals.host.id
             //if(response) res.send(newUser)
             next();
 
@@ -44,8 +45,10 @@ const UserController = {
     },
     async verifyUser(req, res, next) {
         const { username, password } = req.body;
+        
         const user = await User.findOne({ username: username})
-        if(user === null) return res.status(400).send('User not found')
+        console.log('here is user', user);
+        if(!user) return res.status(401).send('User not found')
         // res.locals.id = user._id
         try {
             if (await bcrypt.compare(password , user.password)){
@@ -53,7 +56,7 @@ const UserController = {
                 return next();
             }
             else {
-                return res.status(400).send('incorrect password')
+                return res.status(400).send('unauthorized! Get outta here!')
             }
         }catch(err) {
             next({
@@ -63,8 +66,8 @@ const UserController = {
     },
     async verifyHost(req, res, next) {
         const { username, password } = req.body;
-        const host = await Host.findOne({ username: username, password: password })
-        if(host === null) return res.status(400).send('Host not found')
+        const host = await Host.findOne({ username: username })
+        if(!host) return res.status(401).send('Host not found')
         try {
             if (await bcrypt.compare(password , host.password)){
                 res.locals.user = host;
