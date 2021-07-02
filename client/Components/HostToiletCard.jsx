@@ -9,29 +9,50 @@ import {makeStyles,
         Button, 
         Typography,
         Collapse} from '@material-ui/core';
+import { BorderStyle } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
   card: {
     minWidth: 800,
+    margin: "25px 0 25px 0",
   },
   media: {
-    height: 140,
+    height: 350,
+  },
+  booked:{
+    display:'flex',
+    justifyContent:'flex-end',
+    color: "#FE6B8B",
+    borderStyle:'solid',
+    padding:'0 20px 0 20px',
+    width: 'fit-content'
+  },
+  available:{
+    display:'flex',
+    justifyContent:'flex-end',
+    color: 'green',
+    borderStyle:'solid',
+    padding:'0 20px 0 20px',
+    width: 'fit-content'
   },
   buttonContainer: {
     display: 'flex',
     justifyContent: 'flex-end'
   },
-  deleteButton:{
+  updateForm: {
+    padding: "50px 15px 15px 15px"
+  },
+  button:{
 
   },
-  editButton:{
 
-  }
 });
 
 
 export default function HostToiletCard(props){
+
+    const {_id, available} = props;
     //pass in props from query
     const classes = useStyles();
 
@@ -43,44 +64,54 @@ export default function HostToiletCard(props){
         <Card className={classes.card}>
             <Collapse in={toggleEdit}>
         <CardMedia
+          component = "img"
           className={classes.media}
-          image={props.image}
+          image={props.imageFileName}
           title="Bathroom"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.title}
+            {_id} 
+          </Typography>
+          <Typography className={available? classes.available : classes.booked}>
+            {available? "Available" : "Booked"}
+          </Typography>
+          <Typography>
+              Price Goes here 
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
+            {props.address}
             {props.description}
           </Typography>
         </CardContent>
       <div className={classes.buttonContainer}>
-        <Button size="small" color="primary" onClick={()=> setToggleEdit(!toggleEdit)}>
+        <Button size="small" className={classes.button} onClick={()=> setToggleEdit(!toggleEdit)}>
           Edit
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" className={classes.button}>
           Delete
         </Button>
       </div>
       </Collapse>
       <Collapse in={!toggleEdit} orientation={'horizontal'}>
-        <TextField fullWidth defaultValue={props.title} />
-                <br></br>
-                <br></br>
-                <br></br>
-        <TextField fullWidth defaultValue={props.description} /> 
-                <br></br>
-                <br></br>
-                <br></br>
-        <div className={classes.buttonContainer}>
-            <Button 
-            type="submit"
-            >Save Changes</Button>
-            <Button 
-            type="submit"
-            onClick={()=> setToggleEdit(!toggleEdit)}
-            >Cancel Edit</Button>
+        <div className = {classes.updateForm}>
+            <TextField fullWidth defaultValue={props._id} />
+                    <br></br>
+                    <br></br>
+                    <br></br>
+            <TextField fullWidth defaultValue={props.imageFileName} /> 
+                    <br></br>
+                    <br></br>
+                    <br></br>
+            <div className={classes.buttonContainer}>
+                <Button 
+                type="submit"
+                >Save Changes</Button>
+                <Button 
+                type="submit"
+                onClick={()=> setToggleEdit(!toggleEdit)}
+                >Cancel Edit</Button>
+            </div>
         </div>
       </Collapse>
     </Card>
