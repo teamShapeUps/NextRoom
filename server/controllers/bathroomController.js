@@ -40,7 +40,6 @@ const bathroomController = {
     
         //console.log(hostBathrooms)
         res.locals.bathrooms = hostBathrooms
-        // res.locals.bathrooms = userBathrooms
         return next()
         }
         

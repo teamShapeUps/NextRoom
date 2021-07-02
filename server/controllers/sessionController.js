@@ -31,9 +31,10 @@ sessionController.isLoggedIn = async (req, res, next) => {
 * startSession - create and save a new Session into the database.
 */
 sessionController.startSession = async (req, res, next) => {
-  // console.log('sessionController.startSession',res.locals.id)
+  console.log('sessionController.startSession',res.locals.id)
   // const ssidCook = {cookieId: req.cookies.ssid};
   //const ssidCook = {cookieId: res.locals._id};
+
   try {
      const session = await Session.create({cookieID: res.locals.user._id});
      if(session) return next()

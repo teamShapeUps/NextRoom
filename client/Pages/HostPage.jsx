@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MenuDrawer from '../Components/menuDrawer';
-import { makeStyles, Button } from '@material-ui/core';
+import { makeStyles, Button, Collapse } from '@material-ui/core';
 import HostToiletCard from '../Components/HostToiletCard';
 
 const useStyles = makeStyles({
@@ -24,6 +24,8 @@ export default function HostPage(){
 
     const [bathroomArray, setBathroomArray] = useState([]);
     const [dataFromFetch, setDataFromFetch] = useState([]);
+
+    const [addingNewBath, setAddingNewBath] = useState(true);
 
     const [newBathTitle, setNewBathTitle] = useState('');
     const [newBathDescription, setNewBathDescription] = useState('');
@@ -74,7 +76,7 @@ export default function HostPage(){
     return(
         <div className={classes.container}>
             <MenuDrawer />
-            <Button className={classes.addButton} onClick ={addBathroomHandler}>Add a Commode +</Button>
+            <Button className={classes.addButton} onClick ={()=> setAddingNewBath(!addingNewBath)}>Add a Commode +</Button>
             <h2>Your Bathrooms</h2>
             <div className={classes.cardContainer}>
             {/* <HostToiletCard 

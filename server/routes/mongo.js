@@ -39,7 +39,7 @@ userController.verifyHost,
 cookieController.setSSIDCookie,
 sessionController.startSession, (req,res)=>{
     // res.send('user has signed in!')
-    res.status(200).json(res.locals.host)
+    res.status(200).json(res.locals.user)
 }
 )
 
