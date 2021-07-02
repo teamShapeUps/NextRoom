@@ -81,7 +81,7 @@ export default function LoginForm() {
 
   
 
-  function loginClickHandler(){
+  function loginClickHandler(e){
     //handle authentication here
     //console.log(`Username is ${username} and Password is ${password}`);
     const userInfo = {username, password};
