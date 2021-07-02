@@ -1,5 +1,5 @@
 
-const Session = require('../Schemas/sessionSchema');
+const { Session } = require('../Schemas/sessionSchema');
 
 const sessionController = {};
 
@@ -9,14 +9,15 @@ const sessionController = {};
 */
 sessionController.isLoggedIn = async (req, res, next) => {
   // 
+  console.log('cookies', JSON.stringify(req.cookies, null, 2));
   const ssidCook = {cookieId: req.cookies.ssid};
   try{
     const currentUser = await Session.find(ssidCook);
-    console.log('isLoggedIn ', currentUser)
     if (currentUser.length > 0) {
-      next();
+      res.locals.user = true;
+      return res.status(200).json(res.locals)
     }else {
-      return res.redirect('/signup')
+      return next();
     }
 
   }catch(err){
@@ -30,20 +31,15 @@ sessionController.isLoggedIn = async (req, res, next) => {
 * startSession - create and save a new Session into the database.
 */
 sessionController.startSession = async (req, res, next) => {
-  //write code here
-  const ssidCook = {cookieId: req.cookies.ssid};
-  
+  // console.log('sessionController.startSession',res.locals.id)
+  // const ssidCook = {cookieId: req.cookies.ssid};
+  //const ssidCook = {cookieId: res.locals._id};
   try {
-    const doc = new Session(ssidCook);
-    res.locals.session = await doc.save();
-    //next();
-    // const temp = await Session.find()
-    console.log(res.locals.session)
-    //return res.redirect('/secret')
-    next();
-  }catch(err){
-    console.log('startSession', err)
-    next(err);
+     const session = await Session.create({cookieID: res.locals.user._id});
+     if(session) return next()
+  }
+  catch (err) {
+    next( {log:'Error in sessionController.startSession: ' + JSON.stringify(err["message"])}  );
   }
 
 };
