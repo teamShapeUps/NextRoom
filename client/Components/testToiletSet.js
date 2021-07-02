@@ -30,7 +30,7 @@ const testToiletSet = [
     toiletAddress2: `Apt 9001`,
   },
   {
-    bathroomId: 1,
+    bathroomId: 3,
     bathroomCoords: [40.7472011, -73.9566542],
     imageUrl: null,
     imageTitle: null,
@@ -40,7 +40,7 @@ const testToiletSet = [
     toiletAddress2: `Apt 2`,
   },
   {
-    bathroomId: 1,
+    bathroomId: 4,
     bathroomCoords: [40.74257401667589, -73.96178139585714],
     imageUrl: null,
     imageTitle: null,
@@ -50,7 +50,7 @@ const testToiletSet = [
     toiletAddress2: null,
   },
   {
-    bathroomId: 1,
+    bathroomId: 5,
     bathroomCoords: [40.74249680676719, -73.96053128637011],
     imageUrl: null,
     imageTitle: null,
@@ -60,7 +60,7 @@ const testToiletSet = [
     toiletAddress2: `Grass and fresh air`,
   },
   {
-    bathroomId: 1,
+    bathroomId: 6,
     bathroomCoords: [40.73974725150603, -73.95925757295892],
     imageUrl: null,
     imageTitle: null,
