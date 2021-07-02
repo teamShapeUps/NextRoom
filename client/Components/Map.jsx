@@ -45,17 +45,12 @@ export default function Map() {
 
   const mapDrag = function () {
     const map = useMapEvents({
-      ondragend() {
-        (e) => getNewBathrooms(e);
-      }
-    })
-  }
+      dragend: (e) => console.log(`Map center latlng is: ${e.target.getCenter()}`)
+      })
+    }
 
-  const getNewBathrooms = function(e) {
-    const map = e.target;
-    const latlng = map.getCenter();
-    const latlngArr = [latlng.lat, latlng.lng];
-    console.log(`New center coords are $${JSON.stringify(latlngArr)}`);
+  const getNewBathrooms = function(latlngArr) {
+    // implement API fetch request here
   }
 
   // const [coords, setCoords] = useState([40.785091, -73.968285]);
