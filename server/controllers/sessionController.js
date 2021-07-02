@@ -1,3 +1,4 @@
+
 const { Session } = require('../Schemas/sessionSchema');
 
 const sessionController = {};
@@ -15,6 +16,16 @@ sessionController.isLoggedIn = async (req, res, next) => {
     if (currentUser.length > 0) {
       res.locals.user = true;
       return res.status(200).json(res.locals);
+  // 
+  console.log('cookies', JSON.stringify(req.cookies, null, 2));
+  const ssidCook = {cookieId: req.cookies.ssid};
+  try{
+    const currentUser = await Session.find(ssidCook);
+    if (currentUser.length > 0) {
+      res.locals.user = true;
+      return res.status(200).json(res.locals)
+    }else {
+      return next();
     }
     return next();
   } catch (err) {
@@ -36,6 +47,13 @@ sessionController.startSession = async (req, res, next) => {
     if (session) return next();
   } catch (err) {
     next({ log: `Error in sessionController.startSession: ${JSON.stringify(err.message)}` });
+  //const ssidCook = {cookieId: res.locals._id};
+  try {
+     const session = await Session.create({cookieID: res.locals.user._id});
+     if(session) return next()
+  }
+  catch (err) {
+    next( {log:'Error in sessionController.startSession: ' + JSON.stringify(err["message"])}  );
   }
 };
 

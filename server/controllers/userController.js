@@ -1,16 +1,21 @@
 const {User,Host} = require ('../Schemas/userSchema')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 
 const UserController = {
     async newUser(req, res, next) {
         const { username, password, response } = req.body;
 
         try {
-            const newUser = await User.create({username: username, password: password});
+            console.log('in controller');
+            const hash = await bcrypt.hash(password, saltRounds);
+            const newUser = await User.create({username: username, password: hash});
             
             res.locals.user = await newUser.save();
             res.locals.id = res.locals.user.id
             console.log(res.locals.user._id)
-            if(response) res.send(newUser)
+           // if(response) res.send(newUser)
             next();
         }
         catch (err) {
@@ -23,11 +28,14 @@ const UserController = {
         const { username, password } = req.body;
         
         try {
-            const newUser = await Host.create({"username" : username, "password" :password});
+            const hash = await bcrypt.hash(password, saltRounds);
+            const newUser = await Host.create({username: username, password: hash});
             // res.status(200).send(newUser)
             res.locals.user = await newUser.save();
-            if(newUser) return next()
-            
+            //res.locals.id = res.locals.host.id
+            //if(response) res.send(newUser)
+            next();
+
         }
         catch (err){
             next({
@@ -38,14 +46,19 @@ const UserController = {
     async verifyUser(req, res, next) {
         const { username, password } = req.body;
         
+        const user = await User.findOne({ username: username})
+        console.log('here is user', user);
+        if(!user) return res.status(401).send('User not found')
+        // res.locals.id = user._id
         try {
-            const user = await User.findOne({ username: username, password: password })
-            if(!user) return res.status(400).send('User not found')
-            // res.send(user)
-            res.locals.user = user
-            return next()
-        }
-        catch {
+            if (await bcrypt.compare(password , user.password)){
+                res.locals.user = user
+                return next();
+            }
+            else {
+                return res.status(400).send('unauthorized! Get outta here!')
+            }
+        }catch(err) {
             next({
                 log: `UserController.verifyUser: ERROR: ${err}`
             })
@@ -53,15 +66,17 @@ const UserController = {
     },
     async verifyHost(req, res, next) {
         const { username, password } = req.body;
-        
+        const host = await Host.findOne({ username: username })
+        if(!host) return res.status(401).send('Host not found')
         try {
-            const host = await Host.findOne({ username: username, password: password })
-            if(!host) return res.status(400).send('Host not found')
-            // res.send(host)
-            res.locals.user = host;
-            return next()
+            if (await bcrypt.compare(password , host.password)){
+                res.locals.user = host;
+                next();
+        }else {
+            return res.status(400).send('incorrect password')
         }
-        catch {
+    }
+        catch (err) {
             next({
                 log: `UserController.verifyHost: ERROR: ${err}`
             })

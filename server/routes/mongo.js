@@ -3,7 +3,6 @@ const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
 const sessionController = require('../controllers/sessionController');
 const bathroomController = require('../controllers/bathroomController');
-const { createAppointment, getAppointments } = require('../controllers/appointmentController');
 
 const app = express();
 
@@ -26,7 +25,7 @@ app.post('/hostsignup',
   });
 
 app.post('/userlogin',
-  sessionController.isLoggedIn,
+// sessionController.isLoggedIn,
   userController.verifyUser,
   cookieController.setSSIDCookie,
   sessionController.startSession,
@@ -35,7 +34,7 @@ app.post('/userlogin',
   });
 
 app.post('/hostlogin',
-  sessionController.isLoggedIn,
+// sessionController.isLoggedIn,
   userController.verifyHost,
   cookieController.setSSIDCookie,
   sessionController.startSession, (req, res) => {
@@ -46,7 +45,7 @@ app.post('/hostlogin',
 app.post('/addbathroom',
   bathroomController.addBathroom,
   (req, res) => {
-    res.status(200).json(res.locals.bathrooms);
+    res.status(200).json(res.locals.bathroom);
   });
 // app.put('/addbathroompic',
 // bathroomController.)
@@ -56,14 +55,24 @@ app.post('/addbathroom',
 // (req, res) => {
 //     res.send('rated')
 // })
-app.post('/appointment',
-  createAppointment, (req, res) => {
-    res.status(200).json(res.locals.newApp);
+
+app.get('/getbathrooms',
+  bathroomController.getHostBathrooms,
+  (req, res) => {
+    // console.log(res.locals.bathrooms)
+    res.status(200).send(res.locals.bathrooms);
   });
 
-app.get('/appointment',
-  getAppointments, (req, res) => {
-    res.status(200).json(res.locals.getAppointments);
+app.post('/addbathroompic',
+  bathroomController.addbathroompic,
+  (req, res) => {
+    res.status(200).send(res.locals.bathroomPics);
+  });
+
+app.get('/getnearbathrooms',
+  bathroomController.getNearBathrooms,
+  (req, res) => {
+    res.status(200).send(res.locals.nearBathrooms);
   });
 
 app.use('*', (req, res) => {
