@@ -77,6 +77,13 @@ bathroomController.getNearBathrooms,
 }
 )
 
+app.get('/logout', function(req,res){
+    req.logOut();
+    req.session.destroy(function (err) {
+           res.redirect('/');
+       });
+   });
+
 app.use("*",(req,res)=>{
     res.status(404).send("Page Not Found!")
 })
