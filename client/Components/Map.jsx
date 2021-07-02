@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 // import { makeStyles } from "@material-ui/core/styles";
-import { MapContainer, TileLayer, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
 import ToiletMarker from './toiletMarker.jsx';
 // import testToiletCard from './toiletCard.jsx';
@@ -43,10 +43,11 @@ export default function UserMap() {
     }
   }, bathrooms);
 
-  const mapDrag = function () {
+  const MapDrag = function () {
     const map = useMapEvents({
       dragend: (e) => console.log(`Map center latlng is: ${e.target.getCenter()}`)
       })
+      return null;
     }
 
   const getNewBathrooms = function(latlngArr) {
@@ -90,6 +91,5 @@ return (
   />
   <UserMarker position={coords} />
   {bathroomComponents}
-  {/* <ToiletMarker position={coords} /> */}
 </MapContainer>
 )}
