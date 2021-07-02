@@ -9,7 +9,7 @@ const sessionController = {};
 */
 sessionController.isLoggedIn = async (req, res, next) => {
   // 
-  console.log('cookies', req.cookies);
+  console.log('cookies', JSON.stringify(req.cookies, null, 2));
   const ssidCook = {cookieId: req.cookies.ssid};
   try{
     const currentUser = await Session.find(ssidCook);
