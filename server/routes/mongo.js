@@ -25,7 +25,7 @@ sessionController.startSession,
 })
 
 app.post('/userlogin', 
-sessionController.isLoggedIn,
+// sessionController.isLoggedIn,
 userController.verifyUser,
 cookieController.setSSIDCookie,
 sessionController.startSession,
@@ -34,7 +34,7 @@ sessionController.startSession,
 )
 
 app.post('/hostlogin', 
-sessionController.isLoggedIn,
+// sessionController.isLoggedIn,
 userController.verifyHost,
 cookieController.setSSIDCookie,
 sessionController.startSession, (req,res)=>{
