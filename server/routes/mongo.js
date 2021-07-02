@@ -3,9 +3,9 @@ const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
 const sessionController = require('../controllers/sessionController');
 const bathroomController = require('../controllers/bathroomController');
+const {getAppointments, createAppointment}= require('../controllers/appointmentController')
 
 const app = express();
-
 app.post('/usersignup',
   userController.newUser,
   cookieController.setSSIDCookie,
@@ -14,7 +14,6 @@ app.post('/usersignup',
     res.status(200).json(res.locals.user);
     // res.redirect('filepath')
   });
-
 app.post('/hostsignup',
   userController.newHost,
   cookieController.setSSIDCookie,
@@ -23,7 +22,6 @@ app.post('/hostsignup',
     // res.send('user signup')
     res.status(200).json(res.locals.user);
   });
-
 app.post('/userlogin',
 // sessionController.isLoggedIn,
   userController.verifyUser,
@@ -32,7 +30,6 @@ app.post('/userlogin',
   (req, res) => {
     res.status(200).json(res.locals.user);
   });
-
 app.post('/hostlogin',
 // sessionController.isLoggedIn,
   userController.verifyHost,
@@ -41,7 +38,6 @@ app.post('/hostlogin',
     // res.send('user has signed in!')
     res.status(200).json(res.locals.host);
   });
-
 app.post('/addbathroom',
   bathroomController.addBathroom,
   (req, res) => {
@@ -49,36 +45,44 @@ app.post('/addbathroom',
   });
 // app.put('/addbathroompic',
 // bathroomController.)
-
 // app.put('/rateuser',
 // userController.rateUser,
 // (req, res) => {
 //     res.send('rated')
 // })
-
 app.get('/getbathrooms',
   bathroomController.getHostBathrooms,
   (req, res) => {
     // console.log(res.locals.bathrooms)
     res.status(200).send(res.locals.bathrooms);
   });
-
 app.post('/addbathroompic',
   bathroomController.addbathroompic,
   (req, res) => {
     res.status(200).send(res.locals.bathroomPics);
   });
-
 app.get('/getnearbathrooms',
   bathroomController.getNearBathrooms,
   (req, res) => {
     res.status(200).send(res.locals.nearBathrooms);
   });
+app.get('/logout', (req, res) => {
+  req.logOut();
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
+});
+
+app.post('/appointments',createAppointment,(res,res)=>{
+
+});
+app.get('/appointments',getAppointments,(res,res)=>{
+    
+});
 
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');
 });
-
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Caught unknown Middleware',
@@ -87,5 +91,4 @@ app.use((err, req, res, next) => {
   console.log(errorObj);
   return res.status(500).send('Server Error');
 });
-
 module.exports = app;

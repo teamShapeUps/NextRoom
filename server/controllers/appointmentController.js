@@ -12,13 +12,13 @@ if ( _id === null|| bathroom_id === null ||username=== null ){
 try{
    //creates appointment 
     let app = await Appointment.create({bathroomId: bathroom_id, userId: _id,username:username})
-
+    let newApp = await app.save()
     //should make avalibale to false and be set to true in 30 minutes
     let makeunavailable = await Bathroom.findByIdAndUpdate({_id: bathroom_id},{available :false})    
     setTimeout(async function()
     {let makeavailable = await Bathroom.findByIdAndUpdate({_id: bathroom_id},{available :true})},1800000)
     
-    res.locals.newApp = app;
+    res.locals.newApp = newApp;
     next();
 }catch(error){
     next({
@@ -34,7 +34,7 @@ try{
          bathrooms = await Bathroom.find({hostId :_id})
          console.log("bath", bathrooms)
          if ( bathrooms.length ===0){
-           return  res.send("Host has no bathrooms")
+           return res.send("Host has no bathrooms")
          }else{
             
              for(let i =0;i< bathrooms.length;i++){
@@ -53,6 +53,10 @@ try{
          })
      }
  }
+
+ 
+
+
 
 }
 module.exports = appointmentController
