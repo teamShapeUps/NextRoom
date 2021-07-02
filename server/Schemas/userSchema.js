@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 const { MongoClient } = require('mongodb')
 
 const geocoder = require ('../utils/geocoder')
-const MONGO_URI1 ='mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
-// console.log(process.env)
+
+
 mongoose.connect(process.env.MONGO_URI, {
     // options for the connect method to parse the URI
     useNewUrlParser: true,

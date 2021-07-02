@@ -3,7 +3,8 @@ const { Bathroom ,Host} = require ('../Schemas/userSchema')
 const bathroomController = {
     async addBathroom(req, res, next) {
         const {address, zipcode, response, hostId, imageFileName} = req.body;
-        
+        const picArray = [];
+        picArray.push(imageFileName)
         console.log("request is", req.body)
         console.log("req.sessionID is", req.sessionID)
         try {
@@ -11,7 +12,8 @@ const bathroomController = {
             hostId: hostId,
             address: address,
             zipcode: zipcode,
-            imageFileName: imageFileName
+            imageFileName: imageFileName,
+            pictures: picArray
         })
         //res.locals.bathrooms = await newBathroom.save()
         if (response) res.send(newBathroom)
@@ -48,10 +50,41 @@ const bathroomController = {
         }
     },
 
+    async getNearBathrooms (req, res, next) {
+        let {longitude, latitude, miles} = req.body;
+        longitude = Number(longitude)
+        latitude = Number(latitude)
+        miles = Number(miles)/68.703
+        console.log('miles', miles)
+        if(miles === undefined) miles = 10/68.703
+        try {
+            const bathrooms = await Bathroom.find({}, (err, potty) => {
+                return potty
+            })
+            .exec()
+            let bathroomsArr = []
+            bathrooms.forEach(el =>{
+                if((el['location']['coordinates'][0] < longitude+miles && 
+                el['location']['coordinates'][0] > longitude-miles) &&
+                (el['location']['coordinates'][1] < latitude+miles && 
+                el['location']['coordinates'][1] > latitude-miles) && 
+                el['location']['coordinates'][1]) {
+                    bathroomsArr.push(el)
+                }
+            })
+          
+            res.locals.nearBathrooms = bathroomsArr
+            next()
+        }
+        catch(err) {
+            next(`error in bathroomController.getNearBathrooms: ${err}`)
+        }
+    },
+
     async addbathroompic(req, res, next) {
-        const { pic } = req.body;
+        const { pic, _id } = req.body;
         try{
-            const bathroom = await Bathroom.find({ hostId: _id}, (err, bathroom) => {
+            const bathroom = await Bathroom.findOne({ hostId: _id}, (err, bathroom) => {
                 if (err) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
                 console.log('bathroom', bathroom)
            return bathroom
@@ -74,25 +107,6 @@ const bathroomController = {
 
 },
 
-    async getNearBathrooms (req, res, next) {
-        const {longitude, latitude} = req.body;
-        try {
-            const bathrooms = await Bathroom.find({
-              $near: [longitude, latitude],
-              $maxDistance: .10},
-            (err, bathroom) => {
-                if (err) return next('Error in bathroomController.getNearBathrooms' + JSON.stringify(err))
-                return bathroom
-            })
-            .exec()
-            console.log(bathrooms)
-            res.locals.nearBathrooms = bathrooms
-            next()
-        }
-        catch(err) {
-            next(err)
-        }
-    },
 
     async deleteBathroom (req,res,next){
         try{

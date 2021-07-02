@@ -60,11 +60,11 @@ bathroomController.addBathroom,
 app.get('/getbathrooms',
 bathroomController.getHostBathrooms,
 (req,res)=>{
-    console.log(res.locals.bathrooms)
+    // console.log(res.locals.bathrooms)
     res.status(200).send(res.locals.bathrooms)
 })
 
-app.post('/addpic',
+app.post('/addbathroompic',
 bathroomController.addbathroompic,
 (req, res) => {
     res.status(200).send(res.locals.bathroomPics)
