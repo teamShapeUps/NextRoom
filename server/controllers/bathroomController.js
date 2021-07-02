@@ -28,27 +28,29 @@ const bathroomController = {
     },
 
     async getHostBathrooms (req, res, next) {
-        const { _id } = req.body
+
+        const _id  = req.cookies.ssid
+        console.log('backend id', _id)
+        //console.log("hostId", hostId)
+        try {
         
-        // console.log("hostId", hostId)
-        try{
-        const hostBathrooms = await Bathroom.find({ hostId: _id}, (err, bathrooms) => {
-            if (err) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
-            console.log('bathrooms', bathrooms)
-       return bathrooms
-        })
-        .exec()
-        console.log(hostBathrooms)
+        const hostBathrooms = await Bathroom.find({ hostId: _id})
+        
+        if (!hostBathrooms) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
+    
+        //console.log(hostBathrooms)
         res.locals.bathrooms = hostBathrooms
         // res.locals.bathrooms = userBathrooms
-        next()
+        return next()
         }
+        
         catch {
             next({
                 log: "bathroomController.getHostBathrooms"
             })
         }
     },
+    
 
     async getNearBathrooms (req, res, next) {
         let {longitude, latitude, miles} = req.body;
