@@ -65,7 +65,7 @@ bathroomController.getHostBathrooms,
 })
 
 app.post('/addbathroompic',
-bathroomController.addbathroompic,
+bathroomController.addBathroomPic,
 (req, res) => {
     res.status(200).send(res.locals.bathroomPics)
 })

@@ -51,7 +51,9 @@ const bathroomController = {
         }
     },
     
-
+    // async updateBathroom (req, res, next) {
+    //     const 
+    // }
     async getNearBathrooms (req, res, next) {
         let {longitude, latitude, miles} = req.body;
         longitude = Number(longitude)
@@ -83,27 +85,33 @@ const bathroomController = {
         }
     },
 
-    async addbathroompic(req, res, next) {
+    async addBathroomPic(req, res, next) {
         const { pic, _id } = req.body;
         try{
-            const bathroom = await Bathroom.findOne({ hostId: _id}, (err, bathroom) => {
-                if (err) return next('Error in bathroomController.getHostBathrooms' + JSON.stringify(err))
+            const bathroom = await Bathroom.findOne({ _id: _id}, (err, bathroom) => {
+                if (err) return next('Error in bathroomController.addBathroomPic' + JSON.stringify(err))
                 console.log('bathroom', bathroom)
            return bathroom
             })
             .exec()
-            const pics = bathroom[pictures]
+            console.log('found bathroom in addBathroomPic')
+            const pics = bathroom['pictures']
             pics.push(pic)
-            bathroom.overwrite({pictures: pics})
-            await bathroom.save()
-            console.log(bathroom)
-            res.locals.bathroomPics = pics
+            // bathroom.overwrite({pictures: pics})
+            // await bathroom.save()
+            const updated = await Bathroom.updateOne({_id: _id}, {$set: {pictures: pics}}, (err, bathroom) => {
+                if (err) return next('Error in bathroomController.addBathroomPic.updateOne' + JSON.stringify(err))
+                console.log('bathroom updateOne', bathroom)
+           return bathroom
+            })
+            console.log(updated)
+            res.locals.bathroomPics = updated.pics
             // res.locals.bathrooms = userBathrooms
             next()
             }
-            catch {
+            catch(err) {
                 next({
-                    log: "bathroomController.getHostBathrooms"
+                    log: `bathroomController.addBathroomPic ${err}`
                 })
             }
 
