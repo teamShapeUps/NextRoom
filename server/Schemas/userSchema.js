@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { MongoClient } = require('mongodb')
-const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
+
 const geocoder = require ('../utils/geocoder')
-const MONGO_URI1 ='mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
-// console.log(process.env)
+
+
 mongoose.connect(process.env.MONGO_URI, {
     // options for the connect method to parse the URI
     useNewUrlParser: true,
@@ -36,6 +35,10 @@ const hostSchema = new Schema({
 
 const bathroomSchema = new Schema ({
     hostId: { type: String },
+    title: String,
+    header: String,
+    description: String,
+    imageFileName: String,
     address: { 
       type: String,
     required: [true, 'Please add an address']
@@ -43,7 +46,7 @@ const bathroomSchema = new Schema ({
     available: { type: Boolean, default: true},
     ratings: { type: Array },
     reviews : { type: Array },
-    pictures : { type: String },
+    pictures : { type: Array },
     location : { 
       type: {
         type: String,
@@ -93,55 +96,7 @@ bathroomId: { type: String }
 
 
 
-    userSchema.pre('save', async function(next){
-
-        try{
-          const hash = await bcrypt.hash(this.password, SALT_WORK_FACTOR )
-          this.password = hash
-          next()
-        }catch (err){
-          next({
-            err
-          })
-        }
-      })
-      
-    
-      userSchema.methods.comparison = async function (plainTextPasswd) { 
-        console.log('in comparison')
-      
-        try{
-          return await bcrypt.compare(plainTextPasswd,this.password)
-          
-        }catch(err){
-          console.log(err)
-        }
-      };
-  
-      hostSchema.pre('save', async function(next){
-
-        try{
-          const hash = await bcrypt.hash(this.password, SALT_WORK_FACTOR )
-          this.password = hash
-          next()
-        }catch (err){
-          next({
-            err
-          })
-        }
-      })
-      
-    
-      hostSchema.methods.comparison = async function (plainTextPasswd) { 
-        console.log('in comparison')
-      
-        try{
-          return await bcrypt.compare(plainTextPasswd,this.password)
-          
-        }catch(err){
-          console.log(err)
-        }
-      };
+ 
   
       
 
