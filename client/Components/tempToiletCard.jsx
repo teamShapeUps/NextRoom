@@ -33,6 +33,8 @@ export default function ToiletCard (props) {
 
     const useStyles = makeStyles({
       card: {
+        display: 'grid',
+        placeItems: 'center',
         maxWidth: 245,
         height: 145,
       },
@@ -44,8 +46,8 @@ export default function ToiletCard (props) {
       <div className={classes.card}>
       <div>{imageUrl}</div>
       <div>{imageTitle}</div>
-      <div>{descriptionTitle}</div>
-      <div>{descriptionBody}</div>
+      <h3>{descriptionTitle}</h3>
+      <p>{descriptionBody}</p>
       <div>{toiletAddress}</div>
       <div>{toiletAddress2}</div>
       </div>      
