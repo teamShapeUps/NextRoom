@@ -7,6 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "build"),
         filename: "bundle.js",
+        publicPath: '/',
     },
 
     mode: "development", 
@@ -47,8 +48,9 @@ module.exports = {
     devServer: {
         publicPath: "/build",
         contentBase: "./client",
+        historyApiFallback: true,
         proxy: {
-            "/api": "http://localhost:3000",
+            "/mongo": "http://localhost:3000",
         },
     },
     resolve: {

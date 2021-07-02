@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { MongoClient } = require('mongodb')
 
-const MONGO_URI1 ='mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
-// console.log(process.env)
+const geocoder = require ('../utils/geocoder')
+
+
 mongoose.connect(process.env.MONGO_URI, {
     // options for the connect method to parse the URI
     useNewUrlParser: true,
@@ -17,7 +18,14 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const userSchema = new Schema({
  username: { type: String, required: true, unique: true},
- password: { type: String, required: true }
+ password: { type: String, required: true },
+ name: { type: String},
+ bio: { type: String },
+ rating: { type: Number, default: 0},
+ ratings: { type: Array, default: []},
+ reviews: { type: Array },
+ profilepicture: { type: String }
+ 
 })
 
 const hostSchema = new Schema({
@@ -25,13 +33,80 @@ const hostSchema = new Schema({
     password: { type: String, required: true }
    })
 
+const bathroomSchema = new Schema ({
+    hostId: { type: String },
+    title: String,
+    header: String,
+    description: String,
+    imageFileName: String,
+    address: { 
+      type: String,
+    required: [true, 'Please add an address']
+  }, 
+    available: { type: Boolean, default: true},
+    ratings: { type: Array },
+    reviews : { type: Array },
+    pictures : { type: Array },
+    location : { 
+      type: {
+        type: String,
+        enum: ['Point'],
+        // required: true
+        },
+      coordinates: {
+        type: [Number],
+        // required: true
+      },
+      formattedAddress: String
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+   
+    coordinates: { type: String },
+    zipcode: { type: String }
+    
+})
+
+const appointmentSchema = new Schema({
+bathroomId: { type: String }
+})
+
+// Geocode & create location
+  bathroomSchema.pre('save', async function (next){
+    const location = await geocoder.geocode(this.address);
+    this.location = {
+      type: 'point',
+      coordinates: [location[0].longitude, location[0].latitude],
+      formattedAddress: location[0].formattedAddress
+    }
+    console.log(location)
+
+    //Do not save address
+    this.address = undefined;
+    next()
+  })
+
    const User = mongoose.model('user', userSchema);
    const Host = mongoose.model('host', hostSchema); 
+    const Bathroom = mongoose.model('bathroom', bathroomSchema)
+    const Appointment = mongoose.model('appointment', appointmentSchema)
+  
 
 
-   module.exports={
+
+ 
+  
+      
+
+
+  
+    module.exports={
        User,
-       Host
+       Host,
+       Bathroom,
+       Appointment
 
    }
    
