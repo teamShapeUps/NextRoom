@@ -74,8 +74,13 @@ app.post('/getnearbathrooms',
 bathroomController.getNearBathrooms,
 (req, res) => {
     res.status(200).send(res.locals.nearBathrooms)
-}
-)
+})
+
+app.post('/updateBathroom',
+bathroomController.updateBathroom,
+(req, res) => {
+    res.status(200).send(res.locals.updatedBathroom)
+})
 
 app.use("*",(req,res)=>{
     res.status(404).send("Page Not Found!")

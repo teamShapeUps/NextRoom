@@ -51,9 +51,7 @@ const bathroomController = {
         }
     },
     
-    // async updateBathroom (req, res, next) {
-    //     const 
-    // }
+   
     async getNearBathrooms (req, res, next) {
         let {longitude, latitude, miles} = req.body;
         longitude = Number(longitude)
@@ -114,9 +112,38 @@ const bathroomController = {
                     log: `bathroomController.addBathroomPic ${err}`
                 })
             }
-
 },
 
+async updateBathroom(req, res, next) {
+    const {_id} = req.body
+    try{
+        const bathroom = await Bathroom.findOne({ _id: _id}, (err, bathroom) => {
+            if (err) return next('Error in bathroomController.updateBathroom' + JSON.stringify(err))
+            console.log('bathroom', bathroom)
+       return bathroom
+        })
+        .exec()
+        console.log('updaterequest')
+     let updatedBathroom = {bathroom, ...req.body}
+     console.log('updaterequest',updatedBathroom)
+        // bathroom.overwrite({pictures: pics})
+        // await bathroom.save()
+        const updated = await Bathroom.updateOne({_id: _id}, {$set: updatedBathroom}, (err, bathroom) => {
+            if (err) return next('Error in bathroomController.updateBathroom.updateOne' + JSON.stringify(err))
+            console.log('bathroom updateOne', bathroom)
+       return bathroom
+        })
+        console.log(updated)
+   
+        res.locals.updatedBathroom = updated
+        next()
+        }
+        catch(err) {
+            next({
+                log: `bathroomController.updateBathroom ${err}`
+            })
+        }
+},
 
     async deleteBathroom (req,res,next){
         try{
