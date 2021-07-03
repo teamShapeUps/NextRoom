@@ -5,7 +5,8 @@ const { MongoClient } = require('mongodb');
 
 const geocoder = require('../utils/geocoder');
 
-//
+
+
 mongoose.connect(process.env.MONGO_URI, {
   // options for the connect method to parse the URI
   useNewUrlParser: true,
@@ -42,7 +43,7 @@ const bathroomSchema = new Schema({
   imageFileName: String,
   address: {
     type: String,
-    required: [true, 'Please add an address'],
+    required: true,
   },
   available: { type: Boolean, default: true },
   ratings: { type: Array },

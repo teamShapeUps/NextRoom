@@ -1,53 +1,52 @@
 const express = require('express');
-const userController = require('../controllers/userController')
-const cookieController = require('../controllers/cookieController')
-const sessionController = require('../controllers/sessionController')
-const bathroomController = require ('../controllers/bathroomController')
+const userController = require('../controllers/userController');
+const cookieController = require('../controllers/cookieController');
+const sessionController = require('../controllers/sessionController');
+const bathroomController = require('../controllers/bathroomController');
+
+const { getAppointments, createAppointment, getReservations } = require('../controllers/appointmentController');
+
 const app = express();
 
-
 app.post('/usersignup',
- userController.newUser,
- cookieController.setSSIDCookie,
- sessionController.startSession,
- (req,res)=>{
-    res.status(200).json(res.locals.user)
-    //res.redirect('filepath')
-})
+  userController.newUser,
+  cookieController.setSSIDCookie,
+  sessionController.startSession,
+  (req, res) => {
+    res.status(200).json(res.locals.user);
+    // res.redirect('filepath')
+  });
 
-app.post('/hostsignup', 
-userController.newHost, 
-cookieController.setSSIDCookie,
-sessionController.startSession,
-(req,res)=>{
+app.post('/hostsignup',
+  userController.newHost,
+  cookieController.setSSIDCookie,
+  sessionController.startSession,
+  (req, res) => {
     // res.send('user signup')
-    res.status(200).json(res.locals.user)
-})
+    res.status(200).json(res.locals.user);
+  });
 
-app.post('/userlogin', 
+app.post('/userlogin',
 // sessionController.isLoggedIn,
-userController.verifyUser,
-cookieController.setSSIDCookie,
-sessionController.startSession,
-(req,res)=>{
-    res.status(200).json(res.locals.user)}
-)
+  userController.verifyUser,
+  cookieController.setSSIDCookie,
+  sessionController.startSession,
+  (req, res) => {
+    res.status(200).json(res.locals.user);
+  });
 
-app.post('/hostlogin', 
+app.post('/hostlogin',
 // sessionController.isLoggedIn,
-userController.verifyHost,
-cookieController.setSSIDCookie,
-sessionController.startSession, (req,res)=>{
+  userController.verifyHost,
+  cookieController.setSSIDCookie,
+  sessionController.startSession, (req, res) => {
     // res.send('user has signed in!')
-    res.status(200).json(res.locals.user)
-}
-)
+    res.status(200).json(res.locals.user);
+  });
 
 app.post('/addbathroom',
-bathroomController.addBathroom,
-(req, res) => {
-    return res.status(200).json(res.locals.bathroom)
-})
+  bathroomController.addBathroom,
+  (req, res) => res.status(200).json(res.locals.bathroom));
 // app.put('/addbathroompic',
 // bathroomController.)
 
@@ -57,18 +56,18 @@ bathroomController.addBathroom,
 //     res.send('rated')
 // })
 
-app.delete('/deleteBathroom', 
-    bathroomController.deleteBathroom,
+app.delete('/deleteBathroom',
+  bathroomController.deleteBathroom,
   (req, res) => {
     res.status(200).json('bathroom deleted');
   });
-  
+
 app.get('/getbathrooms',
-bathroomController.getHostBathrooms,
-(req,res)=>{
+  bathroomController.getHostBathrooms,
+  (req, res) => {
     // console.log(res.locals.bathrooms)
-    res.status(200).send(res.locals.bathrooms)
-})
+    res.status(200).send(res.locals.bathrooms);
+  });
 
 // app.post('/addbathroompic',
 // bathroomController.addbathroompic,
@@ -76,32 +75,53 @@ bathroomController.getHostBathrooms,
 //     res.status(200).send(res.locals.bathroomPics)
 // })
 
+<<<<<<< HEAD
 app.post('/getnearbathrooms', 
 bathroomController.getNearBathrooms,
 (req, res) => {
     res.status(200).send(res.locals.nearBathrooms)
 }
 )
+=======
+app.get('/getnearbathrooms',
+  bathroomController.getNearBathrooms,
+  (req, res) => {
+    res.status(200).send(res.locals.nearBathrooms);
+  });
+>>>>>>> 249596bbbf41067f17d52a51fafcef6bad6a4eb3
 
 app.post('/updatebathroom',
-bathroomController.updateBathroom, 
-(req, res)=>{
-    res.status(200).json(res.locals.updatedBathroom)
-})
+  bathroomController.updateBathroom,
+  (req, res) => {
+    res.status(200).json(res.locals.updatedBathroom);
+  });
 
+app.get('/appointments',
+  getAppointments, (req, res) => {
+    res.status(200).send(res.locals.getAppointments);
+  });
 
-app.use("*",(req,res)=>{
-    res.status(404).send("Page Not Found!")
-})
+app.get('/logout', (req, res) => {
+  req.logOut();
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
+});
+app.get('/usersappointments',
+  getReservations, (req, res) => {
+    res.status(200).send(res.locals.getReservations);
+  });
+app.use('*', (req, res) => {
+  res.status(404).send('Page Not Found!');
+});
 
-app.use((err,req,res,next)=>{
-    const defaultErr ={
-        log:"Caught unknown Middleware"
-    }
-const errorObj = Object.assign({},defaultErr,err)
-console.log(errorObj)
-return res.status(500).send("Server Error")
-
+app.use((err, req, res, next) => {
+  const defaultErr = {
+    log: 'Caught unknown Middleware',
+  };
+  const errorObj = { ...defaultErr, ...err };
+  console.log(errorObj);
+  return res.status(500).send('Server Error');
 });
 
 module.exports = app;

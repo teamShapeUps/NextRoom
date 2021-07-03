@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {makeStyles, 
         Card, 
         TextField, 
@@ -78,6 +78,7 @@ export default function HostToiletCard(props){
     //const [updatedBathZip, setUpdatedBathZip] = useState('');
     const [updatedBathImg, setUpdatedBathImg] = useState(imageFileName);
 
+
     const handleDeleteBathroom = function(){
         //delete bathroom using mongo ID. Accessible like this:
         console.log(_id);
@@ -116,9 +117,22 @@ export default function HostToiletCard(props){
       .catch((error) => {
         console.error('Error:', error);
       })
+
+      setToggleEdit(!toggleEdit);
+     
   }
 
+  const clickUpdate = function(){
+    const update = {_id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
+    props.handleUpdateBathroom(update);
+    setToggleEdit(!toggleEdit);
+  }
 
+  const clickDelete = function(){
+    const bathroomId = {_id};
+    props.handleDeleteBathroom(bathroomId);
+
+  }
 
     return(
         // <TextField defaultValue={props.text}/>
@@ -153,7 +167,7 @@ export default function HostToiletCard(props){
         <Button size="small" className={classes.saveButton} onClick={()=> setToggleEdit(!toggleEdit)}>
           Edit
         </Button>
-        <Button  size="small" className={classes.cancelButton} onClick={handleDeleteBathroom}>
+        <Button  size="small" className={classes.cancelButton} onClick={clickDelete}>
           Delete
         </Button>
       </div>
@@ -179,7 +193,7 @@ export default function HostToiletCard(props){
             <div className={classes.buttonContainer}>
                 <Button 
                 className={classes.saveButton}
-                onClick = {handleUpdateBathroom}
+                onClick = {clickUpdate}
                 type="submit"
                 >Save Changes</Button>
                 <Button 

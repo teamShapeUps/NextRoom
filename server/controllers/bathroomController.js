@@ -7,6 +7,7 @@ const bathroomController = {
 
         const {address, zipcode, title, description, imageFileName} = req.body;
         const hostId = req.cookies.ssid;
+        console.log('cookie on the backend ', hostId)
          const picArray = [];
          picArray.push(imageFileName)
         // console.log("req.sessionID is", req.sessionID)
@@ -87,6 +88,7 @@ const bathroomController = {
         }
     },
 
+
     async addBathroomPic(req, res, next) {
         const { pic, _id } = req.body;
         try{
@@ -127,7 +129,6 @@ async updateBathroom(req, res, next) {
 
     const location = await geocoder.geocode(address);
 
-    console.log("location ", location);
 
     update.location = {
       type: 'point',
@@ -135,7 +136,6 @@ async updateBathroom(req, res, next) {
       formattedAddress: location[0].formattedAddress,
     };
 
-    console.log(update, 'AFTER THIS')
 
     const updatedBathroom = await Bathroom.findOneAndUpdate(filter, update, {new:true});
 
