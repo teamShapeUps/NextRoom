@@ -76,7 +76,6 @@ export default function HostPage(){
             //create component for each bathroom to be rendered
         dataFromFetch.forEach(bathroom => {
             arrayOfComponents.push(<HostToiletCard key={bathroom._id} {...bathroom} />);
-            console.log('bathroom ,' , bathroom)
         })
 
         setBathroomArray([arrayOfComponents])

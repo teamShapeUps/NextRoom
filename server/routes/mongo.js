@@ -57,9 +57,10 @@ bathroomController.addBathroom,
 //     res.send('rated')
 // })
 
-app.delete('/deleteBathroom', bathroomController.deleteBathroom,
+app.delete('/deleteBathroom', 
+    bathroomController.deleteBathroom,
   (req, res) => {
-    res.status(200).send('bathroom deleted');
+    res.status(200).json('bathroom deleted');
   });
   
 app.get('/getbathrooms',
@@ -81,6 +82,12 @@ bathroomController.getNearBathrooms,
     res.status(200).send(res.locals.nearBathrooms)
 }
 )
+
+app.post('/updatebathroom',
+bathroomController.updateBathroom, 
+(req, res)=>{
+    res.status(200).json(res.locals.updatedBathroom)
+})
 
 
 app.use("*",(req,res)=>{
