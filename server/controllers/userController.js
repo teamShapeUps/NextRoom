@@ -30,10 +30,9 @@ const UserController = {
         try {
             const hash = await bcrypt.hash(password, saltRounds);
             const newUser = await Host.create({username: username, password: hash});
-            // res.status(200).send(newUser)
+       
             res.locals.user = await newUser.save();
-            //res.locals.id = res.locals.host.id
-            //if(response) res.send(newUser)
+           
             next();
 
         }
