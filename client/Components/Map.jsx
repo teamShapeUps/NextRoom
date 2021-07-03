@@ -62,7 +62,7 @@ export default function UserMap() {
       moveend: (e) => {
       //console.log(`Map center latlng is: ${e.target.getCenter()}`)
       getNewBathrooms(e.target.getCenter())
-      console.log(`toilets is: ${pp(toilets)}`)
+      // console.log(`toilets is: ${pp(toilets)}`)
       },
     })
       return null;
@@ -110,11 +110,8 @@ export default function UserMap() {
           // toiletAddress2,
         }) 
       });
-      console.log(`newBathrooms are ${JSON.stringify(newBathrooms, null, 2)}, prototype of newBathrooms ${newBathrooms.prototype}`)
-      setToilets((prevState) => {
-        const tempSet = new Set(prevState.concat(newBathrooms))
-        return [...tempSet];
-      });
+      // console.log(`newBathrooms are ${JSON.stringify(newBathrooms, null, 2)}, prototype of newBathrooms ${newBathrooms.prototype}`)
+      setToilets(() => [...newBathrooms]);
       // console.log(`toilets are: ${pp(toilets)}`)
     //   console.log(`newBathrooms: ${JSON.stringify(newBathrooms,null,2)}`)
     //   setToiletMarkers((prevState) => {
