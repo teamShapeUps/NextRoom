@@ -87,6 +87,7 @@ const bathroomController = {
         }
     },
 
+
     async addBathroomPic(req, res, next) {
         const { pic, _id } = req.body;
         try{
