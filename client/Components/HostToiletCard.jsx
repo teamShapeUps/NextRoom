@@ -129,7 +129,7 @@ export default function HostToiletCard(props){
               
             <TextField fullWidth defaultValue={price} variant="outlined" label="$$$ / 10 mins" onChange={(e)=> setUpdatedBathPrice(e.target.value)}/>
 
-            <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/>
+            <TextField fullWidth defaultValue={address} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/>
 
             <TextField fullWidth defaultValue={imageFileName} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedBathImg(e.target.value)}/>
             <Typography>Image Preview:</Typography>

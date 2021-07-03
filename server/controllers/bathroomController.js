@@ -110,12 +110,25 @@ const bathroomController = {
             }
 
 },
+    async updateBathroom(req, res, next){
+        const {_id, title, address, description, price, imageFileName} = req.body;
 
+        const filter = {_id}
+        const update = { title , address, description, price, imageFileName }
+        const updatedBathroom = await Bathroom.findOneAndUpdate(filter, update, {new: true});
+
+        if(updatedBathroom){
+            res.locals.updatedBathroom = updatedBathroom
+            return next()
+        } else {
+            return res.status(401).json('Error updating!')
+        }
+    },
 
     async deleteBathroom (req,res,next){
         try{
-            const deletedBathroom = Bathroom.deleteOne({
-            '._id':req.params._id
+            const deletedBathroom = await Bathroom.deleteOne({
+            '._id':req.body._id
             })
         }catch(error){
             console.log("deleteBathroom ", error)

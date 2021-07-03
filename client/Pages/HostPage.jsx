@@ -74,7 +74,10 @@ export default function HostPage(){
     useEffect(() => {
         //handle new bathrooms added to array in this rerender
             //create component for each bathroom to be rendered
-        dataFromFetch.forEach(bathroom => arrayOfComponents.push(<HostToiletCard key={bathroom._id} {...bathroom} />))
+        dataFromFetch.forEach(bathroom => {
+            arrayOfComponents.push(<HostToiletCard key={bathroom._id} {...bathroom} />);
+            console.log('bathroom ,' , bathroom)
+        })
 
         setBathroomArray([arrayOfComponents])
 
