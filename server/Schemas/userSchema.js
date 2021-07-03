@@ -5,9 +5,8 @@ const { MongoClient } = require('mongodb');
 
 const geocoder = require('../utils/geocoder');
 
-const MONGO_URI1 = 'mongodb+srv://Travis:mojorisin6@restroomscluster.alasl.mongodb.net/restdb?retryWrites=true&w=majority';
-// process.env.MONGO_URI
-mongoose.connect(MONGO_URI1, {
+//
+mongoose.connect(process.env.MONGO_URI, {
   // options for the connect method to parse the URI
   useNewUrlParser: true,
   useUnifiedTopology: true,
