@@ -1,27 +1,30 @@
-const { Bathroom ,Host} = require ('../Schemas/userSchema')
+const { Bathroom , Host} = require ('../Schemas/userSchema')
 
 const bathroomController = {
     async addBathroom(req, res, next) {
-        const {address, zipcode, response, hostId, imageFileName} = req.body;
-        const picArray = [];
-        picArray.push(imageFileName)
-        console.log("request is", req.body)
-        console.log("req.sessionID is", req.sessionID)
-        try {
+
+        const {address, zipcode, title, description, imageFileName} = req.body;
+        const hostId = req.cookies.ssid;
+         const picArray = [];
+         picArray.push(imageFileName)
+        // console.log("req.sessionID is", req.sessionID)
+
         const newBathroom = await Bathroom.create({
             hostId: hostId,
+            title: title,
+            description: description,
             address: address,
             zipcode: zipcode,
             imageFileName: imageFileName,
             pictures: picArray
         })
         //res.locals.bathrooms = await newBathroom.save()
-        if (response) res.send(newBathroom)
-        
-        next();
-        }
-        catch (err){
-            next({
+        if (newBathroom) {
+            console.log('New Bathroom made it!')
+            res.locals.bathroom = newBathroom
+            return next();
+        }else {
+            return next({
                 log: `bathroomController.addBathroom: ERROR: ${err}`
             })
         }

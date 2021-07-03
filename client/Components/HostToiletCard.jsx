@@ -2,23 +2,27 @@ import React, { useState } from 'react';
 import {makeStyles, 
         Card, 
         TextField, 
-        CardActionArea, 
-        CardActions, 
         CardContent, 
         CardMedia, 
         Button, 
         Typography,
         Collapse} from '@material-ui/core';
-import { BorderStyle } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
   card: {
     minWidth: 800,
     margin: "25px 0 25px 0",
+    boxShadow:'0 3px 5px 2px rgba(255, 105, 135, .3)',
+
   },
   media: {
     height: 350,
+    width: 250
+  },
+  cardContentContainer:{
+    display:'flex',
+
   },
   booked:{
     display:'flex',
@@ -38,31 +42,54 @@ const useStyles = makeStyles({
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end'
   },
   updateForm: {
-    padding: "50px 15px 15px 15px"
+    padding: "50px 15px 15px 15px",
+    display: 'flex',
+    flexDirection:'column',
+    justifyContent:'space-between',
+    alignItems:'center',
+    height: 1000
   },
-  button:{
-
+  saveButton:{
+    color: 'green',
   },
+  cancelButton:{
+    color: 'red'
+  }
 
 });
 
 
 export default function HostToiletCard(props){
 
-    const {_id, available} = props;
+    const {_id, available, title, description, imageFileName, address, zip, price} = props;
     //pass in props from query
     const classes = useStyles();
 
     const [toggleEdit, setToggleEdit] = useState(true);
+
+    const [updatedBathTitle, setUpdatedBathTitle] = useState('');
+    const [updatedBathDescription, setUpdatedBathDescription] = useState('');
+    const [updatedBathPrice, setUpdatedBathPrice] = useState('');
+    const [updatedBathAddress, setUpdatedBathAddress] = useState('');
+    //const [updatedBathZip, setUpdatedBathZip] = useState('');
+    const [updatedBathImg, setUpdatedBathImg] = useState('');
+
+    const handleDeleteBathroom = function(){
+        //delete bathroom using mongo ID. Accessible like this:
+        console.log(_id);
+        console.log(props.location.formattedAddress);
+    }
 
 
     return(
         // <TextField defaultValue={props.text}/>
         <Card className={classes.card}>
             <Collapse in={toggleEdit}>
+        <div className={classes.cardContentContainer}>
         <CardMedia
           component = "img"
           className={classes.media}
@@ -71,7 +98,7 @@ export default function HostToiletCard(props){
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {_id} 
+            {title} 
           </Typography>
           <Typography className={available? classes.available : classes.booked}>
             {available? "Available" : "Booked"}
@@ -84,30 +111,41 @@ export default function HostToiletCard(props){
             {props.description}
           </Typography>
         </CardContent>
+        </div>
       <div className={classes.buttonContainer}>
-        <Button size="small" className={classes.button} onClick={()=> setToggleEdit(!toggleEdit)}>
+        <Button size="small" className={classes.saveButton} onClick={()=> setToggleEdit(!toggleEdit)}>
           Edit
         </Button>
-        <Button size="small" className={classes.button}>
+        <Button  size="small" className={classes.cancelButton} onClick={handleDeleteBathroom}>
           Delete
         </Button>
       </div>
       </Collapse>
       <Collapse in={!toggleEdit} orientation={'horizontal'}>
         <div className = {classes.updateForm}>
-            <TextField fullWidth defaultValue={props._id} />
-                    <br></br>
-                    <br></br>
-                    <br></br>
-            <TextField fullWidth defaultValue={props.imageFileName} /> 
-                    <br></br>
-                    <br></br>
-                    <br></br>
+            <TextField fullWidth defaultValue={props.title} variant="outlined" label="Title" onChange={(e)=> setUpdatedBathTitle(e.target.value)}/>
+        
+            <TextField fullWidth defaultValue={description} variant="outlined" label="Description" onChange={(e)=> setUpdatedBathDescription(e.target.value)}/>
+              
+            <TextField fullWidth defaultValue={price} variant="outlined" label="$$$ / 10 mins" onChange={(e)=> setUpdatedBathPrice(e.target.value)}/>
+
+            <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/>
+
+            <TextField fullWidth defaultValue={imageFileName} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedBathImg(e.target.value)}/>
+            <Typography>Image Preview:</Typography>
+            <CardMedia 
+            component= "img"
+            className={classes.media}
+            image={updatedBathImg? updatedBathImg: imageFileName}
+            label="Bathroom Preview"/>
+
             <div className={classes.buttonContainer}>
                 <Button 
+                className={classes.saveButton}
                 type="submit"
                 >Save Changes</Button>
                 <Button 
+                className={classes.cancelButton}
                 type="submit"
                 onClick={()=> setToggleEdit(!toggleEdit)}
                 >Cancel Edit</Button>

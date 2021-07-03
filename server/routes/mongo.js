@@ -46,7 +46,7 @@ sessionController.startSession, (req,res)=>{
 app.post('/addbathroom',
 bathroomController.addBathroom,
 (req, res) => {
-    res.status(200).json(res.locals.bathroom)
+    return res.status(200).json(res.locals.bathroom)
 })
 // app.put('/addbathroompic',
 // bathroomController.)
