@@ -83,8 +83,10 @@ app.post('/updateBathroom',
 app.post('/appointments', createAppointment, (req, res) => {
   res.status(200).send(res.locals.newApp);
 });
+
 app.get('/appointments', getAppointments, (req, res) => {
   res.status(200).send(res.locals.getAppointments);
+});
 
   app.get('/logout', (req, res) => {
   req.logOut();
@@ -96,6 +98,7 @@ app.get('/appointments', getAppointments, (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');
 });
+
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Caught unknown Middleware',
