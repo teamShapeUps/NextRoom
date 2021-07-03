@@ -85,6 +85,12 @@ app.post('/appointments', createAppointment, (req, res) => {
 });
 app.get('/appointments', getAppointments, (req, res) => {
   res.status(200).send(res.locals.getAppointments);
+
+  app.get('/logout', (req, res) => {
+  req.logOut();
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
 });
 
 app.use('*', (req, res) => {
