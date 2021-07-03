@@ -7,6 +7,13 @@ import {
 import { Redirect, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
+  text: {
+    ontSize: 15,
+    fontFamily: [
+      'Eurostile',
+      'cursive',
+    ].join(',')
+  },
   button: {
     // display:'flex',
     // flexDirection: 'row',
@@ -54,8 +61,8 @@ const useStyles = makeStyles({
 
 const theme = createMuiTheme({
   typography: {
-    fontSize: '300px',
-    fontSize: '80',
+    // fontSize: '300px',
+    fontSize: 75,
     fontFamily: [
       'Permanent Marker',
       'cursive',
@@ -72,7 +79,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   // const [count, setCount] = useState(0);
   const [checked, setChecked] = useState(false);
-  const [isUser, setUser] = useState(false);
+  const [isUser, setUser] = useState(true);
   const [createUsername, setCreateUsername] = useState('');
   const [createPassword, setCreatePassword] = useState('');
 
@@ -163,19 +170,20 @@ export default function LoginForm() {
     <section>
       <ThemeProvider theme={theme}>
         <div className={classes.title}>
-          <Typography>Potty Over Here</Typography>
+          {/* <Typography>Potty Over Here</Typography> */}
+          <Typography>R.E.S.T.room</Typography>
         </div>
       </ThemeProvider>
       <div className={classes.div}>
         <h1>{checked ? 'Sign Up' : 'Login'}</h1>
         <Switch onChange={() => setUser(!isUser)} className={classes.toggle} />
-        <p>{isUser ? 'User' : 'Host'}</p>
+        <p>{isUser ? 'User Login' : 'Host Login'}</p>
         <Box className={classes.box}>
           <Collapse in={!checked} orientation="horizontal">
             <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
             <br />
             <br />
-            <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+            <TextField placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
             <br />
             <br />
             <Button

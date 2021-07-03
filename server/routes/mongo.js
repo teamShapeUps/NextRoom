@@ -46,19 +46,20 @@ app.post('/hostlogin',
 
 app.post('/addbathroom',
   bathroomController.addBathroom,
-  (req, res) => {
-    res.status(200).json(res.locals.bathroom);
-  });
+  (req, res) => res.status(200).json(res.locals.bathroom));
 // app.put('/addbathroompic',
 // bathroomController.)
+
 // app.put('/rateuser',
 // userController.rateUser,
 // (req, res) => {
 //     res.send('rated')
 // })
-app.delete('/deleteBathroom', bathroomController.deleteBathroom,
+
+app.delete('/deleteBathroom',
+  bathroomController.deleteBathroom,
   (req, res) => {
-    res.status(200).send('bathroom deleted');
+    res.status(200).json('bathroom deleted');
   });
 
 app.get('/getbathrooms',
@@ -68,36 +69,23 @@ app.get('/getbathrooms',
     res.status(200).send(res.locals.bathrooms);
   });
 
-app.post('/addbathroompic',
-  bathroomController.addBathroomPic,
-  (req, res) => {
-    res.status(200).send(res.locals.bathroomPics);
-  });
+// app.post('/addbathroompic',
+// bathroomController.addbathroompic,
+// (req, res) => {
+//     res.status(200).send(res.locals.bathroomPics)
+// })
 
-app.post('/getnearbathrooms',
+app.get('/getnearbathrooms',
   bathroomController.getNearBathrooms,
   (req, res) => {
     res.status(200).send(res.locals.nearBathrooms);
   });
 
-app.post('/updateBathroom',
+app.post('/updatebathroom',
   bathroomController.updateBathroom,
   (req, res) => {
-    res.status(200).send(res.locals.updatedBathroom);
+    res.status(200).json(res.locals.updatedBathroom);
   });
-
-// app.post('/appointments',
-//   createAppointment,
-//   (req, res) => {
-//     res.status(200).send(res.locals.newApp);
-//   });
-app.post('/appointments', createAppointment, (req, res) => {
-  res.status(200).send(res.locals.newApp);
-});
-
-// app.get('/appointments', getAppointments, (req, res) => {
-//   res.status(200).send(res.locals.getAppointments);
-// });
 
 app.get('/appointments',
   getAppointments, (req, res) => {
@@ -114,7 +102,6 @@ app.get('/usersappointments',
   getReservations, (req, res) => {
     res.status(200).send(res.locals.getReservations);
   });
-
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');
 });
