@@ -15,8 +15,10 @@ _id, Bathroom_id, username  */
       // creates appointment
       const app = await Appointment.create({ bathroomId: bathroom_id, userId: _id, username });
       const newApp = await app.save();
-      // should make avalibale to false and be set to true in 30 minutes
+
       const makeunavailable = await Bathroom.findOneAndUpdate({ _id: bathroom_id }, { available: false });
+      // should make avalibale to false and be set to true in 30 minutes
+
       setTimeout(async () => {
         const makeavailable = await Bathroom.findOneAndUpdate({ _id: bathroom_id }, { available: true });
       }, 30000);
@@ -52,6 +54,26 @@ _id, Bathroom_id, username  */
     } catch (error) {
       next({
         log: 'appointmentController.getAppointment', error,
+      });
+    }
+  },
+
+  async getReservations(req, res, next) {
+    const { _id } = req.body;
+    try {
+      const appointments = await Appointment.find({ userId: _id });
+
+      if (appointments.length === 0) {
+        console.log(appointments);
+        res.send(' no reservations ');
+      } else {
+        console.log(appointments);
+        res.locals.getReservations = appointments;
+      }
+      next();
+    } catch (error) {
+      next({
+        log: 'appointmentController.getReservations', error,
       });
     }
   },

@@ -3,7 +3,8 @@ const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
 const sessionController = require('../controllers/sessionController');
 const bathroomController = require('../controllers/bathroomController');
-const { getAppointments, createAppointment } = require('../controllers/appointmentController');
+
+const { getAppointments, createAppointment, getReservations } = require('../controllers/appointmentController');
 
 const app = express();
 
@@ -102,13 +103,17 @@ app.get('/appointments',
   getAppointments, (req, res) => {
     res.status(200).send(res.locals.getAppointments);
   });
-  
+
 app.get('/logout', (req, res) => {
   req.logOut();
   req.session.destroy((err) => {
     res.redirect('/');
   });
 });
+app.get('/usersappointments',
+  getReservations, (req, res) => {
+    res.status(200).send(res.locals.getReservations);
+  });
 
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');

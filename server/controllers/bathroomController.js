@@ -15,7 +15,7 @@ const bathroomController = {
             imageFileName: imageFileName,
             pictures: picArray
         })
-        //res.locals.bathrooms = await newBathroom.save()
+        //res.locals.bathrooms = await newBathroom
         if (response) res.send(newBathroom)
         
         next();
@@ -82,6 +82,7 @@ const bathroomController = {
             next(`error in bathroomController.getNearBathrooms: ${err}`)
         }
     },
+
 
     async addBathroomPic(req, res, next) {
         const { pic, _id } = req.body;
