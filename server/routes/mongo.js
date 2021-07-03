@@ -39,7 +39,7 @@ app.post('/hostlogin',
   cookieController.setSSIDCookie,
   sessionController.startSession, (req, res) => {
     // res.send('user has signed in!')
-    res.status(200).json(res.locals.host);
+    res.status(200).json(res.locals.user);
   });
 
 app.post('/addbathroom',
@@ -64,16 +64,29 @@ app.get('/getbathrooms',
   });
 
 app.post('/addbathroompic',
-  bathroomController.addbathroompic,
+  bathroomController.addBathroomPic,
   (req, res) => {
     res.status(200).send(res.locals.bathroomPics);
   });
 
-app.get('/getnearbathrooms',
+app.post('/getnearbathrooms',
   bathroomController.getNearBathrooms,
   (req, res) => {
     res.status(200).send(res.locals.nearBathrooms);
   });
+
+app.post('/updateBathroom',
+  bathroomController.updateBathroom,
+  (req, res) => {
+    res.status(200).send(res.locals.updatedBathroom);
+  });
+
+app.get('/logout', (req, res) => {
+  req.logOut();
+  req.session.destroy((err) => {
+    res.redirect('/');
+  });
+});
 
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');
