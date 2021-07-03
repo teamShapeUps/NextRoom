@@ -76,7 +76,7 @@ bathroomController.getHostBathrooms,
 //     res.status(200).send(res.locals.bathroomPics)
 // })
 
-app.get('/getnearbathrooms', 
+app.post('/getnearbathrooms', 
 bathroomController.getNearBathrooms,
 (req, res) => {
     res.status(200).send(res.locals.nearBathrooms)
