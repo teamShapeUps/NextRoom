@@ -183,7 +183,7 @@ export default function LoginForm() {
             <TextField placeholder="username" onChange={(e) => setUsername(e.target.value)} />
             <br />
             <br />
-            <TextField placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+            <TextField placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} />
             <br />
             <br />
             <Button
