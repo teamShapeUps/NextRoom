@@ -3,11 +3,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './client/index.js',
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
     publicPath: '/',
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
   mode: 'development',
   module: {
     rules: [
@@ -50,4 +58,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 };
