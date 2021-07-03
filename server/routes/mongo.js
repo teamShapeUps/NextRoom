@@ -85,16 +85,24 @@ app.post('/updateBathroom',
     res.status(200).send(res.locals.updatedBathroom);
   });
 
-app.post('/appointments',
-  createAppointment,
-  (req, res) => {
-    res.status(200).send(res.locals.newApp);
-  });
+// app.post('/appointments',
+//   createAppointment,
+//   (req, res) => {
+//     res.status(200).send(res.locals.newApp);
+//   });
+app.post('/appointments', createAppointment, (req, res) => {
+  res.status(200).send(res.locals.newApp);
+});
+
+// app.get('/appointments', getAppointments, (req, res) => {
+//   res.status(200).send(res.locals.getAppointments);
+// });
 
 app.get('/appointments',
   getAppointments, (req, res) => {
     res.status(200).send(res.locals.getAppointments);
   });
+  
 app.get('/logout', (req, res) => {
   req.logOut();
   req.session.destroy((err) => {
