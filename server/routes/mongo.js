@@ -3,7 +3,7 @@ const userController = require('../controllers/userController');
 const cookieController = require('../controllers/cookieController');
 const sessionController = require('../controllers/sessionController');
 const bathroomController = require('../controllers/bathroomController');
-const {getAppointments, createAppointment}= require('../controllers/appointmentController')
+const { getAppointments, createAppointment } = require('../controllers/appointmentController');
 
 const app = express();
 app.post('/usersignup',
@@ -73,11 +73,11 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.post('/appointments',createAppointment,(res,res)=>{
-
+app.post('/appointments', createAppointment, (req, res) => {
+  res.status(200).send(res.locals.newApp);
 });
-app.get('/appointments',getAppointments,(res,res)=>{
-    
+app.get('/appointments', getAppointments, (req, res) => {
+  res.status(200).send(res.locals.getAppointments);
 });
 
 app.use('*', (req, res) => {
