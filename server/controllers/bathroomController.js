@@ -136,7 +136,7 @@ async updateBathroom(req, res, next) {
         console.log(updated)
    
         res.locals.updatedBathroom = updated
-        next()
+        next();
         }
         catch(err) {
             next({
@@ -146,10 +146,12 @@ async updateBathroom(req, res, next) {
 },
 
     async deleteBathroom (req,res,next){
+        const {_id} = req.body
         try{
-            const deletedBathroom = Bathroom.deleteOne({
-            '._id':req.params._id
-            })
+            const deletedBathroom = await Bathroom.deleteOne({_id:_id})
+            //res.locals.deleted = ;
+            console.log(deletedBathroom)
+            next();
         }catch(error){
             console.log("deleteBathroom ", error)
         }
