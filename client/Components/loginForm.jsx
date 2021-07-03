@@ -31,7 +31,6 @@ const useStyles = makeStyles({
     placeItems: 'center',
     paddingTop: '5%',
     color: '#FE6B8B',
-    fontSize: '400%',
   },
   signup: {
     cursor: 'pointer',
@@ -56,6 +55,7 @@ const useStyles = makeStyles({
 const theme = createMuiTheme({
   typography: {
     fontSize: '300px',
+    fontSize: '80',
     fontFamily: [
       'Permanent Marker',
       'cursive',
@@ -105,7 +105,7 @@ export default function LoginForm() {
         body: JSON.stringify(userInfo),
       })
         .then((response) => response.json())
-        .then((response) => console.log('response from back', response))
+
         .then((response) => {
           if (response) history.push('/host');
         })
@@ -115,8 +115,12 @@ export default function LoginForm() {
     }
   }
 
-  const validateForm = function () {
+  // disables buttons if length of required fields is 0
+  const validateSignIn = function () {
     return username.length > 0 && password.length > 0;
+  };
+  const validateSignUp = function () {
+    return createUsername.length > 0 && createPassword.length > 0;
   };
 
   const handleCreate = function () {
@@ -177,10 +181,10 @@ export default function LoginForm() {
             <Button
               type="submit"
               className={classes.button}
-              disabled={!validateForm()}
+              disabled={!validateSignIn()}
               onClick={loginClickHandler}
             >
-              PRESS THIS, YOU FOOL!!!
+              {isUser ? 'When you gotta go...' : 'Relieved to see you!'}
             </Button>
           </Collapse>
 
@@ -196,7 +200,14 @@ export default function LoginForm() {
             <TextField placeholder="password" onChange={(e) => setCreatePassword(e.target.value)} />
             <br />
             <br />
-            <Button className={classes.button} onClick={handleCreate}>Create New User</Button>
+            <Button
+              className={classes.button}
+              disabled={!validateSignUp()}
+              onClick={handleCreate}
+            >
+              Create New
+              {isUser ? 'User' : 'Host'}
+            </Button>
           </Collapse>
         </Box>
       </div>
