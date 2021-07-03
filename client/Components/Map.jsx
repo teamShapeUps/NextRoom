@@ -20,8 +20,8 @@ const useStyles = makeStyles({
   map: {
     margin: 'auto',
     padding: '10px',
-    height: '500px',
-    width: '500px',
+    height: '800px',
+    width: '800px',
   },
   popup: {
     margin: 'auto',
@@ -68,7 +68,7 @@ export default function UserMap() {
       return null;
     }
 
-  const getNewBathrooms = function(latlngObj, miles=10) {
+  const getNewBathrooms = function(latlngObj, miles=1) {
     const {lat, lng} = latlngObj;
     // console.log(`getNewBathrooms parameter latlngArr is ${JSON.stringify(latlngObj)}`)
     // console.log(`lat: ${lat}, lng: ${lng}`)

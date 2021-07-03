@@ -14,35 +14,48 @@ const useStyles = makeStyles({
   },
   media: {
     height: 300,
+    maxWidth: '100%',
+maxHeight:'100%',
   },
 });
 
-export default function ToiletCard() {
+export default function ToiletCard(props) {
+  const {
+    imageUrl,
+    imageTitle,
+    descriptionTitle,
+    descriptionBody,
+    toiletAddress,
+    toiletAddress2} = props.bathroom;
+  
   const classes = useStyles();
+
+  // console.log(toiletAddress);
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image="https://royaltoiletry.com/wp-content/uploads/2020/07/royal-style-gold-toilet-5.jpg"
-          title="Toilet fit for the GODS"
+          image={imageUrl}
+          title={imageTitle}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Golden Comode
+            {descriptionTitle}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            The greates seat you'll ever meet. Come, experience nirvana right down the street. The Golden Comode.
+           {descriptionBody}
+          </Typography>
+          <Typography color="textSecondary" component="p">
+            {toiletAddress}
+            {toiletAddress2}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
+          RESERVE
         </Button>
       </CardActions>
     </Card>
