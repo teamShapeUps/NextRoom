@@ -114,7 +114,7 @@ export default function MenuDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.headingStyle} variant="h6" noWrap>
-            PottyOverHere
+            RESTroom
           </Typography>
         </Toolbar>
       </AppBar>

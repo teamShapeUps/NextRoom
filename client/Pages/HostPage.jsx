@@ -46,7 +46,7 @@ export default function HostPage(){
     const classes = useStyles();
 
     const [bathroomArray, setBathroomArray] = useState([]);
-    const [dataFromFetch, setDataFromFetch] = useState([]);
+    const [dataFromFetch, setDataFromFetch] = useState([]);    
 
     const [addingNewBath, setAddingNewBath] = useState(false);
 
@@ -64,9 +64,7 @@ export default function HostPage(){
         console.log('You mounted!')
         //fetch all bathrooms
         //cookie should be sent with request...right? 
-        fetch('/mongo/getBathrooms')
-            .then(response => response.json())
-            .then(response => setDataFromFetch(response))
+        fetchBathrooms();
             
         }, [])
 
@@ -75,14 +73,64 @@ export default function HostPage(){
         //handle new bathrooms added to array in this rerender
             //create component for each bathroom to be rendered
         dataFromFetch.forEach(bathroom => {
-            arrayOfComponents.push(<HostToiletCard key={bathroom._id} {...bathroom} />);
+            arrayOfComponents.push(<HostToiletCard handleDeleteBathroom={handleDeleteBathroom} handleUpdateBathroom={handleUpdateBathroom} key={bathroom._id} {...bathroom} />);
         })
 
         setBathroomArray([arrayOfComponents])
 
     }, [dataFromFetch])
 
+    // useEffect( (() => null), [bathroomArray])
+    const fetchBathrooms = function(){
+        fetch('/mongo/getBathrooms')
+            .then(response => response.json())
+            .then(response => setDataFromFetch(response))
+    }
 
+    const handleDeleteBathroom = function(bathroomId){
+        //delete bathroom using mongo ID. Accessible like this:
+        const {_id} = bathroomId
+        const deleteId = {_id};
+    
+        fetch('/mongo/deleteBathroom', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(deleteId),
+        })
+        .then(response => response.json())
+        .then(response => fetchBathrooms())
+        .catch((error) => {
+          console.error('Error:', error);
+        })
+        
+    }
+
+    const handleUpdateBathroom = function(bathroomProps){
+      //delete bathroom using mongo ID. Accessible like this:
+      const {_id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg} = bathroomProps;
+      const update = {_id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg} 
+
+      fetch('/mongo/updatebathroom', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(update),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Update Success:', data);
+      })
+      .then(data => fetchBathrooms())
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      
+
+     
+  }
     const addBathroomHandler = function(){
         const newBath = { 
             title: newBathTitle,
@@ -141,10 +189,9 @@ export default function HostPage(){
                 <h2 className={classes.hostTitle}>Your Bathrooms</h2>
                 
             <div className={classes.cardContainer}>
-            {/* <HostToiletCard 
-                title={state.title}
-                description = {state.description}/> */}
+           
             {bathroomArray? bathroomArray: 'Add a Bathroom to get things moving!'}
+            
             </div>
         </div>
     )
