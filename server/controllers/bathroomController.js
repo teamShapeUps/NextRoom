@@ -1,4 +1,6 @@
 const { Bathroom , Host} = require ('../Schemas/userSchema')
+const geocoder = require('../utils/geocoder');
+
 
 const bathroomController = {
     async addBathroom(req, res, next) {
@@ -118,34 +120,33 @@ const bathroomController = {
     
 
 async updateBathroom(req, res, next) {
-    const {_id} = req.body
-    try{
-        const bathroom = await Bathroom.findOne({ _id: _id}, (err, bathroom) => {
-            if (err) return next('Error in bathroomController.updateBathroom' + JSON.stringify(err))
-            console.log('bathroom', bathroom)
-       return bathroom
-        })
-        .exec()
-        console.log('updaterequest')
-     let updatedBathroom = {bathroom, ...req.body}
-     console.log('updaterequest',updatedBathroom)
-        // bathroom.overwrite({pictures: pics})
-        // await bathroom.save()
-        const updated = await Bathroom.updateOne({_id: _id}, {$set: updatedBathroom}, (err, bathroom) => {
-            if (err) return next('Error in bathroomController.updateBathroom.updateOne' + JSON.stringify(err))
-            console.log('bathroom updateOne', bathroom)
-       return bathroom
-        })
-        console.log(updated)
-   
-        res.locals.updatedBathroom = updated
-        next();
-        }
-        catch(err) {
-            next({
-                log: `bathroomController.updateBathroom ${err}`
-            })
-        }
+    const {_id, title, description, address, price, imageFileName} = req.body
+
+    const filter = {_id};
+    const update = {title, description, address, price, imageFileName}
+
+    const location = await geocoder.geocode(address);
+
+    console.log("location ", location);
+
+    update.location = {
+      type: 'point',
+      coordinates: [location[0].longitude, location[0].latitude],
+      formattedAddress: location[0].formattedAddress,
+    };
+
+    console.log(update, 'AFTER THIS')
+
+    const updatedBathroom = await Bathroom.findOneAndUpdate(filter, update, {new:true});
+
+    if(!updatedBathroom){
+        return res.status(400).json('Error updating bathroom');
+    } else {
+        console.log('updated ', updatedBathroom);
+        res.locals.updatedBathroom = updatedBathroom;
+        return next();
+    }
+
 },
 
     async deleteBathroom (req,res,next){
@@ -153,8 +154,8 @@ async updateBathroom(req, res, next) {
         try{
             const deletedBathroom = await Bathroom.deleteOne({_id:_id})
             //res.locals.deleted = ;
-            console.log(deletedBathroom)
-            next();
+            //console.log(deletedBathroom)
+            return next();
         }catch(error){
             console.log("deleteBathroom ", error)
         }
