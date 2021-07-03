@@ -41,7 +41,7 @@ export default function UserMap() {
 
   // let bathrooms;
 
-  const [toiletMarkers, setToiletMarkers] = useState(new Set());
+  const [toilets, setToilets] = useState([]);
 
   // useEffect(() => {
   //   console.log(`triggered useEffect`);
@@ -62,7 +62,7 @@ export default function UserMap() {
       moveend: (e) => {
       //console.log(`Map center latlng is: ${e.target.getCenter()}`)
       getNewBathrooms(e.target.getCenter())
-      console.log(`toiletMarkers is: ${pp(toiletMarkers)}`)
+      console.log(`toilets is: ${pp(toilets)}`)
       },
     })
       return null;
@@ -108,20 +108,26 @@ export default function UserMap() {
           descriptionBody,
           toiletAddress,
           // toiletAddress2,
-        })        
+        }) 
       });
-      console.log(`newBathrooms: ${JSON.stringify(newBathrooms,null,2)}`)
-      setToiletMarkers((prevState) => {
-      console.log(`about to create a bunch of toiletMarkers`)
-      const tempMarkers = new Set();
-      for (const bathroom of newBathrooms) {
-        tempMarkers.add(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
-    } 
-    console.log(`tempMarkers are ${pp(tempMarkers)} and toiletMarkers are ${pp(toiletMarkers)}`)
-    return (prevState.add(tempMarkers))
+      console.log(`newBathrooms are ${JSON.stringify(newBathrooms, null, 2)}, prototype of newBathrooms ${newBathrooms.prototype}`)
+      setToilets((prevState) => {
+        const tempSet = new Set(prevState.concat(newBathrooms))
+        return [...tempSet];
       });
-    console.log(`toiletMarkers are ${JSON.stringify(toiletMarkers, null, 2)}`)
-  })
+      // console.log(`toilets are: ${pp(toilets)}`)
+    //   console.log(`newBathrooms: ${JSON.stringify(newBathrooms,null,2)}`)
+    //   setToiletMarkers((prevState) => {
+    //   console.log(`about to create a bunch of toiletMarkers`)
+    //   const tempMarkers = new Set();
+    //   for (const bathroom of newBathrooms) {
+    //     const newComp = (<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />);
+    //     tempMarkers.add(newComp)
+    //     console.log(`Added newComp to tempMarkers set. newComp is ${pp(newComp)} Now tempMarkers is ${pp(tempMarkers)}`)
+    // } 
+    // console.log(`tempMarkers are ${pp(tempMarkers)} and toiletMarkers are ${pp(Object.keys(toiletMarkers))}`)
+    // return (prevState.add(tempMarkers))
+    })
     .catch(err => console.log(err))
   }
 
@@ -133,6 +139,8 @@ return (
   />
   <UserMarker position={coords} />
   <MapDrag />
-  {toiletMarkers}
+  {/* {toiletMarkers} */}
+  {toilets.map(elem => <ToiletMarker bathroom={elem} key={elem.bathroomId} />)}
+
 </MapContainer>
 )}
