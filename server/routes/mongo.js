@@ -75,20 +75,12 @@ app.get('/getbathrooms',
 //     res.status(200).send(res.locals.bathroomPics)
 // })
 
-<<<<<<< HEAD
 app.post('/getnearbathrooms', 
 bathroomController.getNearBathrooms,
 (req, res) => {
     res.status(200).send(res.locals.nearBathrooms)
 }
 )
-=======
-app.get('/getnearbathrooms',
-  bathroomController.getNearBathrooms,
-  (req, res) => {
-    res.status(200).send(res.locals.nearBathrooms);
-  });
->>>>>>> 249596bbbf41067f17d52a51fafcef6bad6a4eb3
 
 app.post('/updatebathroom',
   bathroomController.updateBathroom,
