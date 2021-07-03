@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 // import { makeStyles } from "@material-ui/core/styles";
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
@@ -9,6 +9,10 @@ import ToiletMarker from './toiletMarker.jsx';
 // toilet dependency injection goes here:
 
 import testToiletSet from './testToiletSet.js';
+
+const pp = function(stuff) {
+  return JSON.stringify(stuff,null,2)
+}
 
 // const L = window.L;
 
@@ -33,55 +37,93 @@ export default function UserMap() {
   // default coordinates
   const coords = [40.785091, -73.968285];
 
-  const bathrooms = testToiletSet;
+  // const bathrooms = testToiletSet;
 
-  const bathroomComponents = [];
+  // let bathrooms;
 
-  useEffect(() => {
-    for (const bathroom of bathrooms) {
-      bathroomComponents.push(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
-    }
-  }, bathrooms);
+  const [toiletMarkers, setToiletMarkers] = useState(new Set());
+
+  // useEffect(() => {
+  //   console.log(`triggered useEffect`);
+  //   bathroomComponents = [];
+  //   if (bathrooms) {
+  //     console.log(`Creating toiletMarker components`)
+  //   for (const bathroom of bathrooms) {
+  //     bathroomComponents.push(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
+  //   }
+  // }}, bathrooms);
 
   const MapDrag = function () {
     const map = useMapEvents({
-      dragend: (e) => console.log(`Map center latlng is: ${e.target.getCenter()}`)
-      })
+      load: (e) => {
+        map.locate();
+        getNewBathrooms(e.target.getCenter())
+      },
+      moveend: (e) => {
+      //console.log(`Map center latlng is: ${e.target.getCenter()}`)
+      getNewBathrooms(e.target.getCenter())
+      console.log(`toiletMarkers is: ${pp(toiletMarkers)}`)
+      },
+    })
       return null;
     }
 
-  const getNewBathrooms = function(latlngArr) {
-    // implement API fetch request here
+  const getNewBathrooms = function(latlngObj, miles=10) {
+    const {lat, lng} = latlngObj;
+    // console.log(`getNewBathrooms parameter latlngArr is ${JSON.stringify(latlngObj)}`)
+    // console.log(`lat: ${lat}, lng: ${lng}`)
+    fetch('/mongo/getnearbathrooms', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({
+        latitude: lat,
+        longitude: lng,
+        miles: miles,
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      const newBathrooms = [];
+      response.forEach(elem => {
+        const bathroomId = elem._id;
+        const [lat, lng] = [elem.location.coordinates[1], elem.location.coordinates[0]];
+        const bathroomCoords = [lat, lng];
+        const imageUrl = elem.imageFileName;
+        const imageTitle = null;
+        const descriptionTitle = elem.title;
+        const descriptionBody = elem.body;
+        const toiletAddress = elem.location.formattedAddress;
+        // const toiletAddress2 = elem.
+        newBathrooms.push({
+          bathroomId,
+          bathroomCoords,
+          imageUrl,
+          imageTitle,
+          descriptionTitle,
+          descriptionBody,
+          toiletAddress,
+          // toiletAddress2,
+        })        
+      });
+      console.log(`newBathrooms: ${JSON.stringify(newBathrooms,null,2)}`)
+      setToiletMarkers((prevState) => {
+      console.log(`about to create a bunch of toiletMarkers`)
+      const tempMarkers = new Set();
+      for (const bathroom of newBathrooms) {
+        tempMarkers.add(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
+    } 
+    console.log(`tempMarkers are ${pp(tempMarkers)} and toiletMarkers are ${pp(toiletMarkers)}`)
+    return (prevState.add(tempMarkers))
+      });
+    console.log(`toiletMarkers are ${JSON.stringify(toiletMarkers, null, 2)}`)
+  })
+    .catch(err => console.log(err))
   }
-
-  // const [coords, setCoords] = useState([40.785091, -73.968285]);
-
-  // function UserMarker() {
-  //   const map = useMapEvents({
-  //     click() {
-  //       map.locate()
-  //     },
-  //     locationfound(e) {
-  //       setCoords(e.latlng)
-  //       // map.flyTo(e.latlng, map.getZoom())
-  //       map.flyTo(e.latlng, map.getZoom())
-  //     },
-  //   })
-  
-  //   return coords === null ? null : (
-  //     <Marker position={coords}>
-  //       <Popup>You are here</Popup>
-  //     </Marker>
-  //   )
-  // };
-  
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(function(position) {
-  //     console.log("Latitude is :", position.coords.latitude);
-  //     console.log("Longitude is :", position.coords.longitude);
-  //     setCoords([position.coords.latitude, position.coords.longitude])
-  //   })
-  // }, coords);
 
 return (
 <MapContainer className={classes.map} center={coords} zoom={15} scrollWheelZoom={true}>
@@ -90,6 +132,7 @@ return (
     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   />
   <UserMarker position={coords} />
-  {bathroomComponents}
+  <MapDrag />
+  {toiletMarkers}
 </MapContainer>
 )}
