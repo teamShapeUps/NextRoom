@@ -17,8 +17,18 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ToiletCard() {
+export default function ToiletCard(props) {
+  const {
+    imageUrl,
+    imageTitle,
+    descriptionTitle,
+    descriptionBody,
+    toiletAddress,
+    toiletAddress2} = props.bathroom;
+  
   const classes = useStyles();
+
+  console.log(toiletAddress);
 
   return (
     <Card className={classes.root}>
@@ -35,14 +45,14 @@ export default function ToiletCard() {
           <Typography variant="body2" color="textSecondary" component="p">
             The greates seat you'll ever meet. Come, experience nirvana right down the street. The Golden Comode.
           </Typography>
+          <Typography color="textSecondary" component="p">
+            {props.toiletAddress}
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
+          RESERVE
         </Button>
       </CardActions>
     </Card>

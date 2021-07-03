@@ -20,8 +20,8 @@ const useStyles = makeStyles({
   map: {
     margin: 'auto',
     padding: '10px',
-    height: '500px',
-    width: '500px',
+    height: '800px',
+    width: '800px',
   },
   popup: {
     margin: 'auto',
