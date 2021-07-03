@@ -7,7 +7,6 @@ const { getAppointments, createAppointment } = require('../controllers/appointme
 
 const app = express();
 
-const app = express();
 app.post('/usersignup',
   userController.newUser,
   cookieController.setSSIDCookie,
@@ -41,9 +40,8 @@ app.post('/hostlogin',
   cookieController.setSSIDCookie,
   sessionController.startSession, (req, res) => {
     // res.send('user has signed in!')
-    res.status(200).json(res.locals.user)
-}
-)
+    res.status(200).json(res.locals.user);
+  });
 
 app.post('/addbathroom',
   bathroomController.addBathroom,
@@ -65,22 +63,22 @@ app.get('/getbathrooms',
   });
 
 app.post('/addbathroompic',
-bathroomController.addBathroomPic,
-(req, res) => {
-    res.status(200).send(res.locals.bathroomPics)
-})
+  bathroomController.addBathroomPic,
+  (req, res) => {
+    res.status(200).send(res.locals.bathroomPics);
+  });
 
-app.post('/getnearbathrooms', 
-bathroomController.getNearBathrooms,
-(req, res) => {
-    res.status(200).send(res.locals.nearBathrooms)
-})
+app.post('/getnearbathrooms',
+  bathroomController.getNearBathrooms,
+  (req, res) => {
+    res.status(200).send(res.locals.nearBathrooms);
+  });
 
 app.post('/updateBathroom',
-bathroomController.updateBathroom,
-(req, res) => {
-    res.status(200).send(res.locals.updatedBathroom)
-})
+  bathroomController.updateBathroom,
+  (req, res) => {
+    res.status(200).send(res.locals.updatedBathroom);
+  });
 
 app.post('/appointments', createAppointment, (req, res) => {
   res.status(200).send(res.locals.newApp);

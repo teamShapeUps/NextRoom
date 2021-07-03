@@ -16,8 +16,10 @@ _id, Bathroom_id, username  */
       const app = await Appointment.create({ bathroomId: bathroom_id, userId: _id, username });
       const newApp = await app.save();
       // should make avalibale to false and be set to true in 30 minutes
-      const makeunavailable = await Bathroom.FindAndModify({ _id: bathroom_id }, { available: false });
-
+      const makeunavailable = await Bathroom.findOneAndUpdate({ _id: bathroom_id }, { available: false });
+      setTimeout(async () => {
+        const makeavailable = await Bathroom.findOneAndUpdate({ _id: bathroom_id }, { available: true });
+      }, 30000);
       res.locals.newApp = newApp;
       next();
     } catch (error) {
