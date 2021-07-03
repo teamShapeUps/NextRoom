@@ -57,6 +57,11 @@ bathroomController.addBathroom,
 //     res.send('rated')
 // })
 
+app.delete('/deleteBathroom', bathroomController.deleteBathroom,
+  (req, res) => {
+    res.status(200).send('bathroom deleted');
+  });
+  
 app.get('/getbathrooms',
 bathroomController.getHostBathrooms,
 (req,res)=>{
@@ -64,11 +69,11 @@ bathroomController.getHostBathrooms,
     res.status(200).send(res.locals.bathrooms)
 })
 
-app.post('/addbathroompic',
-bathroomController.addbathroompic,
-(req, res) => {
-    res.status(200).send(res.locals.bathroomPics)
-})
+// app.post('/addbathroompic',
+// bathroomController.addbathroompic,
+// (req, res) => {
+//     res.status(200).send(res.locals.bathroomPics)
+// })
 
 app.get('/getnearbathrooms', 
 bathroomController.getNearBathrooms,
@@ -76,6 +81,7 @@ bathroomController.getNearBathrooms,
     res.status(200).send(res.locals.nearBathrooms)
 }
 )
+
 
 app.use("*",(req,res)=>{
     res.status(404).send("Page Not Found!")
