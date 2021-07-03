@@ -41,14 +41,9 @@ app.post('/hostlogin',
   cookieController.setSSIDCookie,
   sessionController.startSession, (req, res) => {
     // res.send('user has signed in!')
-<<<<<<< HEAD
-    res.status(200).json(res.locals.host);
-  });
-=======
     res.status(200).json(res.locals.user)
 }
 )
->>>>>>> 8b951226cb651265873e071af8bea3fb6c130f1e
 
 app.post('/addbathroom',
   bathroomController.addBathroom,
@@ -70,24 +65,6 @@ app.get('/getbathrooms',
   });
 
 app.post('/addbathroompic',
-<<<<<<< HEAD
-  bathroomController.addbathroompic,
-  (req, res) => {
-    res.status(200).send(res.locals.bathroomPics);
-  });
-
-app.get('/getnearbathrooms',
-  bathroomController.getNearBathrooms,
-  (req, res) => {
-    res.status(200).send(res.locals.nearBathrooms);
-  });
-app.get('/logout', (req, res) => {
-  req.logOut();
-  req.session.destroy((err) => {
-    res.redirect('/');
-  });
-});
-=======
 bathroomController.addBathroomPic,
 (req, res) => {
     res.status(200).send(res.locals.bathroomPics)
@@ -104,7 +81,6 @@ bathroomController.updateBathroom,
 (req, res) => {
     res.status(200).send(res.locals.updatedBathroom)
 })
->>>>>>> 8b951226cb651265873e071af8bea3fb6c130f1e
 
 app.post('/appointments', createAppointment, (req, res) => {
   res.status(200).send(res.locals.newApp);
