@@ -47,7 +47,7 @@ const bathroomSchema = new Schema({
   available: { type: Boolean, default: true },
   ratings: { type: Array },
   reviews: { type: Array },
-  pictures: { type: String },
+  pictures: { type: Array },
   location: {
     type: {
       type: String,
