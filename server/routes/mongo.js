@@ -55,6 +55,11 @@ app.post('/addbathroom',
 // (req, res) => {
 //     res.send('rated')
 // })
+app.delete('/deleteBathroom', bathroomController.deleteBathroom,
+  (req, res) => {
+    res.status(200).send('bathroom deleted');
+  });
+
 app.get('/getbathrooms',
   bathroomController.getHostBathrooms,
   (req, res) => {
@@ -80,13 +85,17 @@ app.post('/updateBathroom',
     res.status(200).send(res.locals.updatedBathroom);
   });
 
-app.post('/appointments', createAppointment, (req, res) => {
-  res.status(200).send(res.locals.newApp);
-});
-app.get('/appointments', getAppointments, (req, res) => {
-  res.status(200).send(res.locals.getAppointments);
+app.post('/appointments',
+  createAppointment,
+  (req, res) => {
+    res.status(200).send(res.locals.newApp);
+  });
 
-  app.get('/logout', (req, res) => {
+app.get('/appointments',
+  getAppointments, (req, res) => {
+    res.status(200).send(res.locals.getAppointments);
+  });
+app.get('/logout', (req, res) => {
   req.logOut();
   req.session.destroy((err) => {
     res.redirect('/');
@@ -96,6 +105,7 @@ app.get('/appointments', getAppointments, (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).send('Page Not Found!');
 });
+
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Caught unknown Middleware',
@@ -104,18 +114,5 @@ app.use((err, req, res, next) => {
   console.log(errorObj);
   return res.status(500).send('Server Error');
 });
-
-// app.use('*', (req, res) => {
-//   res.status(404).send('Page Not Found!');
-// });
-
-// app.use((err, req, res, next) => {
-//   const defaultErr = {
-//     log: 'Caught unknown Middleware',
-//   };
-//   const errorObj = { ...defaultErr, ...err };
-//   console.log(errorObj);
-//   return res.status(500).send('Server Error');
-// });
 
 module.exports = app;
