@@ -5,8 +5,6 @@ const { MongoClient } = require("mongodb");
 
 const geocoder = require("../utils/geocoder");
 
-// const URI =
-//   "mongodb+srv://shapeups:PTRI3@cluster0.ojae5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose // CANT LOAD process.env.MONGO_URI FROM .ENV
   .connect(process.env.MONGO_URI, {
