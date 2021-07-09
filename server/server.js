@@ -1,3 +1,5 @@
+// this is where the SERVER goes
+
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "./.env" }); // --> ?
