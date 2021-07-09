@@ -34,6 +34,28 @@ module.exports = {
                 ],
             },
         ],
+<<<<<<< HEAD
+=======
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        type: 'asset/inline',
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './client/index.html',
+    }),
+  ],
+  devServer: {
+    publicPath: '/build',
+    contentBase: './client',
+    historyApiFallback: true,
+    proxy: {
+      '/mongo': 'http://localhost:3000',
+>>>>>>> d3bc90e7dc504aa17129370f3944d19a8effde26
     },
     plugins: [
         new HtmlWebpackPlugin({
