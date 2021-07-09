@@ -1,4 +1,4 @@
-// this is where the SERVER goes
+// Hello everybody, this is hello
 
 const dotenv = require("dotenv");
 
