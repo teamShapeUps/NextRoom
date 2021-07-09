@@ -1,13 +1,13 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: "./.env" }); // --> ?
 
-const mongoRouter = require('./routes/mongo.js');
-const express = require('express');
+const mongoRouter = require("./routes/mongo.js");
+const express = require("express");
 
 const app = express();
-const path = require('path');
-const cookieParser = require('cookie-parser');
+const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const PORT = 3000;
 
@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 // Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 // Routes
-app.use('/mongo', mongoRouter);
+app.use("/mongo", mongoRouter);
 
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
