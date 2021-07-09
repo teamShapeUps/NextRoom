@@ -1,21 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require("mongodb");
 
-const geocoder = require('../utils/geocoder');
+const geocoder = require("../utils/geocoder");
 
-
-
-mongoose.connect(process.env.MONGO_URI, {
-  // options for the connect method to parse the URI
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  // sets the name of the DB that our collections are part of
-  dbName: 'airpnp',
-})
-  .then(() => console.log('Connected to Mongo DB.'))
-  .catch((err) => console.log(err));
+mongoose // CANT LOAD process.env.MONGO_URI FROM .ENV
+  .connect(process.env.MONGO_URI, {
+    // options for the connect method to parse the URI
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // sets the name of the DB that our collections are part of
+    dbName: "RESTRoom",
+  })
+  .then(() => console.log("Connected to Mongo DB."))
+  .catch((err) => console.log("not connected"));
 
 // Schemas
 const userSchema = new Schema({
@@ -27,7 +26,6 @@ const userSchema = new Schema({
   ratings: { type: Array, default: [] },
   reviews: { type: Array },
   profilepicture: { type: String },
-
 });
 
 const hostSchema = new Schema({
@@ -52,7 +50,7 @@ const bathroomSchema = new Schema({
   location: {
     type: {
       type: String,
-      enum: ['Point'],
+      enum: ["Point"],
       // required: true
     },
     coordinates: {
@@ -68,21 +66,22 @@ const bathroomSchema = new Schema({
 
   coordinates: { type: String },
   zipcode: { type: String },
-
 });
 
-const appointmentSchema = new Schema({
-  bathroomId: { type: String },
-  userId: { type: String },
-  username: { type: String },
-
-}, { timestamps: { createdAt: 'created_at' } });
+const appointmentSchema = new Schema(
+  {
+    bathroomId: { type: String },
+    userId: { type: String },
+    username: { type: String },
+  },
+  { timestamps: { createdAt: "created_at" } }
+);
 
 // Geocode & create location
-bathroomSchema.pre('save', async function (next) {
+bathroomSchema.pre("save", async function (next) {
   const location = await geocoder.geocode(this.address);
   this.location = {
-    type: 'point',
+    type: "point",
     coordinates: [location[0].longitude, location[0].latitude],
     formattedAddress: location[0].formattedAddress,
   };
@@ -93,15 +92,14 @@ bathroomSchema.pre('save', async function (next) {
   next();
 });
 // model Schemas
-const User = mongoose.model('user', userSchema);
-const Host = mongoose.model('host', hostSchema);
-const Bathroom = mongoose.model('bathroom', bathroomSchema);
-const Appointment = mongoose.model('appointment', appointmentSchema);
+const User = mongoose.model("user", userSchema);
+const Host = mongoose.model("host", hostSchema);
+const Bathroom = mongoose.model("bathroom", bathroomSchema);
+const Appointment = mongoose.model("appointment", appointmentSchema);
 
 module.exports = {
   User,
   Host,
   Bathroom,
   Appointment,
-
 };
