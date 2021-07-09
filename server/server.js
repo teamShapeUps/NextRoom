@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 // this is where the SERVER goes
-=======
+
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "./.env" }); // --> ?
@@ -27,4 +27,3 @@ app.use("/mongo", mongoRouter);
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
 module.exports = app;
->>>>>>> d3bc90e7dc504aa17129370f3944d19a8effde26
