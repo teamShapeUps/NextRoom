@@ -27,9 +27,9 @@ userControllerSQL.createUser = async (req, res, next) => {
       const value = [username, password, isHost]; // coming from the front
       await db.query(addText, value);
       res.send("User Created");
-      next();
+      return next();
     } else {
-      res.send("User already exists");
+      return res.status(400).send("User already exists");
     }
   } catch (error) {
     return next(error);
@@ -57,7 +57,7 @@ userControllerSQL.verifyUser = async (req, res, next) => {
         };
         return next();
       } else {
-        return next();
+        return res.status(400).send("Account not verified!");
       }
     }
   } catch (error) {
