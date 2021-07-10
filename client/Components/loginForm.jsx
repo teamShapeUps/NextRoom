@@ -136,7 +136,7 @@ export default function LoginForm() {
     const userInfo = { username: createUsername, password: createPassword };
     console.log(userInfo);
     if (isUser) {
-      fetch("/mongo/usersignup", {
+      fetch("/users/usersignup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -150,22 +150,23 @@ export default function LoginForm() {
         .catch((error) => {
           console.error("Error:", error);
         });
-    } else {
-      fetch("/mongo/hostsignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/host");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
     }
+    //  else {
+    //   fetch("/mongo/hostsignup", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(userInfo),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((response) => {
+    //       if (response) history.push("/host");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error:", error);
+    //     });
+    // }
   };
 
   return (
