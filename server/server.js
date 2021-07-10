@@ -15,6 +15,12 @@ const cookieParser = require("cookie-parser");
 
 const PORT = 3000;
 
+app.get("/", (req, res) => {
+  return res
+    .status(200)
+    .sendFile(path.resolve(__dirname, "../client/index.html"));
+});
+
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
