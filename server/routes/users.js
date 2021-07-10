@@ -11,3 +11,4 @@ const router = express.Router();
 router.post("/usersignup", userControllerSQL.createUser, (req, res) => {
   return res.status(200).send("User created!");
 });
+
