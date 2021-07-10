@@ -1,15 +1,3 @@
-import React,{useState} from 'react'
-
-<<<<<<< HEAD
-
-const App = () => (
-    <div>
-        <h1>Hello React</h1>
-    </div>
-)
-
-export default App;
-=======
 import React, { useState } from 'react';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import LoginForm from './Components/loginForm.jsx';
@@ -28,4 +16,3 @@ const App = () => (
 );
 
 export default App;
->>>>>>> d3bc90e7dc504aa17129370f3944d19a8effde26
