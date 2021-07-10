@@ -57,7 +57,15 @@ module.exports = {
     historyApiFallback: true,
 
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/mongo/**': {
+        target: 'http://localhost:3000',
+        secure: false,
+      },
+      '/users/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+
     },
   }
 }

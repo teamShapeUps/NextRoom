@@ -1,5 +1,4 @@
 const db = require("../models/NextroomModels");
-
 const bcrypt = require("bcrypt");
 
 const SaltFactor = 10;
