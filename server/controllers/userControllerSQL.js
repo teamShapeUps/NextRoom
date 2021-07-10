@@ -11,6 +11,8 @@ userControllerSQL.createUser = async (req, res, next) => {
     const { username, isHost } = req.body;
     let { password } = req.body;
 
+    console.log("Made it to create user");
+
     //checking if user exists
     const queryText = `SELECT * FROM users where username  = ($1)`;
     const check = [username]; //
