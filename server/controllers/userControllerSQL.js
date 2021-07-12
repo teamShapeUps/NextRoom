@@ -24,7 +24,6 @@ userControllerSQL.createUser = async (req, res, next) => {
     if (queryResult.rowCount === 0) {
       const addText = `INSERT INTO users (username, pass_word, isHost) VALUES ($1,$2,$3)`;
       const value = [username, password, isHost]; // coming from the front
-      await db.query(addText, value);
       res.send("User Created");
       return next();
     } else {
