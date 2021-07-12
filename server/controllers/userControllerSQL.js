@@ -1,5 +1,4 @@
 const db = require("../models/NextroomModels");
-
 const bcrypt = require("bcrypt");
 
 const SaltFactor = 10;
@@ -25,11 +24,10 @@ userControllerSQL.createUser = async (req, res, next) => {
     if (queryResult.rowCount === 0) {
       const addText = `INSERT INTO users (username, pass_word, isHost) VALUES ($1,$2,$3)`;
       const value = [username, password, isHost]; // coming from the front
-      await db.query(addText, value);
       res.send("User Created");
-      next();
+      return next();
     } else {
-      res.send("User already exists");
+      return res.status(400).send("User already exists");
     }
   } catch (error) {
     return next(error);
@@ -57,7 +55,7 @@ userControllerSQL.verifyUser = async (req, res, next) => {
         };
         return next();
       } else {
-        return next();
+        return res.status(400).send("Account not verified!");
       }
     }
   } catch (error) {
