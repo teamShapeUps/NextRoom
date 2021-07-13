@@ -1,7 +1,16 @@
-const db = require('../models/afterModels.js');
-const sessionController = {};
+const db = require('../models/NextroomModels.js');
+const sessionControllerSQL = {};
 
-sessionController.isLoggedIn = async (req, res, next) => {
+// This is to check if the user with unique SSID have active session. 
+// If not active, move to the next middleware and delete the session
+// If active, move to the next middleware and extend the session
+sessionControllerSQL.verifySession = async (req, res, next)=>{
+  const cookieid = res.locals.userInfo.userId;
+
+}
+
+
+sessionControllerSQL.isLoggedIn = async (req, res, next) => {
   const cookieid = res.locals.userInfo.userId;
 
   try {
@@ -22,10 +31,8 @@ sessionController.isLoggedIn = async (req, res, next) => {
 };
 
 
-sessionController.startSession = async (req, res, next)=>{
-  //const cookieid = res.locals.userInfo.userId
+sessionControllerSQL.startSession = async (req, res, next)=>{
   const cookieid = req.cookies
-  console.log(req.cookies)
   try{
     const text = 'INSERT INTO session (cookieid) VALUES ($1)'
     const values = [cookieid]
@@ -36,7 +43,7 @@ sessionController.startSession = async (req, res, next)=>{
   }
 };
 
-sessionController.logOut = async (req, res, next) => {
+sessionControllerSQL.logOut = async (req, res, next) => {
   const cookieid = req.cookies.SSID;
   try {
     const text = 'DELETE FROM session WHERE (cookieid) = ($1)';
@@ -48,4 +55,4 @@ sessionController.logOut = async (req, res, next) => {
   }
 };
 
-module.exports = sessionController;
+module.exports = sessionControllerSQL;
