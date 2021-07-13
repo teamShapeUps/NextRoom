@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     display: "grid",
     placeItems: "center",
     paddingTop: "5%",
-    color: "#FEBBAA",
+    color: "#E63946",
   },
   signup: {
     cursor: "pointer",
@@ -73,7 +73,7 @@ const theme = createMuiTheme({
   typography: {
     // fontSize: '300px',
     fontSize: 75,
-    fontFamily: ["Cormorant Garamond"].join(","),
+    fontFamily: ["Oswald"],
   },
 });
 
@@ -192,7 +192,7 @@ export default function LoginForm() {
       <ThemeProvider theme={theme}>
         <div className={classes.title}>
           {/* <Typography>Potty Over Here</Typography> */}
-          <Typography>NEXT room</Typography>
+          <Typography>NEXT/ROOM</Typography>
         </div>
       </ThemeProvider>
       <div className={classes.div}>

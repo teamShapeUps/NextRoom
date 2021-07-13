@@ -1,0 +1,14 @@
+.userPageBackground {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #F1FAEE;
+}
+
+.userPageHead {
+    color: #1D3557;
+    text-shadow: 1px 1px 2px #457B9D;
+    font-size: 36px;
+    font-family: 'Oswald';
+    margin-top: 0px;
+    margin-bottom: 6px;
+}

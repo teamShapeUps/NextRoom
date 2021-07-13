@@ -1,7 +1,8 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Box } from "@material-ui/core";
+
 import React, { useState } from "react";
 // import { makeStyles } from "@material-ui/core/styles";
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents, LayersControl } from 'react-leaflet';
 import UserMarker from './userMarker.jsx';
 import ToiletMarker from './toiletMarker.jsx';
 // import testToiletCard from './toiletCard.jsx';
@@ -17,10 +18,16 @@ const pp = function(stuff) {
 // const L = window.L;
 
 const useStyles = makeStyles({
+  border: {
+    margin: 'auto',
+    height: '602px',
+    width: '802px',
+  },
   map: {
     margin: 'auto',
+    marginBottom: '20px',
     padding: '10px',
-    height: '800px',
+    height: '600px',
     width: '800px',
   },
   popup: {
@@ -129,15 +136,44 @@ export default function UserMap() {
   }
 
 return (
-<MapContainer className={classes.map} center={coords} zoom={15} scrollWheelZoom={true}>
-  <TileLayer
-    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  />
-  <UserMarker position={coords} />
-  <MapDrag />
-  {/* {toiletMarkers} */}
-  {toilets.map(elem => <ToiletMarker bathroom={elem} key={elem.bathroomId} />)}
-
-</MapContainer>
+<Box className={classes.border} border={1} borderColor="#1D3557">
+  <MapContainer className={classes.map} center={coords} zoom={15} scrollWheelZoom={true}>
+    <LayersControl position="topright"> 
+      <LayersControl.BaseLayer checked name="Light Mode">
+        <TileLayer
+          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          url='https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png'
+        />
+      </LayersControl.BaseLayer>
+      <LayersControl.BaseLayer name="Dark Mode">
+        <TileLayer
+          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
+        />
+      </LayersControl.BaseLayer>
+      <LayersControl.BaseLayer name="Vivid Mode">
+        <TileLayer
+          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+          url='https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png'
+        />
+      </LayersControl.BaseLayer>
+      <LayersControl.BaseLayer name="Grayscale">
+        <TileLayer
+          attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url='https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png'
+        />
+      </LayersControl.BaseLayer>
+      <LayersControl.BaseLayer name="Watercolor">
+        <TileLayer
+          attribution='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url='https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg'
+        />
+      </LayersControl.BaseLayer>
+    </LayersControl>
+    <UserMarker position={coords} />
+    <MapDrag />
+    {/* {toiletMarkers} */}
+    {toilets.map(elem => <ToiletMarker bathroom={elem} key={elem.bathroomId} />)}
+  </MapContainer>
+</Box>
 )}
