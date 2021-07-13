@@ -73,7 +73,7 @@ const theme = createMuiTheme({
   typography: {
     // fontSize: '300px',
     fontSize: 75,
-    fontFamily: ["Permanent Marker", "cursive"].join(","),
+    fontFamily: ["Cormorant Garamond"].join(","),
   },
 });
 

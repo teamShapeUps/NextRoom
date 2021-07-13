@@ -1,3 +1,4 @@
+// REFACTOR INTO 'ADDCOMMODE' COMPONENT?
 import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/menuDrawer";
 import {
