@@ -24,7 +24,7 @@ userControllerSQL.createUser = async (req, res, next) => {
     if (queryResult.rowCount === 0) {
       const addText = `INSERT INTO users (username, pass_word, isHost) VALUES ($1,$2,$3)`;
       const value = [username, password, isHost]; // coming from the front
-      res.send("User Created");
+      await db.query(addText, value);
       return next();
     } else {
       return res.status(400).send("User already exists");
@@ -42,7 +42,7 @@ userControllerSQL.verifyUser = async (req, res, next) => {
 
     //if that user name is NOT there, move to next middleware
     if (userValid.rows.length === 0) {
-      res.send("User Not Found!");
+      console.log("User Not Found!");
       return next();
     } else {
       const { username, pass_word, isHost } = userValid.rows[0];
