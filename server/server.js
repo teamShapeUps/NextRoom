@@ -6,13 +6,13 @@ dotenv.config({ path: "./.env" }); // --> ?
 
 const mongoRouter = require("./routes/mongo.js");
 const express = require("express");
-
+const favicon = require('serve-favicon');
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 
 const PORT = 3000;
-
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));

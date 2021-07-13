@@ -1,10 +1,14 @@
 // login form
 import React, { Component, useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+
+//Import Material-UI components
 import {
   makeStyles,
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
+
 import {
   Button,
   Box,
@@ -13,11 +17,12 @@ import {
   Switch,
   Typography,
 } from "@material-ui/core";
-import { Redirect, useHistory } from "react-router-dom";
 
+
+//Customize component styles
 const useStyles = makeStyles({
   text: {
-    ontSize: 15,
+    fontSize: 15,
     fontFamily: ["Eurostile", "cursive"].join(","),
   },
   button: {
@@ -42,7 +47,7 @@ const useStyles = makeStyles({
     display: "grid",
     placeItems: "center",
     paddingTop: "5%",
-    color: "#FE6B8B",
+    color: "#FEBBAA",
   },
   signup: {
     cursor: "pointer",
@@ -77,6 +82,7 @@ export default function LoginForm() {
 
   const classes = useStyles();
 
+  // React hooks
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [count, setCount] = useState(0);
@@ -86,10 +92,23 @@ export default function LoginForm() {
   const [createPassword, setCreatePassword] = useState("");
 
   function loginClickHandler(e) {
+    //paramaterize the user type: user vs host
+    
+    //user: fetchstring = /mongo/userlogin
+    //host: fetchstring = /mongo/hostlogin
+    // change isUser to usertype
+    // `"/mongo/"+${usertype}+"userlogin"`
+
+    //fetch(fetchstring)
+
+    //history.push (usertype)
+
     // handle authentication here
     // console.log(`Username is ${username} and Password is ${password}`);
+    
     const userInfo = { username, password };
     e.preventDefault();
+    // REFACTOR (change Mongo routes to SQL/consolidate duplicate code (DRY))
     if (isUser) {
       fetch("/mongo/userlogin", {
         method: "POST",
@@ -201,7 +220,7 @@ export default function LoginForm() {
               disabled={!validateSignIn()}
               onClick={loginClickHandler}
             >
-              {isUser ? "When you gotta go..." : "Relieved to see you!"}
+              {isUser ? "Click to Login as User!" : "Login as Host!"}
             </Button>
           </Collapse>
 
