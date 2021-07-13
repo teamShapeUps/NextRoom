@@ -4,11 +4,14 @@ const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
+const multer = require('multer');
+const upload = multer({dest:'uploads/'})
 
 dotenv.config({ path: "./.env" }); 
 
 const mongoRouter = require("./routes/mongo.js");
 const usersRouter = require("./routes/users.js");
+const imagesRouter = require("./routes/images.js")
 
 const PORT = 3000;
 
@@ -21,6 +24,7 @@ app.use(express.json());
 // Routes
 app.use('/mongo', mongoRouter);
 app.use('/users', usersRouter);
+app.use('/images', imagesRouter);
 
 // Set static folder
 app.use('/build', express.static(path.join(__dirname, '../build')));

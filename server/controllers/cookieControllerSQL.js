@@ -19,7 +19,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
     const salt = await bcrypt.genSalt(SaltFactor);
     const hash = await bcrypt.hash(username, salt);
     username = hash;
-
+    //console.log("setcookie", username)
     res.cookie('SSIDSQL', username, {
       httpOnly: true,
       secure: true,
@@ -35,7 +35,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
   console.log('checkcookie', req.cookies.SSIDSQL); 
-  // //console.log(req); 
+  //console.log(req); 
   // try {
   //   let hello = await bcrypt.compare(
   //     JSON.stringify(req.cookies.SSIDSQL),
