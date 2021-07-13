@@ -35,7 +35,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  console.log("checkcookie", req);
+  // console.log("checkcookie", req);
   // //console.log(req);
   // try {
   //   let hello = await bcrypt.compare(
