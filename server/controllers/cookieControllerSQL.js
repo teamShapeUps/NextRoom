@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const SaltFactor = 10;
 
 const cookiesControllerSQL = {};
@@ -8,7 +8,7 @@ const cookiesControllerSQL = {};
 
 cookiesControllerSQL.initialCookie = (req, res, next) => {
   //console.log("This is res", req);
-  console.log('Hello');
+  console.log("Hello");
 
   console.log(req);
 };
@@ -20,13 +20,14 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
     const hash = await bcrypt.hash(username, salt);
     username = hash;
 
-    res.cookie('SSIDSQL', username, {
+    res.cookie("SSIDSQL", username, {
       httpOnly: true,
       secure: true,
       maxAge: 2 * 60 * 60 * 1000 * 1000,
     });
     //cookiesControllerSQL.initialCookie(username);
     //cookiesControllerSQL.checkCookie(cookies)
+    //console.log('this is the cookie', hash )
     return next();
   } catch (error) {
     console.log(error);
@@ -34,8 +35,8 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  console.log('checkcookie', req.cookies.SSIDSQL); 
-  // //console.log(req); 
+  console.log("checkcookie", req);
+  // //console.log(req);
   // try {
   //   let hello = await bcrypt.compare(
   //     JSON.stringify(req.cookies.SSIDSQL),
