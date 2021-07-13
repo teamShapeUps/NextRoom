@@ -1,3 +1,4 @@
+const { ContactSupportOutlined } = require('@material-ui/icons');
 const bcrypt = require('bcrypt');
 const SaltFactor = 10;
 
@@ -9,7 +10,7 @@ const cookiesControllerSQL = {};
 cookiesControllerSQL.initialCookie = (req, res, next) => {
   //console.log("This is res", req);
   console.log('Hello');
-
+  
   console.log(req);
 };
 
@@ -20,12 +21,14 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
     const hash = await bcrypt.hash(username, salt);
     username = hash;
 
+    console.log(username);
     res.cookie('SSIDSQL', username, {
       httpOnly: true,
-      secure: true,
+      //secure: true,
       maxAge: 2 * 60 * 60 * 1000 * 1000,
     });
-    //cookiesControllerSQL.initialCookie(username);
+
+    cookiesControllerSQL.initialCookie(username);
     //cookiesControllerSQL.checkCookie(cookies)
     return next();
   } catch (error) {
@@ -45,6 +48,7 @@ cookiesControllerSQL.checkCookie = (req, res, next) => {
   // } catch (error) {
   //   console.log(error);
   // }
+  next();
 };
 
 module.exports = cookiesControllerSQL;
