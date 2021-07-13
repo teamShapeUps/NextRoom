@@ -22,9 +22,10 @@ userControllerSQL.createUser = async (req, res, next) => {
 
     // if the user does NOT exist
     if (queryResult.rowCount === 0) {
-      const addText = `INSERT INTO users (username, pass_word, isHost) VALUES ($1,$2,$3)`;
+      const addText = `INSERT INTO users (username, password, isHost) VALUES ($1,$2,$3)`;
       const value = [username, password, isHost]; // coming from the front
       await db.query(addText, value);
+      console.log("user created!");
       return next();
     } else {
       return res.status(400).send("User already exists");
@@ -45,14 +46,15 @@ userControllerSQL.verifyUser = async (req, res, next) => {
       console.log("User Not Found!");
       return next();
     } else {
-      const { username, pass_word, isHost } = userValid.rows[0];
+      const { username, password, isHost } = userValid.rows[0];
 
-      if (bcrypt.compare(req.body.pass_word, userValid.rows[0].password)) {
+      if (bcrypt.compare(req.body.password, userValid.rows[0].password)) {
         res.locals.userInfo = {
           username: username,
-          pass_word: pass_word,
+          password: password,
           isHost: isHost,
         };
+        console.log("User logged in");
         return next();
       } else {
         return res.status(400).send("Account not verified!");
