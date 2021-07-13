@@ -1,26 +1,23 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './client/index.js',
+    entry: "./client/index.js", 
 
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
-    publicPath: '/',
-  },
+    output: {
+        path: path.resolve(__dirname, "build"),
+        filename: "bundle.js",
+    },
 
-  mode: 'development',
+    mode: 'development',
   module: {
     rules: [
       {
-        test: /\.jsx?/,
-        exclude: /node-modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-          },
+        test: /.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
         },
       },
       {
@@ -41,21 +38,34 @@ module.exports = {
       },
     ],
   },
+  
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.html',
     }),
   ],
-  devServer: {
-    publicPath: '/build',
-    contentBase: './client',
-    historyApiFallback: true,
-    proxy: {
-      '/mongo': 'http://localhost:3000',
-    },
-  },
+
   resolve: {
     extensions: ['.js', '.jsx'],
   },
 
-};
+
+  devServer: {
+    publicPath: '/build',
+    contentBase: path.resolve(__dirname, './client/'),
+
+    historyApiFallback: true,
+
+    proxy: {
+      '/mongo/**': {
+        target: 'http://localhost:3000',
+        secure: false,
+      },
+      '/users/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
+
+    },
+  }
+}
