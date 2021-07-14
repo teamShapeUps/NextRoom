@@ -24,6 +24,9 @@ router.post("/userlogin", userControllerSQL.verifyUser, cookiesControllerSQL.set
   return res.status(200).send("no good");
 });
 
+router.put("/logout", sessionControllerSQL.logOut, (req, res)=>{
+  return res.status(200).send("It's deleted")
+})
 
 
 module.exports = router;

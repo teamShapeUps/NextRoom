@@ -84,7 +84,8 @@ const bathroomController = {
             next()
         }
         catch(err) {
-            next(`error in bathroomController.getNearBathrooms: ${err}`)
+            // next(`error in bathroomController.getNearBathrooms: ${err}`)
+            next({err})
         }
     },
 
