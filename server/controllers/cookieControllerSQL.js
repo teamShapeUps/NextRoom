@@ -45,6 +45,7 @@ cookiesControllerSQL.checkCookie = (req, res, next) => {
   // } catch (error) {
   //   console.log(error);
   // }
+  next();
 };
 
 module.exports = cookiesControllerSQL;

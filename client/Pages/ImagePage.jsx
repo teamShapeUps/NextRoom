@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-const axios = require('axios')
+const axios = require('axios');
 
 async function postImage({ image, description }) {
   const formData = new FormData();
@@ -17,20 +17,19 @@ const ImagePage = () => {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
 
-
-  async function submit(event){
-    const result = await postImage({image: file, description})
-    setImages([result.image, ...images])
+  async function submit(event) {
+    const result = await postImage({ image: file, description });
+    setImages([result.image, ...images]);
   }
 
-  useEffect((event) => {
-    submit(event)
-  }, []);
+  // useEffect((event) => {
+  //   submit(event)
+  // }, []);
 
-  const handleSubmit = event=>{
+  const handleSubmit = (event) => {
     event.preventDefault();
     submit(event);
-  }
+  };
 
   const fileSelected = (event) => {
     const file = event.target.files[0];
@@ -40,17 +39,22 @@ const ImagePage = () => {
   return (
     <div className='Uploadpage'>
       <form onSubmit={handleSubmit}>
-        <input onChange={fileSelected} type="file" accept="image/*"></input>
-        <input value={description} onChange={e => setDescription(e.target.value)} type="text"></input>
-        <button type="submit">Submit</button>
+        <input onChange={fileSelected} type='file' accept='image/*'></input>
+        <input
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          type='text'
+        ></input>
+        <button type='submit'>Submit</button>
       </form>
 
-      { images.map( image => (
+      {images.map((image) => (
         <div key={image}>
           <img src={image}></img>
         </div>
       ))}
 
+      <img src='/images/show/c54d213fee5f528de4422c0d7ebe31ee'></img>
     </div>
   );
 };
