@@ -3,7 +3,9 @@ import Greeting from '../Components/greeting.jsx';
 
 export default function LandingPage() {
   return (
-    <Greeting />
+    <div>
+        <Greeting />
+    </div>
   );
 }
 
