@@ -3,7 +3,7 @@ import React, { Component, useState } from "react";
 import {
   makeStyles,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core/styles";
 import {
   Button,
@@ -14,6 +14,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Redirect, useHistory } from "react-router-dom";
+
+import axios from "axios";
 
 const useStyles = makeStyles({
   text: {
@@ -64,7 +66,7 @@ const useStyles = makeStyles({
   },
 });
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     // fontSize: '300px',
     fontSize: 75,
@@ -84,28 +86,36 @@ export default function LoginForm() {
   const [isUser, setUser] = useState(true);
   const [createUsername, setCreateUsername] = useState("");
   const [createPassword, setCreatePassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState("");
 
   function loginClickHandler(e) {
     // handle authentication here
     // console.log(`Username is ${username} and Password is ${password}`);
-    const userInfo = { username, password };
+    // const userInfo = { username, password };
     e.preventDefault();
+    console.log("post called successfully");
     if (isUser) {
-      fetch("/users/userlogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/user");
+      axios
+        .post("/users/userlogin", {
+          data: {
+            username: username,
+            password: password,
+          },
+        })
+        .then((res) => {
+          if (res.data === "good") {
+            setLoggedIn(true);
+          }
+          console.log(res.data);
         })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
+  }
+
+  if (loggedIn) {
+    history.push("/user");
   }
 
   // disables buttons if length of required fields is 0
@@ -116,41 +126,30 @@ export default function LoginForm() {
     return createUsername.length > 0 && createPassword.length > 0;
   };
 
-  const handleCreate = function () {
-    const userInfo = { username: createUsername, password: createPassword };
-    //console.log(userInfo);
+  const handleCreate = function (e) {
+    // Obtaines username/pw from state
+    const username = createUsername;
+    const password = createPassword;
+    e.preventDefault();
+    console.log("Create user post called");
     if (isUser) {
-      fetch("/users/usersignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/user");
+      axios
+        .post("/users/usersignup", {
+          data: {
+            username: username,
+            password: password,
+          },
+        })
+        .then((res) => {
+          if (res.data === "good") {
+            setLoggedIn(true);
+          }
+          console.log(res.data);
         })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
-    //  else {
-    //   fetch("/mongo/hostsignup", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(userInfo),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((response) => {
-    //       if (response) history.push("/host");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error:", error);
-    //     });
-    // }
   };
 
   return (
