@@ -28,6 +28,12 @@ sessionControllerSQL.isLoggedIn = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+
+  /*
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    //console.log(decoded)
+    next();
+  */
 };
 
 
@@ -43,16 +49,19 @@ sessionControllerSQL.startSession = async (req, res, next)=>{
   }
 };
 
-sessionControllerSQL.logOut = async (req, res, next) => {
-  const cookieid = req.cookies.SSID;
-  try {
-    const text = 'DELETE FROM session WHERE (cookieid) = ($1)';
-    const values = [cookieid];
-    await db.query(text, values);
-    next();
-  } catch (error) {
-    return next(error);
-  }
+sessionControllerSQL.logOut = (req, res, next) => {
+  // const cookieid = req.cookies.SSID;
+  // try {
+  //   const text = 'DELETE FROM session WHERE (cookieid) = ($1)';
+  //   const values = [cookieid];
+  //   await db.query(text, values);
+  //   next();
+  // } catch (error) {
+  //   return next(error);
+  // }
+
+  res.cookie('SSIDSQL', '', {maxAge: 1});
+  next();
 };
 
 module.exports = sessionControllerSQL;

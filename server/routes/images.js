@@ -20,7 +20,7 @@ router.post("/upload", upload.single('image'), async (req, res) => {
   const file = req.file;
   console.log(file)
   const result = await uploadFile(file); //Upload the file
-  //await unlikeFile(file.path); //Delete the file after uploading it to s3
+  await unlikeFile(file.path); //Delete the file after uploading it to s3
   console.log(result);
   const description = req.body.description;
   return res.send({imagePath: `/images/${result.key}`});

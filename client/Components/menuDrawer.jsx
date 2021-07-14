@@ -17,6 +17,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { ExitToApp, FormatPaint, DirectionsRun } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+const axios = require('axios');
 
 const drawerWidth = 240;
 
@@ -80,6 +81,13 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
 }));
+
+
+const logOut = ()=>{
+  axios
+  .put('/users/logout')
+
+}
 
 export default function MenuDrawer() {
   const classes = useStyles();
@@ -150,7 +158,7 @@ export default function MenuDrawer() {
         <Divider />
         <List>
           {["Log Out"].map((text, index) => (
-            <ListItem button key={text} component={Link} to="/">
+            <ListItem button key={text} component={Link} to="/" onClick={logOut}>
               <ListItemIcon>{<ExitToApp />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>

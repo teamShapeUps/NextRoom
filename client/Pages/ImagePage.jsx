@@ -54,7 +54,7 @@ const ImagePage = () => {
         </div>
       ))}
 
-      <img src='/images/show/4b0d1bc7f4c52be205d9886fd9bc48c7'></img>
+      <img src='/images/show/b3b5148fb744156b95fa64b73063abe0'></img>
     </div>
   );
 };
