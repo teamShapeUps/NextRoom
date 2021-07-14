@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const SaltFactor = 10;
 const cookiesControllerSQL = {};
 
@@ -17,14 +17,19 @@ cookiesControllerSQL.initialCookie = (req, res, next) => {
 cookiesControllerSQL.setCookie = async (req, res, next) => {
   try {
     let username = res.locals.userInfo.username; // NOT LOGGING
+    console.log("username from setCookie: ", username);
 
-    const token = jwt.sign({
-      data: username,
-    }, process.env.JWT_KEY , {expiresIn: "1h"})
+    const token = jwt.sign(
+      {
+        data: username,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
 
     //console.log(token)
 
-    res.cookie('SSIDSQL', token, {
+    res.cookie("SSIDSQL", token, {
       httpOnly: true,
       secure: true,
     });
@@ -35,12 +40,10 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  //console.log('checkcookie', req.cookies.SSIDSQL); 
+  //console.log('checkcookie', req.cookies.SSIDSQL);
   const decoded = jwt.verify(token, process.env.JWT_KEY);
   //console.log(decoded)
   next();
 };
-
-
 
 module.exports = cookiesControllerSQL;
