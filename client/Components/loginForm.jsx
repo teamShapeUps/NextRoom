@@ -89,12 +89,10 @@ export default function LoginForm() {
   const [loggedIn, setLoggedIn] = useState("");
 
   function loginClickHandler(e) {
-    // handle authentication here
-    // console.log(`Username is ${username} and Password is ${password}`);
-    // const userInfo = { username, password };
     e.preventDefault();
+    //logs if post was called on click
     console.log("post called successfully");
-    if (isUser) {
+    if (isUser) { // still need to implement user or host logic
       axios
         .post("/users/userlogin", {
           data: {
