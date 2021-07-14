@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const SaltFactor = 10;
 
 const cookiesControllerSQL = {};
@@ -8,14 +8,14 @@ const cookiesControllerSQL = {};
 
 cookiesControllerSQL.initialCookie = (req, res, next) => {
   //console.log("This is res", req);
-  console.log('Hello');
+  console.log("Hello");
 
   console.log(req);
 };
 
 cookiesControllerSQL.setCookie = async (req, res, next) => {
   try {
-    let username = res.locals.userInfo.username;
+    let username = res.locals.userInfo.username; // NOT LOGGING
     const salt = await bcrypt.genSalt(SaltFactor);
     const hash = await bcrypt.hash(username, salt);
     username = hash;
@@ -27,6 +27,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
     });
     //cookiesControllerSQL.initialCookie(username);
     //cookiesControllerSQL.checkCookie(cookies)
+    //console.log('this is the cookie', hash )
     return next();
   } catch (error) {
     console.log(error);

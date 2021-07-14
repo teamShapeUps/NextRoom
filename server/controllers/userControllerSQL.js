@@ -7,8 +7,11 @@ const userControllerSQL = {};
 
 userControllerSQL.createUser = async (req, res, next) => {
   try {
-    const { username, isHost } = req.body;
-    let { password } = req.body;
+    const { username, isHost } = req.body.data;
+    let { password } = req.body.data;
+
+    // console.log("Password type is:  ", typeof password);
+    // console.log(password);
 
     //checking if user exists
     const queryText = `SELECT * FROM users where username  = ($1)`;
@@ -25,6 +28,7 @@ userControllerSQL.createUser = async (req, res, next) => {
       const addText = `INSERT INTO users (username, password, isHost) VALUES ($1,$2,$3)`;
       const value = [username, password, isHost]; // coming from the front
       await db.query(addText, value);
+      res.answer = "added";
       console.log("user created!");
       return next();
     } else {
@@ -35,33 +39,71 @@ userControllerSQL.createUser = async (req, res, next) => {
   }
 };
 
+// userControllerSQL.createUser = async (req, res, next) => {
+//   try {
+//     const { username, isHost } = req.body.data;
+//     let { password } = req.body.data;
+
+//     console.log("req.body.data:", req.body.data); // info logging from the back
+//     const hashedPassword = await bcrypt.hash(password, SaltFactor);
+//     const newUser = await db.query(
+//       `INSERT INTO users (username, password, isHost) VALUES ($1,$2,$3) RETURNING *`,
+//       [username, hashedPassword, isHost]
+//     );
+//     // res.answer = "added";
+//     return next();
+//   } catch (err) {
+//     return next({
+//       log: "userControllerSQL.createUser: ERROR: Error adding user",
+//       message: {
+//         err: `Error occurred in userControllerSQL.createUser. err log: ${err}`,
+//       },
+//     });
+//   }
+// };
+
 userControllerSQL.verifyUser = async (req, res, next) => {
   try {
-    const userQuery = `SELECT * FROM users WHERE username = $1`;
-    const values = [req.body.username]; // comes from the front end input
-    const userValid = await db.query(userQuery, values); // query db
+    // Destructure from req.body.data from input on front end
+    const { username, password, isHost } = req.body.data;
 
-    //if that user name is NOT there, move to next middleware
-    if (userValid.rows.length === 0) {
-      console.log("User Not Found!");
-      return next();
-    } else {
-      const { username, password, isHost } = userValid.rows[0];
-
-      if (bcrypt.compare(req.body.password, userValid.rows[0].password)) {
-        res.locals.userInfo = {
-          username: username,
-          password: password,
-          isHost: isHost,
-        };
-        console.log("User logged in");
-        return next();
-      } else {
-        return res.status(400).send("Account not verified!");
+    await db.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username],
+      (err, results) => {
+        if (err) {
+          throw err;
+        }
+        if (results.rows.length > 0) {
+          const username = results.rows[0];
+          bcrypt.compare(password, username.password, (err, isMatch) => {
+            if (err) {
+              throw err;
+            }
+            if (isMatch) {
+              console.log("User logged in");
+              res.answer = "yes";
+              res.locals.userInfo = {
+                username: username.username,
+                password: username.password,
+                isHost: username.ishost
+              }
+              return next();
+            } else {
+              console.log("Something is wrong, check your password again");
+              next();
+            }
+          });
+        }
       }
-    }
+    );
   } catch (error) {
-    return next(error);
+    return next({
+      log: "userControllerSQL.verifyUser: Error logging in",
+      message: {
+        err: `Error occured in userControllerSQL.verifyUser. err log ${err}`,
+      },
+    });
   }
 };
 
