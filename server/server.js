@@ -13,6 +13,7 @@ dotenv.config({ path: "./.env" });
 const mongoRouter = require("./routes/mongo.js");
 const usersRouter = require("./routes/users.js");
 const imagesRouter = require("./routes/images.js");
+const tableRouter = require("./routes/table.js")
 
 const PORT = 3000;
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use("/mongo", mongoRouter);
 app.use("/users", usersRouter);
 app.use("/images", imagesRouter);
+app.use("/create", tableRouter)
 
 // Set static folder
 app.use("/build", express.static(path.join(__dirname, "../build")));

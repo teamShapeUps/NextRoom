@@ -107,4 +107,24 @@ userControllerSQL.verifyUser = async (req, res, next) => {
   }
 };
 
+userControllerSQL.deleteUser = async (req, res, next) =>{
+  try{
+    const user = req.params.username;
+    const selectQuery = `SELECT * FROM users WHERE username = ($1)`
+    const result = await db.query(selectQuery, user);
+    
+    if(result.rows[0] !== 0){
+      const deleteQuery = `DELETE FROM users WHERE username = ($1)`
+      await db.query(deleteQuery, [user]);
+      next();
+    }else{
+      res.status(400).send("User not found")
+    }
+    
+  }catch(err){
+    console.log(err);
+    next(err);
+  }
+}
+
 module.exports = userControllerSQL;

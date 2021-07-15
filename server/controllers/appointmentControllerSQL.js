@@ -1,13 +1,10 @@
 const { resourceLimits } = require('worker_threads');
 const db = require('../models/NextroomModels.js');
-const { getHostBathrooms } = require('./bathroomController.js');
 
 const appointmentControllerSQL = {}
 
 // YOU HAVE TO RUN cookiesControllerSQL.checkCookie BEFORE ANY OF THESE MIDDLEWARE FUNCS!
-
-
-appointmentControllerSQL.createAppointment = (req, res, next) =>{
+appointmentControllerSQL.createAppointment = async (req, res, next) =>{
   const {bathroom_id, username } = req.body;
   const id = res.locals.token.id;
   if (id === null || bathroom_id === null || username === null) {
@@ -44,7 +41,7 @@ appointmentControllerSQL.createAppointment = (req, res, next) =>{
 }
 
 
-appointmentControllerSQL.getAppointments = (req, res, next)=>{
+appointmentControllerSQL.getAppointments = async (req, res, next)=>{
   const id = res.locals.token.id;
   try{
     const app = []
@@ -59,7 +56,7 @@ appointmentControllerSQL.getAppointments = (req, res, next)=>{
 
     // result.rows = [{},{},{},{}]
     for(let i = 0; i<result.rows.length; i++){
-      const roomQuery = `SELECT * FROM rooms WHERE id = ($1)`
+      const roomQuery = `SELECT * FROM appointment WHERE id = ($1)`
     }
     
 
@@ -70,6 +67,27 @@ appointmentControllerSQL.getAppointments = (req, res, next)=>{
 
 }
 
+
+appointmentControllerSQL.getReservations = async (req, res, next)=>{
+  const id = res.locals.token.id;
+  try{
+    const roomQuery = `SELECT * FROM appointment WHERE id = ($1)`
+    const result = await db.query(roomQuery, [id]);
+
+    if(result.rows[0].length === 0){ //result.rows[0] might be undefined
+      console.log(result.rows[0]);
+      res.send(' no reservations ');
+    }else{
+      console.log(result.rows[0]);
+      res.locals.getReservations = result.rows[0];
+    }
+
+  }catch(err){
+    console.log(err);
+    next(err);
+  }
+
+}
 
 
 module.exports = appointmentControllerSQL;

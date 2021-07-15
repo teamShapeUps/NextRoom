@@ -15,7 +15,9 @@ roomControllerSQL.addRoom = async (req, res, next) => {
     VALUES($1, $2, $3, $4, $5, $6)`;
     const values = [id, title, address, zipcode, description, imageFileName]; //imageFileName might be different
     const queryResult = await db.query(query, values);
+
     res.locals.rooms = queryResult.rows[0];
+
     next();
   } catch (err) {
     console.log(err);
@@ -23,7 +25,7 @@ roomControllerSQL.addRoom = async (req, res, next) => {
   }
 };
 
-roomControllerSQL.getHostRoom = async (req, res, next) => {
+roomControllerSQL.getRooms = async (req, res, next) => {
   try {
     const id = res.locals.token.id;
 
@@ -47,9 +49,10 @@ roomControllerSQL.getNearRooms = async (req, res, next) => {
   if (miles === undefined) miles = 10 / 68.703;
   try {
     const query = `SELECT * FROM rooms`;
-
-    // let bathroomsArr = []
-    // bathrooms.forEach(el =>{
+    // data.rows[0]
+    // rows [{long:00}, {}, {}, {}, {}]
+    let bathroomsArr = []
+    // bathrooms.rows.forEach(el =>{
     //     if((el['location']['coordinates'][0] < longitude+miles &&
     //     el['location']['coordinates'][0] > longitude-miles) &&
     //     (el['location']['coordinates'][1] < latitude+miles &&
@@ -72,7 +75,7 @@ roomControllerSQL.updateBathroom = async (req, res, next) => {
   try {
     const location = await geocoder.geocode(address);
 
-    // Room info requires id, title, description, address, price, type, cooridinates, formattedAddress, imageFileName
+    // Room info requires id, title, description, address, price, type, logitude, latitude, formattedAddress, imageFileName
 
     const type = 'point';
     const coordinates = [location[0].longitude, location[0].latitude];

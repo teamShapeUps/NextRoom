@@ -7,10 +7,11 @@ const cookiesControllerSQL = {};
 // Nested middleware function
 
 cookiesControllerSQL.initialCookie = (req, res, next) => {
-  //console.log("This is res", req);
-  //console.log("Hello");
-
-  console.log(req);
+  res.cookie("SSIDSQL", "", {
+    httpOnly: true,
+    secure: true,
+  })
+  next();
 };
 
 cookiesControllerSQL.setCookie = async (req, res, next) => {
@@ -43,6 +44,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
   const token = req.cookies.SSIDSQL
+
   const decoded = jwt.verify(token, process.env.JWT_KEY);
   //console.log(decoded)
   res.locals.token = decoded;
