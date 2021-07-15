@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const db = require('../models/NextroomModels.js');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SaltFactor = 10;
@@ -16,31 +17,48 @@ cookiesControllerSQL.initialCookie = (req, res, next) => {
 
 cookiesControllerSQL.setCookie = async (req, res, next) => {
   try {
-    let username = res.locals.userInfo.username; // NOT LOGGING
+    const username = [res.locals.userInfo.username]; // NOT LOGGING
 
-    const token = jwt.sign({
-      data: username,
+    const idquery = `SELECT id FROM users WHERE username = ($1)`
+    const idqueryResult = await db.query(idquery, username);
+    const id = idqueryResult.rows[0].id
+
+    const token = await jwt.sign({
+      id: id,
     }, process.env.JWT_KEY , {expiresIn: "1h"})
 
-    //console.log(token)
+    res.locals.token = {
+      tokenid: token,
+    }
 
     res.cookie('SSIDSQL', token, {
       httpOnly: true,
       secure: true,
     });
+
     return next();
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  //console.log('checkcookie', req.cookies.SSIDSQL); 
+  const token = req.cookies.SSIDSQL
   const decoded = jwt.verify(token, process.env.JWT_KEY);
   //console.log(decoded)
+  res.locals.token = decoded;
   next();
-};
 
+  /* 
+  decoded returns this
+  {
+    id: 'f2e30374-e37c-11eb-b60f-f9eb6eb2c2d4',
+    iat: 1626305338,
+    exp: 1626308938
+  }
+  */
+};
 
 
 module.exports = cookiesControllerSQL;
