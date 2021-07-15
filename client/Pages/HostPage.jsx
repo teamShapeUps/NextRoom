@@ -1,3 +1,4 @@
+// REFACTOR INTO 'ADDCOMMODE' COMPONENT?
 import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/menuDrawer";
 import {
@@ -8,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import HostToiletCard from "../Components/HostToiletCard";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   container: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: ["Permanent Marker", "cursive"].join(","),
   },
