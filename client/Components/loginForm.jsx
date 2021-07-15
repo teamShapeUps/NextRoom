@@ -14,7 +14,6 @@ import {
   Box,
   TextField,
   Collapse,
-  Switch,
   Typography,
 } from "@material-ui/core";
 
@@ -139,7 +138,7 @@ export default function LoginForm() {
   }
 
   if (loggedIn) {
-    history.push("/user");
+    history.push("/map");
   }
 
   // disables buttons if length of required fields is 0
@@ -177,7 +176,7 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='userPageBackground'>
+    <section className='mapPageBackground'>
       {/* <ThemeProvider theme={theme}>
         <div className={classes.title}>
           <Typography>NEXT/ROOM</Typography>

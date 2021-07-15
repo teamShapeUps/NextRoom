@@ -25,14 +25,14 @@ const useStyles = makeStyles({
   cancelButton: {
     color: "red",
   },
-  newBathForm: {
+  newRoomForm: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
     height: "600px",
     width: "400px",
   },
-  hostTitle: {
+  roomsTitle: {
     color: "#FE6B8B",
     fontSize: 60,
   },
@@ -44,58 +44,58 @@ const theme = createTheme({
   },
 });
 
-export default function HostPage() {
+export default function RoomsPage() {
   const classes = useStyles();
 
-  const [bathroomArray, setBathroomArray] = useState([]);
+  const [roomArray, setRoomArray] = useState([]);
   const [dataFromFetch, setDataFromFetch] = useState([]);
 
-  const [addingNewBath, setAddingNewBath] = useState(false);
+  const [addingNewRoom, setAddingNewRoom] = useState(false);
 
-  const [newBathTitle, setNewBathTitle] = useState("");
-  const [newBathDescription, setNewBathDescription] = useState("");
-  const [newBathPrice, setNewBathPrice] = useState("");
-  const [newBathAddress, setNewBathAddress] = useState("");
-  const [newBathZip, setNewBathZip] = useState("");
-  const [newBathImg, setNewBathImg] = useState("");
+  const [newRoomTitle, setNewRoomTitle] = useState("");
+  const [newRoomDescription, setNewRoomDescription] = useState("");
+  const [newRoomPrice, setNewRoomPrice] = useState("");
+  const [newRoomAddress, setNewRoomAddress] = useState("");
+  const [newRoomZip, setNewRoomZip] = useState("");
+  const [newRoomImg, setNewRoomImg] = useState("");
 
   const arrayOfComponents = [];
 
   //this is the hook solution to lifecycle methods. This is will invoke when the HostPage component mounts
   useEffect(() => {
     console.log("You mounted!");
-    //fetch all bathrooms
+    //fetch all rooms
     //cookie should be sent with request...right?
-    fetchBathrooms();
+    fetchRooms();
   }, []);
 
   useEffect(() => {
     //handle new bathrooms added to array in this rerender
     //create component for each bathroom to be rendered
-    dataFromFetch.forEach((bathroom) => {
+    dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
         <HostToiletCard
-          handleDeleteBathroom={handleDeleteBathroom}
-          handleUpdateBathroom={handleUpdateBathroom}
-          key={bathroom._id}
-          {...bathroom}
+          handleDeleteRoom={handleDeleteRoom}
+          handleUpdateRoom={handleUpdateRoom}
+          key={room._id}
+          {...room}
         />
       );
     });
 
-    setBathroomArray([arrayOfComponents]);
+    setRoomArray([arrayOfComponents]);
   }, [dataFromFetch]);
 
   // useEffect( (() => null), [bathroomArray])
-  const fetchBathrooms = function () {
+  const fetchRooms = function () {
     fetch("/mongo/getBathrooms")
       .then((response) => response.json())
       .then((response) => setDataFromFetch(response));
   };
 
-  const handleDeleteBathroom = function (bathroomId) {
-    //delete bathroom using mongo ID. Accessible like this:
-    const { _id } = bathroomId;
+  const handleDeleteRoom = function (bathroomId) {
+    //delete room using mongo ID. Accessible like this:
+    const { _id } = roomId;
     const deleteId = { _id };
 
     fetch("/mongo/deleteBathroom", {
@@ -106,29 +106,29 @@ export default function HostPage() {
       body: JSON.stringify(deleteId),
     })
       .then((response) => response.json())
-      .then((response) => fetchBathrooms())
+      .then((response) => fetchRooms())
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
-  const handleUpdateBathroom = function (bathroomProps) {
-    //delete bathroom using mongo ID. Accessible like this:
+  const handleUpdateRoom = function (roomProps) {
+    //delete room using mongo ID. Accessible like this:
     const {
       _id,
-      title: updatedBathTitle,
-      description: updatedBathDescription,
-      address: updatedBathAddress,
-      price: updatedBathPrice,
-      imageFileName: updatedBathImg,
-    } = bathroomProps;
+      title: updatedRoomTitle,
+      description: updatedRoomDescription,
+      address: updatedRoomAddress,
+      price: updatedRoomPrice,
+      imageFileName: updatedRoomImg,
+    } = roomProps;
     const update = {
       _id,
-      title: updatedBathTitle,
-      description: updatedBathDescription,
-      address: updatedBathAddress,
-      price: updatedBathPrice,
-      imageFileName: updatedBathImg,
+      title: updatedRoomTitle,
+      description: updatedRoomDescription,
+      address: updatedRoomAddress,
+      price: updatedRoomPrice,
+      imageFileName: updatedRoomImg,
     };
 
     fetch("/mongo/updatebathroom", {
@@ -142,19 +142,19 @@ export default function HostPage() {
       .then((data) => {
         console.log("Update Success:", data);
       })
-      .then((data) => fetchBathrooms())
+      .then((data) => fetchRooms())
       .catch((error) => {
         console.error("Error:", error);
       });
   };
-  const addBathroomHandler = function () {
-    const newBath = {
-      title: newBathTitle,
-      description: newBathDescription,
-      address: newBathAddress,
-      zipcode: newBathZip,
-      imageFileName: newBathImg,
-      price: newBathPrice,
+  const addRoomHandler = function () {
+    const newRoom = {
+      title: newRoomTitle,
+      description: newRoomDescription,
+      address: newRoomAddress,
+      zipcode: newRoomZip,
+      imageFileName: newRoomImg,
+      price: newRoomPrice,
     };
 
     fetch("/mongo/addbathroom", {
@@ -162,7 +162,7 @@ export default function HostPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newBath),
+      body: JSON.stringify(newRoom),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -177,71 +177,71 @@ export default function HostPage() {
         console.error("Error:", error);
       });
 
-    setNewBathTitle("");
-    setNewBathDescription("");
-    setNewBathPrice("");
-    setNewBathZip("");
-    setNewBathAddress("");
-    setNewBathImg("");
+    setNewRoomTitle("");
+    setNewRoomDescription("");
+    setNewRoomPrice("");
+    setNewRoomZip("");
+    setNewRoomAddress("");
+    setNewRoomImg("");
 
-    setAddingNewBath(!addingNewBath);
+    setAddingNewRoom(!addingNewRoom);
   };
 
   return (
     <div className={classes.container}>
       <MenuDrawer />
-      <Collapse in={!addingNewBath}>
+      <Collapse in={!addingNewRoom}>
         <Button
           className={classes.addButton}
-          onClick={() => setAddingNewBath(!addingNewBath)}
+          onClick={() => setAddingNewRoom(!addingNewRoom)}
         >
-          Add a Commode +
+          Add a Room +
         </Button>
       </Collapse>
-      <Collapse in={addingNewBath}>
-        <div className={classes.newBathForm}>
+      <Collapse in={addingNewRoom}>
+        <div className={classes.newRoomForm}>
           <TextField
             label="Title"
-            onChange={(e) => setNewBathTitle(e.target.value)}
+            onChange={(e) => setNewRoomTitle(e.target.value)}
           />
           <TextField
             label="Description"
             multiline
-            onChange={(e) => setNewBathDescription(e.target.value)}
+            onChange={(e) => setNewRoomDescription(e.target.value)}
           />
           <TextField
-            label="$$$ / 10mins"
-            onChange={(e) => setNewBathPrice(e.target.value)}
+            label="Price Per Hour"
+            onChange={(e) => setNewRoomPrice(e.target.value)}
           />
           <TextField
-            label="Bathroom's Street, City, and State"
-            onChange={(e) => setNewBathAddress(e.target.value)}
+            label="Room's Street Address, City, and State"
+            onChange={(e) => setNewRoomAddress(e.target.value)}
           />
           <TextField
-            label="Bathroom's Zip Code"
-            onChange={(e) => setNewBathZip(e.target.value)}
+            label="Room's Zip Code"
+            onChange={(e) => setNewRoomZip(e.target.value)}
           />
           <TextField
             label="Image URL"
-            onChange={(e) => setNewBathImg(e.target.value)}
+            onChange={(e) => setNewRoomImg(e.target.value)}
           />
-          <Button className={classes.addButton} onClick={addBathroomHandler}>
-            Get this Potty Started!
+          <Button className={classes.addButton} onClick={addRoomHandler}>
+            Submit
           </Button>
           <Button
             className={classes.cancelButton}
             onClick={() => {
-              setAddingNewBath(!addingNewBath);
+              setAddingNewRoom(!addingNewRoom);
             }}
           >
-            Nah, it's not Potty time yet
+            Cancel
           </Button>
         </div>
       </Collapse>
-      <h2 className={classes.hostTitle}>Your Bathrooms</h2>
+      <h2 className={classes.roomsTitle}>Your Rooms</h2>
 
       <div className={classes.cardContainer}>
-        {bathroomArray ? bathroomArray : "Add a Bathroom to get things moving!"}
+        {roomArray ? roomArray : "Rooms you're listing or renting will appear here!"}
       </div>
     </div>
   );
