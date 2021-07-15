@@ -1,8 +1,6 @@
-const bcrypt = require("bcrypt");
 const db = require('../models/NextroomModels.js');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const SaltFactor = 10;
 const cookiesControllerSQL = {};
 
 // Cookies from chrome and req.cookies are different because of bcrypt.
