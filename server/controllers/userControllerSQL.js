@@ -82,12 +82,12 @@ userControllerSQL.verifyUser = async (req, res, next) => {
             }
             if (isMatch) {
               console.log("User logged in");
-              res.answer = "yes";
               res.locals.userInfo = {
                 username: username.username,
                 password: username.password,
-                isHost: username.ishost
-              }
+                isHost: username.isHost,
+              };
+              res.answer = "yes";
               return next();
             } else {
               console.log("Something is wrong, check your password again");

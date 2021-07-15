@@ -29,7 +29,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
       tokenid: token,
     }
 
-    res.cookie('SSIDSQL', token, {
+    res.cookie("SSIDSQL", token, {
       httpOnly: true,
       secure: true,
     });

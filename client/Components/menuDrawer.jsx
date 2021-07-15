@@ -15,22 +15,24 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { ExitToApp, FormatPaint, DirectionsRun } from "@material-ui/icons";
+import { ExitToApp, Apartment, Favorite, Map } from "@material-ui/icons";
+import { green, red, indigo } from "@material-ui/core/colors";
 import { Link } from "react-router-dom";
-const axios = require('axios');
+const axios = require("axios");
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    paddingBottom: 0,
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    background: "linear-gradient(45deg, #1D3557 20%, #457B9D 90%)",
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -52,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    background: "#a8dadc",
   },
   drawerHeader: {
     display: "flex",
@@ -64,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    paddingBottom: 0,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -78,16 +82,20 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   headingStyle: {
-    margin: "auto",
+    fontFamily: ["Oswald"],
+    fontSize: 25,
+    // position: 'absolute',
+    // marginLeft: 'auto',
+    // marginRight: 'auto',
+    // left: 0,
+    // right: 0,
+    // textAlign: 'center',
   },
 }));
 
-
-const logOut = ()=>{
-  axios
-  .put('/users/logout')
-
-}
+const logOut = () => {
+  axios.put("/users/logout");
+};
 
 
 export default function MenuDrawer() {
@@ -103,6 +111,7 @@ export default function MenuDrawer() {
     setOpen(false);
   };
 
+  // REFACTOR BUTTONS (LINES 138-154)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -114,7 +123,7 @@ export default function MenuDrawer() {
       >
         <Toolbar>
           <IconButton
-            color="inherit"
+            style={{ color: green[50] }}
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
@@ -122,8 +131,13 @@ export default function MenuDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.headingStyle} variant="h6" noWrap>
-            RESTroom
+          <Typography
+            className={classes.headingStyle}
+            variant="h6"
+            noWrap
+            style={{ color: green[50] }}
+          >
+            NEXT/ROOM
           </Typography>
         </Toolbar>
       </AppBar>
@@ -147,10 +161,16 @@ export default function MenuDrawer() {
         </div>
         <Divider />
         <List>
-          {["Potty Time", "gARffiti"].map((text, index) => (
+          {["Rooms", "Faves", "Map"].map((text, index) => (
             <ListItem button key={text} component={Link} to="/user">
-              <ListItemIcon>
-                {text === "Potty Time" ? <DirectionsRun /> : <FormatPaint />}
+              <ListItemIcon style={{ color: red[600] }}>
+                {text === "Rooms" ? (
+                  <Apartment />
+                ) : text === "Faves" ? (
+                  <Favorite />
+                ) : (
+                  <Map />
+                )}
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
@@ -159,8 +179,16 @@ export default function MenuDrawer() {
         <Divider />
         <List>
           {["Log Out"].map((text, index) => (
-            <ListItem button key={text} component={Link} to="/" onClick={logOut}>
-              <ListItemIcon>{<ExitToApp />}</ListItemIcon>
+            <ListItem
+              button
+              key={text}
+              component={Link}
+              to="/"
+              onClick={logOut}
+            >
+              <ListItemIcon style={{ color: indigo[900] }}>
+                {<ExitToApp />}
+              </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
