@@ -23,19 +23,28 @@ import axios from "axios";
 const useStyles = makeStyles({
   text: {
     fontSize: 15,
-    fontFamily: ["Eurostile", "cursive"].join(","),
+    fontFamily: ["Oswald"],
+  },
+  logo: {
+    display: "grid",
+    placeItems: "center",
+    paddingTop: "4%",
   },
   button: {
     // display:'flex',
     // flexDirection: 'row',
+    fontFamily: "Oswald",
+    fontSize: "18px",
     justify: "center",
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    color: "#F1FAEE",
+    background: "linear-gradient(45deg, #1D3557 20%, #457B9D 90%)",
     border: 0,
     borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    color: "white",
+    boxShadow: "0 3px 5px 2px #457B9D",
     height: 48,
+    width: 220,
     textAlign: "center",
+    marginTop: 25,
   },
   box: {
     display: "grid",
@@ -50,22 +59,33 @@ const useStyles = makeStyles({
     color: "#E63946",
   },
   signup: {
+    marginTop: "5%",
     cursor: "pointer",
     textDecoration: "underline",
     "&:hover": {
-      color: "#FE6B8B",
+      color: "#E63946",
     },
   },
+  element: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingTop: 20,
+  },
   div: {
+    fontFamily: "Oswald",
+    color: '#1D3557',
     display: "flex",
-    marginTop: "5%",
+    marginTop: "2%",
+    paddingTop: 10,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#B6D0E2",
+    background: "#a8dadc",
     margin: "0 40% 0 40%",
     borderRadius: "5%",
-    boxShadow: "0 3px 5px 2px #FE6B8B",
+    boxShadow: "0 3px 5px 2px #457B9D",
   },
 });
 
@@ -157,69 +177,61 @@ export default function LoginForm() {
   };
 
   return (
-    <section>
-      <ThemeProvider theme={theme}>
+    <section className='userPageBackground'>
+      {/* <ThemeProvider theme={theme}>
         <div className={classes.title}>
-          {/* <Typography>Potty Over Here</Typography> */}
           <Typography>NEXT/ROOM</Typography>
         </div>
-      </ThemeProvider>
+      </ThemeProvider> */}
+      <Box className={classes.logo}>
+        <img src='../Assets/NEXTROOM_LOGO_2.0.png' width='240px'></img>
+      </Box>
       <div className={classes.div}>
-        <h1>{checked ? "Sign Up" : "Login"}</h1>
-        <Switch onChange={() => setUser(!isUser)} className={classes.toggle} />
-        <p>{isUser ? "User Login" : "Host Login"}</p>
+        <h1>{checked ? "SIGN UP" : "LOG IN"}</h1>
         <Box className={classes.box}>
           <Collapse in={!checked} orientation="horizontal">
             <TextField
+              className={classes.element}
               placeholder="username"
               onChange={(e) => setUsername(e.target.value)}
             />
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <br />
-            <br />
             <Button
               type="submit"
               className={classes.button}
               disabled={!validateSignIn()}
               onClick={loginClickHandler}
             >
-              {isUser ? "Click to Login as User!" : "Login as Host!"}
+              {"Click to Login as User"}
             </Button>
           </Collapse>
-
-          <br />
-
           <a className={classes.signup} onClick={() => setChecked(!checked)}>
-            {checked ? "Back to Login" : "Sign up!?"}
+            {checked ? "Back to Login" : "Sign up"}
           </a>
           <Collapse in={checked} orientation="horizontal">
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="username"
               onChange={(e) => setCreateUsername(e.target.value)}
             />
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="password"
+              type="password"
               onChange={(e) => setCreatePassword(e.target.value)}
             />
-            <br />
-            <br />
             <Button
               className={classes.button}
               disabled={!validateSignUp()}
               onClick={handleCreate}
             >
               Create New
-              {isUser ? "User" : "Host"}
+              {" User"}
             </Button>
           </Collapse>
         </Box>

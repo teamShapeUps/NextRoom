@@ -10,7 +10,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import {
   makeStyles,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core/styles";
 
 import { Button, Typography } from "@material-ui/core";
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   title: {
     display: "grid",
     placeItems: "center",
-    paddingTop: "20%",
+    paddingTop: "20vh",
     color: "#E63946",
   },
   subtitle: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   },
 });
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontSize: 75,
     fontFamily: ["Oswald"].join(","),
@@ -72,103 +72,6 @@ export default function LoginForm() {
   const history = useHistory();
 
   const classes = useStyles();
-
-  // React hooks
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // //const [count, setCount] = useState(0);
-  // const [checked, setChecked] = useState(false);
-  // const [isUser, setUser] = useState(true);
-  // const [createUsername, setCreateUsername] = useState("");
-  // const [createPassword, setCreatePassword] = useState("");
-
-  //  function loginClickHandler(e) {
-  //paramaterize the user type: user vs host
-
-  //user: fetchstring = /mongo/userlogin
-  //host: fetchstring = /mongo/hostlogin
-  // change isUser to usertype
-  // `"/mongo/"+${usertype}+"userlogin"`
-
-  //fetch(fetchstring)
-
-  //history.push (usertype)
-
-  // handle authentication here
-  // console.log(`Username is ${username} and Password is ${password}`);
-
-  //   const userInfo = { username, password };
-  //   e.preventDefault();
-  //   // REFACTOR (change Mongo routes to SQL/consolidate duplicate code (DRY))
-  //   if (isUser) {
-  //     fetch("/mongo/userlogin", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(userInfo),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         if (response) history.push("/user");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //       });
-  //   } else {
-  //     fetch("/mongo/hostlogin", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(userInfo),
-  //     })
-  //       .then((response) => response.json())
-
-  //       .then((response) => {
-
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //       });
-  //   }
-  // }
-
-  // const handleClick = function () {
-  //   const userInfo = { username: createUsername, password: createPassword };
-  //   console.log(userInfo);
-  //   if (isUser) {
-  //     fetch("/mongo/usersignup", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(userInfo),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         if (response) history.push("/user");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //       });
-  //   } else {
-  //     fetch("/mongo/hostsignup", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(userInfo),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         if (response) history.push("/host");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error:", error);
-  //       });
-  //   }
-  // };
 
   return (
     <section className={classes.backgroundImage}>
