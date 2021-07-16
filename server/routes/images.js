@@ -25,7 +25,7 @@ router.post(
   async (req, res) => {
     const file = req.file;
     const id = res.locals.token.id;
-
+    //console.log(id);
     const query = `UPDATE rooms
   SET imagefilename = ($1)
   WHERE id = ($2)`;

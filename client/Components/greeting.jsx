@@ -87,7 +87,7 @@ export default function LoginForm() {
         <Button
           type="submit"
           className={classes.button}
-          onClick={() => history.push("/login")}
+          onClick={() => history.push("/signup")}
         >
           {" "}
           SIGN UP
