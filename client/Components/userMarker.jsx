@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Marker, Popup, useMap } from "react-leaflet";
 //for testing only
-import ToiletCard from "./toiletCard.jsx";
+import RoomCard from "./roomCard.jsx";
 
 export default function UserMarker(props) {
   // const [coords, setCoords] = useState([40.785091, -73.968285]);
@@ -31,6 +31,6 @@ export default function UserMarker(props) {
   }, []);
 
   return (
-    <Marker position={coords}>{/* <Popup><ToiletCard /></Popup> */}</Marker>
+    <Marker position={coords}>{/* <Popup><RoomCard /></Popup> */}</Marker>
   );
 }

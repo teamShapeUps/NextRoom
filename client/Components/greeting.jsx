@@ -18,7 +18,7 @@ import { Button, Typography } from "@material-ui/core";
 //Customize component styles
 const useStyles = makeStyles({
   backgroundImage: {
-    backgroundImage: `url(${"https://images.pexels.com/photos/3183198/pexels-photo-3183198.jpeg"})`,
+    backgroundImage: `url(${"../Assets/background.jpeg"})`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",

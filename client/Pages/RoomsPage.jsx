@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import HostToiletCard from '../Components/HostToiletCard';
+import HostRoomCard from '../Components/HostRoomCard';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 const axios = require('axios');
 
@@ -121,11 +121,11 @@ export default function RoomsPage() {
   }, []);
 
   useEffect(() => {
-    //handle new bathrooms added to array in this rerender
-    //create component for each bathroom to be rendered
+    //handle new rooms added to array in this rerender
+    //create component for each room to be rendered
     dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
-        <HostToiletCard
+        <HostRoomCard
           handleDeleteRoom={handleDeleteRoom}
           handleUpdateRoom={handleUpdateRoom}
           key={newKey}
@@ -137,7 +137,7 @@ export default function RoomsPage() {
     setRoomArray([arrayOfComponents]);
   }, [dataFromFetch]);
 
-  // useEffect( (() => null), [bathroomArray])
+  // useEffect( (() => null), [roomArray])
   const fetchRooms = function () {
     // fetch("/mongo/getBathrooms")
     //   .then((response) => response.json())

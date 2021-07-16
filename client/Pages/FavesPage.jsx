@@ -1,10 +1,10 @@
-// REFACTOR INTO 'ADDCOMMODE' COMPONENT?
+// REFACTOR INTO 'ADDROOM' COMPONENT?
 import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/menuDrawer";
 import {
   makeStyles,
 } from "@material-ui/core";
-import HostToiletCard from "../Components/HostToiletCard";
+import HostRoomCard from "../Components/HostRoomCard";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -49,11 +49,11 @@ export default function FavesPage() {
   // }, []);
 
   // useEffect(() => {
-  //   //handle new bathrooms added to array in this rerender
-  //   //create component for each bathroom to be rendered
+  //   //handle new rooms added to array in this rerender
+  //   //create component for each room to be rendered
   //   dataFromFetch.forEach((fave) => {
   //     arrayOfComponents.push(
-  //       <HostToiletCard
+  //       <HostRoomCard
   //         handleDeleteFave={handleDeleteFave}
   //         key={fave._id}
   //         {...fave}
@@ -64,7 +64,7 @@ export default function FavesPage() {
   //   setFavesArray([arrayOfComponents]);
   // }, [dataFromFetch]);
 
-  // // useEffect( (() => null), [bathroomArray])
+  // // useEffect( (() => null), [roomArray])
   // const fetchRooms = function () {
   //   fetch("/mongo/getBathrooms")
   //     .then((response) => response.json())
