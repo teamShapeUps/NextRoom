@@ -7,6 +7,7 @@ import {makeStyles,
         Button, 
         Typography,
         Collapse} from '@material-ui/core';
+import { CollectionsBookmark } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
@@ -65,7 +66,7 @@ const useStyles = makeStyles({
 
 export default function HostToiletCard(props){
 
-    const {id, available, title, description, imageFileName, price} = props;
+    const {id, available, title, description, imagefilename, price} = props;
     //pass in props from query
     const classes = useStyles();
 
@@ -77,8 +78,17 @@ export default function HostToiletCard(props){
     const [updatedBathAddress, setUpdatedBathAddress] = useState(props.address);
     //const [updatedBathAddress, setUpdatedBathAddress] = useState(props.location.formattedAddress);
     //const [updatedBathZip, setUpdatedBathZip] = useState('');
-    const [updatedBathImg, setUpdatedBathImg] = useState(imageFileName);
+    const [updatedBathImg, setUpdatedBathImg] = useState(imagefilename);
 
+    // const getImageFileName = ()=>{
+    //   fetch('/images/getimage')
+    //   .then(data=>)
+    // }
+
+    useEffect(()=>{
+      console.log(props.imagefilename)
+      console.log(updatedBathImg)
+    })
 
     const handleDeleteBathroom = function(){
         //delete bathroom using mongo ID. Accessible like this:
@@ -103,7 +113,7 @@ export default function HostToiletCard(props){
   
     const handleUpdateBathroom = function(){
       //delete bathroom using mongo ID. Accessible like this:
-      const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
+      const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imagefilename: updatedBathImg}
 
       fetch('/mongo/updatebathroom', {
         method: 'POST',
@@ -125,7 +135,7 @@ export default function HostToiletCard(props){
   }
 
   const clickUpdate = function(){
-    const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
+    const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imagefilename: updatedBathImg}
     props.handleUpdateBathroom(update);
     setToggleEdit(!toggleEdit);
   }
@@ -144,7 +154,8 @@ export default function HostToiletCard(props){
         <CardMedia
           component = "img"
           className={classes.media}
-          image={props.imageFileName} // This is where image goes
+          image={`/images/show/${props.imagefilename}`} // this should work, does it? Yeah it did. hell yeah!!
+          // image={props.imagefilename} // This is where image goes I got it - it worked? check the slack chat - ok
           title="Bathroom"
         />
         <CardContent>
@@ -188,12 +199,12 @@ export default function HostToiletCard(props){
             
             {/* <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/> */}
 
-            <TextField fullWidth defaultValue={imageFileName} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedBathImg(e.target.value)}/>
+            <TextField fullWidth defaultValue={imagefilename} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedBathImg(e.target.value)}/>
             <Typography>Image Preview:</Typography>
             <CardMedia 
             component= "img"
             className={classes.media}
-            image={updatedBathImg? updatedBathImg: imageFileName}
+            image={updatedBathImg? updatedBathImg: imagefilename}
             label="Bathroom Preview"/>
 
             <div className={classes.buttonContainer}>
