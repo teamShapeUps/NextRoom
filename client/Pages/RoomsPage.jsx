@@ -86,7 +86,7 @@ export default function RoomsPage() {
   }, [dataFromFetch]);
 
   // useEffect( (() => null), [bathroomArray])
-  const fetchBathrooms = function () {
+  const fetchRooms = function () {
     // fetch("/mongo/getBathrooms")
     //   .then((response) => response.json())
     //   .then((response) => {
