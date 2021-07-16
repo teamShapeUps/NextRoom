@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import HostToiletCard from "../Components/HostToiletCard";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles({
   container: {
@@ -57,6 +58,7 @@ export default function RoomsPage() {
   const [newRoomAddress, setNewRoomAddress] = useState("");
   const [newRoomZip, setNewRoomZip] = useState("");
   const [newRoomImg, setNewRoomImg] = useState("");
+  const [newKey, setNewKey] = useState("");
 
   const arrayOfComponents = [];
 
@@ -65,7 +67,10 @@ export default function RoomsPage() {
     console.log("You mounted!");
     //fetch all rooms
     //cookie should be sent with request...right?
-    fetchRooms();
+    fetch('/users/check')
+    .then(data=>data.json())
+    .then(data=>setNewKey(data.id))
+    .then(()=>fetchRooms())
   }, []);
 
   useEffect(() => {
@@ -74,10 +79,10 @@ export default function RoomsPage() {
     dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
         <HostToiletCard
-          handleDeleteBathroom={handleDeleteBathroom}
-          handleUpdateBathroom={handleUpdateBathroom}
-          key={res.locals.token.id}
-          {...bathroom}
+          handleDeleteRoom={handleDeleteRoom}
+          handleUpdateRoom={handleUpdateRoom}
+          key={newKey}
+          {...room}
         />
       );
     });
@@ -93,23 +98,26 @@ export default function RoomsPage() {
     //     console.log(response)
     //     setDataFromFetch(response)});
 
-    fetch("/rooms/getroom")
-    .then(data=>data.json())
-    .then(data=>console.log(data));
-      //setDataFromFetch(data));
+    axios
+    .get("/rooms/getroom")
+    .then(res=>res.data)
+    .then(data=>setDataFromFetch(data));
+
+    //.then(data=>data.json())
+    //.then(data=>setDataFromFetch(data));
   };
 
   const handleDeleteRoom = function (bathroomId) {
     //delete room using mongo ID. Accessible like this:
-    const { _id } = roomId;
-    const deleteId = { _id };
+    const id= res.locals.token.id;
+    const deleteId = id;
 
     fetch("/rooms/deleteroom", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(deleteId),
+      body: JSON.stringify(id),
     })
       .then((response) => response.json())
       .then((response) => fetchRooms())
@@ -121,7 +129,7 @@ export default function RoomsPage() {
   const handleUpdateRoom = function (roomProps) {
     //delete room using mongo ID. Accessible like this:
     const {
-      _id,
+      id,
       title: updatedRoomTitle,
       description: updatedRoomDescription,
       address: updatedRoomAddress,
@@ -129,7 +137,7 @@ export default function RoomsPage() {
       imageFileName: updatedRoomImg,
     } = roomProps;
     const update = {
-      _id,
+      id,
       title: updatedRoomTitle,
       description: updatedRoomDescription,
       address: updatedRoomAddress,
@@ -173,9 +181,9 @@ export default function RoomsPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // const newData = [...dataFromFetch];
-        // newData.unshift(data);
-        // setDataFromFetch(newData);
+        const newData = [...dataFromFetch];
+        newData.unshift(data);
+        setDataFromFetch(newData);
       })
       .catch((error) => {
         console.log("something broke here");

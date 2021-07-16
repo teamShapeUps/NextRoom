@@ -29,7 +29,7 @@ router.delete('/deleteroom', roomControllerSQL.deleteRooms, (req, res) => {
 
 router.get('/getroom', roomControllerSQL.getRooms, (req, res) => {
   // console.log(res.locals.bathrooms)
-  res.status(200).send(res.locals.rooms);
+  res.status(200).json(res.locals.rooms);
 });
 
 // app.post('/addbathroompic',

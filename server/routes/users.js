@@ -23,7 +23,7 @@ router.post(
 );
 
 router.get('/check', cookiesControllerSQL.checkCookie, (req, res) => {
-  res.status(200);
+  res.status(200).send(res.locals.token);
 });
 
 router.post(
@@ -41,5 +41,6 @@ router.post(
 router.put('/logout', sessionControllerSQL.logOut, (req, res) => {
   return res.status(200).send("It's deleted");
 });
+
 
 module.exports = router;

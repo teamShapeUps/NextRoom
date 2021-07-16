@@ -65,7 +65,7 @@ const useStyles = makeStyles({
 
 export default function HostToiletCard(props){
 
-    const {_id, available, title, description, imageFileName, price} = props;
+    const {id, available, title, description, imageFileName, price} = props;
     //pass in props from query
     const classes = useStyles();
 
@@ -74,21 +74,23 @@ export default function HostToiletCard(props){
     const [updatedBathTitle, setUpdatedBathTitle] = useState(title);
     const [updatedBathDescription, setUpdatedBathDescription] = useState(description);
     const [updatedBathPrice, setUpdatedBathPrice] = useState(price);
-    const [updatedBathAddress, setUpdatedBathAddress] = useState(props.location.formattedAddress);
+    const [updatedBathAddress, setUpdatedBathAddress] = useState(props.address);
+    //const [updatedBathAddress, setUpdatedBathAddress] = useState(props.location.formattedAddress);
     //const [updatedBathZip, setUpdatedBathZip] = useState('');
     const [updatedBathImg, setUpdatedBathImg] = useState(imageFileName);
 
 
     const handleDeleteBathroom = function(){
         //delete bathroom using mongo ID. Accessible like this:
-        console.log(_id);
-        console.log(props.location.formattedAddress);
+        console.log(id);
+        console.log(props.address);
+        //console.log(props.location.formattedAddress);
         fetch('/mongo/deleteBathroom', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({_id}),
+          body: JSON.stringify({id}),
         })
         .then(response => response.json())
         .then(data => {
@@ -98,10 +100,10 @@ export default function HostToiletCard(props){
           console.error('Error:', error);
         })
     }
-
+  
     const handleUpdateBathroom = function(){
       //delete bathroom using mongo ID. Accessible like this:
-      const update = {_id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
+      const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
 
       fetch('/mongo/updatebathroom', {
         method: 'POST',
@@ -123,13 +125,13 @@ export default function HostToiletCard(props){
   }
 
   const clickUpdate = function(){
-    const update = {_id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
+    const update = {id, title: updatedBathTitle, description: updatedBathDescription, address:updatedBathAddress , price: updatedBathPrice, imageFileName: updatedBathImg}
     props.handleUpdateBathroom(update);
     setToggleEdit(!toggleEdit);
   }
 
   const clickDelete = function(){
-    const bathroomId = {_id};
+    const bathroomId = {id};
     props.handleDeleteBathroom(bathroomId);
 
   }
@@ -142,7 +144,7 @@ export default function HostToiletCard(props){
         <CardMedia
           component = "img"
           className={classes.media}
-          image={props.imageFileName}
+          image={props.imageFileName} // This is where image goes
           title="Bathroom"
         />
         <CardContent>
@@ -156,7 +158,8 @@ export default function HostToiletCard(props){
               Price Goes here 
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {props.location.formattedAddress}
+            {props.address}
+            {/* {props.location.formattedAddress} */}
             <br/>
             <br/>
             {props.description}
@@ -180,7 +183,10 @@ export default function HostToiletCard(props){
               
             <TextField fullWidth defaultValue={price} variant="outlined" label="$$$ / 10 mins" onChange={(e)=> setUpdatedBathPrice(e.target.value)}/>
 
-            <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/>
+            <TextField fullWidth defaultValue={props.address} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/>
+            
+            
+            {/* <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedBathAddress(e.target.value)}/> */}
 
             <TextField fullWidth defaultValue={imageFileName} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedBathImg(e.target.value)}/>
             <Typography>Image Preview:</Typography>
