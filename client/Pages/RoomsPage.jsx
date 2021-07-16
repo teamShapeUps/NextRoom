@@ -16,14 +16,28 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "#F1FAEE",
+    width: '100vw',
+    minHeight: '100vh',
   },
   addButton: {
-    backgroundColor: "green",
-    color: "white",
-    padding: "10px 20px 10px 20px",
+    fontFamily: "Oswald",
+    fontSize: "18px",
+    justify: "center",
+    color: "#F1FAEE",
+    background: "linear-gradient(45deg, #1D3557 20%, #457B9D 90%)",
+    border: 0,
+    borderRadius: 3,
+    boxShadow: "0 3px 5px 2px #457B9D",
+    height: 48,
+    textAlign: "center",
+    marginTop: 25,
   },
   cancelButton: {
-    color: "red",
+    fontFamily: "Oswald",
+    fontSize: "18px",
+    justify: "center",
+    color: "#E63946",
   },
   newRoomForm: {
     display: "flex",
@@ -33,8 +47,12 @@ const useStyles = makeStyles({
     width: "400px",
   },
   roomsTitle: {
-    color: "#FE6B8B",
-    fontSize: 60,
+    color: '#1D3557',
+    textShadow: '1px 1px 2px #457B9D',
+    fontSize: '60px',
+    fontFamily: 'Oswald',
+    marginTop: '0px',
+    marginBottom: '6px',
   },
 });
 
@@ -93,7 +111,7 @@ export default function RoomsPage() {
       .then((response) => setDataFromFetch(response));
   };
 
-  const handleDeleteRoom = function (bathroomId) {
+  const handleDeleteRoom = function (roomId) {
     //delete room using mongo ID. Accessible like this:
     const { _id } = roomId;
     const deleteId = { _id };
