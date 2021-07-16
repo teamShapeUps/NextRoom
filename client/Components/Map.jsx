@@ -9,16 +9,11 @@ import {
   LayersControl,
 } from "react-leaflet";
 import UserMarker from "./userMarker.jsx";
-import ToiletMarker from "./toiletMarker.jsx";
-// import testToiletCard from './toiletCard.jsx';
+import RoomMarker from "./roomMarker.jsx";
+// import testRoomCard from './roomCard.jsx';
 
-// toilet dependency injection goes here:
-
-import testToiletSet from "./testToiletSet.js";
-
-const pp = function (stuff) {
-  return JSON.stringify(stuff, null, 2);
-};
+// room dependency injection goes here:
+import testRoomSet from "./testRoomSet.js";
 
 // const L = window.L;
 
@@ -48,99 +43,99 @@ export default function UserMap() {
   // default coordinates
   const coords = [40.785091, -73.968285];
 
-  // const bathrooms = testToiletSet;
 
-  // let bathrooms;
+  // TEST ROOM SET FUNCTIONALITY
+  const rooms = testRoomSet;
 
-  const [toilets, setToilets] = useState([]);
+  // let rooms;
+
+  // const [rooms, setRooms] = useState([]); <--- COMMENTED OUT TEMPORARILY 
 
   // useEffect(() => {
   //   console.log(`triggered useEffect`);
-  //   bathroomComponents = [];
-  //   if (bathrooms) {
-  //     console.log(`Creating toiletMarker components`)
-  //   for (const bathroom of bathrooms) {
-  //     bathroomComponents.push(<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />)
+  //   roomComponents = [];
+  //   if (rooms) {
+  //     console.log(`Creating roomMarker components`)
+  //   for (const room of rooms) {
+  //     roomComponents.push(<RoomMarker room={room} key={room.roomId} />)
   //   }
-  // }}, bathrooms);
+  // }}, rooms);
 
   const MapDrag = function () {
     const map = useMapEvents({
       load: (e) => {
         map.locate();
-        getNewBathrooms(e.target.getCenter());
+        // getNewRooms(e.target.getCenter());  <--- COMMENTED OUT TEMPORARILY 
       },
       moveend: (e) => {
         //console.log(`Map center latlng is: ${e.target.getCenter()}`)
-        getNewBathrooms(e.target.getCenter());
-        // console.log(`toilets is: ${pp(toilets)}`)
+        // getNewRooms(e.target.getCenter());   <--- COMMENTED OUT TEMPORARILY 
       },
     });
     return null;
   };
 
-  const getNewBathrooms = function (latlngObj, miles = 1) {
-    const { lat, lng } = latlngObj;
-    // console.log(`getNewBathrooms parameter latlngArr is ${JSON.stringify(latlngObj)}`)
-    // console.log(`lat: ${lat}, lng: ${lng}`)
-    fetch("/mongo/getnearbathrooms", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify({
-        latitude: lat,
-        longitude: lng,
-        miles: miles,
-      }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        const newBathrooms = [];
-        response.forEach((elem) => {
-          const bathroomId = elem._id;
-          const [lat, lng] = [
-            elem.location.coordinates[1],
-            elem.location.coordinates[0],
-          ];
-          const bathroomCoords = [lat, lng];
-          const imageUrl = elem.imageFileName;
-          const imageTitle = null;
-          const descriptionTitle = elem.title;
-          const descriptionBody = elem.body;
-          const toiletAddress = elem.location.formattedAddress;
-          // const toiletAddress2 = elem.
-          newBathrooms.push({
-            bathroomId,
-            bathroomCoords,
-            imageUrl,
-            imageTitle,
-            descriptionTitle,
-            descriptionBody,
-            toiletAddress,
-            // toiletAddress2,
-          });
-        });
-        // console.log(`newBathrooms are ${JSON.stringify(newBathrooms, null, 2)}, prototype of newBathrooms ${newBathrooms.prototype}`)
-        setToilets(() => [...newBathrooms]);
-        // console.log(`toilets are: ${pp(toilets)}`)
-        //   console.log(`newBathrooms: ${JSON.stringify(newBathrooms,null,2)}`)
-        //   setToiletMarkers((prevState) => {
-        //   console.log(`about to create a bunch of toiletMarkers`)
-        //   const tempMarkers = new Set();
-        //   for (const bathroom of newBathrooms) {
-        //     const newComp = (<ToiletMarker bathroom={bathroom} key={bathroom.bathroomId} />);
-        //     tempMarkers.add(newComp)
-        //     console.log(`Added newComp to tempMarkers set. newComp is ${pp(newComp)} Now tempMarkers is ${pp(tempMarkers)}`)
-        // }
-        // console.log(`tempMarkers are ${pp(tempMarkers)} and toiletMarkers are ${pp(Object.keys(toiletMarkers))}`)
-        // return (prevState.add(tempMarkers))
-      })
-      .catch((err) => console.log(err));
-  };
+  // COMMENTED OUT TEMPORARILY:
+  // const getNewRooms = function (latlngObj, miles = 1) {
+  //   const { lat, lng } = latlngObj;
+  //   // console.log(`getNewRooms parameter latlngArr is ${JSON.stringify(latlngObj)}`)
+  //   // console.log(`lat: ${lat}, lng: ${lng}`)
+  //   fetch("/mongo/getnearbathrooms", {
+  //     method: "POST",
+  //     mode: "cors",
+  //     cache: "no-cache",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       // 'Content-Type': 'application/x-www-form-urlencoded',
+  //     },
+  //     body: JSON.stringify({
+  //       latitude: lat,
+  //       longitude: lng,
+  //       miles: miles,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       const newRooms = [];
+  //       response.forEach((elem) => {
+  //         const roomId = elem._id;
+  //         const [lat, lng] = [
+  //           elem.location.coordinates[1],
+  //           elem.location.coordinates[0],
+  //         ];
+  //         const roomCoords = [lat, lng];
+  //         const imageUrl = elem.imageFileName;
+  //         const imageTitle = null;
+  //         const descriptionTitle = elem.title;
+  //         const descriptionBody = elem.body;
+  //         const roomAddress = elem.location.formattedAddress;
+  //         // const roomAddress2 = elem.
+  //         newRooms.push({
+  //           roomId,
+  //           roomCoords,
+  //           imageUrl,
+  //           imageTitle,
+  //           descriptionTitle,
+  //           descriptionBody,
+  //           roomAddress,
+  //           // roomAddress2,
+  //         });
+  //       });
+  //       // console.log(`newRooms are ${JSON.stringify(newRooms, null, 2)}, prototype of newRooms ${newRooms.prototype}`)
+  //       setRooms(() => [...newRooms]);
+  //       //   console.log(`newRooms: ${JSON.stringify(newRooms,null,2)}`)
+  //       //   setRoomMarkers((prevState) => {
+  //       //   console.log(`about to create a bunch of roomMarkers`)
+  //       //   const tempMarkers = new Set();
+  //       //   for (const room of newRooms) {
+  //       //     const newComp = (<RoomMarker room={room} key={room.roomId} />);
+  //       //     tempMarkers.add(newComp)
+  //       //     console.log(`Added newComp to tempMarkers set`)
+  //       // }
+  //       // return (prevState.add(tempMarkers))
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   return (
     <Box className={classes.border} border={1} borderColor="#1D3557">
@@ -184,9 +179,9 @@ export default function UserMap() {
         </LayersControl>
         <UserMarker position={coords} />
         <MapDrag />
-        {/* {toiletMarkers} */}
-        {toilets.map((elem) => (
-          <ToiletMarker bathroom={elem} key={elem.bathroomId} />
+        {/* {roomMarkers} */}
+        {rooms.map((elem) => (
+          <RoomMarker room={elem} key={elem.roomId} />
         ))}
       </MapContainer>
     </Box>
