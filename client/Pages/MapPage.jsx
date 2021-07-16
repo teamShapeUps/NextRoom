@@ -3,11 +3,11 @@ import MenuDrawer from '../Components/menuDrawer.jsx';
 import UserMap from '../Components/Map.jsx';
 import styles from '../style.css';
 
-export default function UserPage(){
+export default function MapPage(){
     return(
-        <div className='userPageBackground'>
+        <div className='mapPageBackground'>
             <MenuDrawer />
-            <h1 className='userPageHead' style={{textAlign:'center'}}>ROOMS CURRENTLY AVAILABLE NEAR YOU:</h1>
+            <h1 className='mapPageHead' style={{textAlign:'center'}}>ROOMS CURRENTLY AVAILABLE NEAR YOU:</h1>
             <UserMap />
         </div>
     )

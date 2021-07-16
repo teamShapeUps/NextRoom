@@ -44,14 +44,14 @@ userControllerSQL.createUser = async (req, res, next) => {
 
 // userControllerSQL.createUser = async (req, res, next) => {
 //   try {
-//     const { username, isHost } = req.body.data;
+//     const { username } = req.body.data;
 //     let { password } = req.body.data;
 
 //     console.log("req.body.data:", req.body.data); // info logging from the back
 //     const hashedPassword = await bcrypt.hash(password, SaltFactor);
 //     const newUser = await db.query(
-//       `INSERT INTO users (username, password, isHost) VALUES ($1,$2,$3) RETURNING *`,
-//       [username, hashedPassword, isHost]
+//       `INSERT INTO users (username, password) VALUES ($1,$2,$3) RETURNING *`,
+//       [username, hashedPassword]
 //     );
 //     // res.answer = "added";
 //     return next();
@@ -68,7 +68,7 @@ userControllerSQL.createUser = async (req, res, next) => {
 userControllerSQL.verifyUser = async (req, res, next) => {
   try {
     // Destructure from req.body.data from input on front end
-    const { username, password} = req.body.data;
+    const { username, password } = req.body.data;
 
     await db.query(
       "SELECT * FROM users WHERE username = $1",
