@@ -97,6 +97,7 @@ const logOut = () => {
   axios.put("/users/logout");
 };
 
+
 export default function MenuDrawer() {
   const classes = useStyles();
   const theme = useTheme();
@@ -161,7 +162,7 @@ export default function MenuDrawer() {
         <Divider />
         <List>
           {["Rooms", "Faves", "Map"].map((text, index) => (
-            <ListItem button key={text} component={Link} to="/user">
+            <ListItem button key={text} component={Link} to={`/${text}`}>
               <ListItemIcon style={{ color: red[600] }}>
                 {text === "Rooms" ? (
                   <Apartment />

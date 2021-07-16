@@ -96,7 +96,7 @@ const theme = createTheme({
   },
 });
 
-export default function LoginForm() {
+export default function SignupForm() {
   const history = useHistory();
 
   const classes = useStyles();
@@ -105,7 +105,7 @@ export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [count, setCount] = useState(0);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [isUser, setUser] = useState(true);
   const [createUsername, setCreateUsername] = useState("");
   const [createPassword, setCreatePassword] = useState("");

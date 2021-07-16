@@ -1,49 +1,68 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const SaltFactor = 10;
+const db = require('../models/NextroomModels.js');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const cookiesControllerSQL = {};
 
 // Cookies from chrome and req.cookies are different because of bcrypt.
 // Nested middleware function
 
 cookiesControllerSQL.initialCookie = (req, res, next) => {
-  //console.log("This is res", req);
-  //console.log("Hello");
-
-  console.log(req);
+  res.cookie('SSIDSQL', '', {
+    httpOnly: true,
+    secure: true,
+  });
+  next();
 };
 
 cookiesControllerSQL.setCookie = async (req, res, next) => {
   try {
-    let username = res.locals.userInfo.username; // NOT LOGGING
-    console.log("username from setCookie: ", username);
+    const username = [res.locals.userInfo.username]; // NOT LOGGING
 
-    const token = jwt.sign(
+    const idquery = `SELECT id FROM users WHERE username = ($1)`;
+    const idqueryResult = await db.query(idquery, username);
+    const id = idqueryResult.rows[0].id;
+
+    const token = await jwt.sign(
       {
-        data: username,
+        id: id,
       },
       process.env.JWT_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: '1h' }
     );
 
-    //console.log(token)
+    res.locals.token = {
+      tokenid: token,
+    };
 
-    res.cookie("SSIDSQL", token, {
+    res.cookie('SSIDSQL', token, {
       httpOnly: true,
       secure: true,
     });
+
     return next();
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  //console.log('checkcookie', req.cookies.SSIDSQL);
-  const decoded = jwt.verify(token, process.env.JWT_KEY);
-  //console.log(decoded)
+  const token = req.cookies.SSIDSQL;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    //console.log(decoded);
+    res.locals.token = decoded;
+  }
   next();
+
+  /* 
+  decoded returns this
+  {
+    id: 'f2e30374-e37c-11eb-b60f-f9eb6eb2c2d4',
+    iat: 1626305338,
+    exp: 1626308938
+  }
+  */
 };
 
 module.exports = cookiesControllerSQL;
