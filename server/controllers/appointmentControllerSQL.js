@@ -59,7 +59,6 @@ appointmentControllerSQL.getAppointments = async (req, res, next)=>{
       const roomQuery = `SELECT * FROM appointment WHERE id = ($1)`
     }
     
-
   }catch(err){
     console.log(err);
     next(err);

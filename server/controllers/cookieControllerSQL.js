@@ -7,10 +7,10 @@ const cookiesControllerSQL = {};
 // Nested middleware function
 
 cookiesControllerSQL.initialCookie = (req, res, next) => {
-  res.cookie("SSIDSQL", "", {
+  res.cookie('SSIDSQL', '', {
     httpOnly: true,
     secure: true,
-  })
+  });
   next();
 };
 
@@ -18,19 +18,23 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
   try {
     const username = [res.locals.userInfo.username]; // NOT LOGGING
 
-    const idquery = `SELECT id FROM users WHERE username = ($1)`
+    const idquery = `SELECT id FROM users WHERE username = ($1)`;
     const idqueryResult = await db.query(idquery, username);
-    const id = idqueryResult.rows[0].id
+    const id = idqueryResult.rows[0].id;
 
-    const token = await jwt.sign({
-      id: id,
-    }, process.env.JWT_KEY , {expiresIn: "1h"})
+    const token = await jwt.sign(
+      {
+        id: id,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: '1h' }
+    );
 
     res.locals.token = {
       tokenid: token,
-    }
+    };
 
-    res.cookie("SSIDSQL", token, {
+    res.cookie('SSIDSQL', token, {
       httpOnly: true,
       secure: true,
     });
@@ -43,11 +47,12 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
 };
 
 cookiesControllerSQL.checkCookie = (req, res, next) => {
-  const token = req.cookies.SSIDSQL
-
-  const decoded = jwt.verify(token, process.env.JWT_KEY);
-  //console.log(decoded)
-  res.locals.token = decoded;
+  const token = req.cookies.SSIDSQL;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    //console.log(decoded);
+    res.locals.token = decoded;
+  }
   next();
 
   /* 
@@ -59,6 +64,5 @@ cookiesControllerSQL.checkCookie = (req, res, next) => {
   }
   */
 };
-
 
 module.exports = cookiesControllerSQL;

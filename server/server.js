@@ -14,18 +14,28 @@ const mongoRouter = require("./routes/mongo.js");
 const usersRouter = require("./routes/users.js");
 const imagesRouter = require("./routes/images.js");
 const tableRouter = require("./routes/table.js")
+const roomRouter = require("./routes/room.js")
+const cookiesControllerSQL = require('./controllers/cookieControllerSQL.js');
 
 const PORT = 3000;
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(cookieParser());
 
+
 // Handle Parsign Request Body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Check cookies every single time
+app.use(cookiesControllerSQL.checkCookie)
+// app.all('*', cookiesControllerSQL.checkCookie, (req, res, next)=>{
+//   next();
+// })
+
 // Routes
 app.use("/mongo", mongoRouter);
 app.use("/users", usersRouter);
+app.use("/rooms", roomRouter);
 app.use("/images", imagesRouter);
 app.use("/create", tableRouter)
 
@@ -35,6 +45,9 @@ app.use("/build", express.static(path.join(__dirname, "../build")));
 app.get("/", (req, res) => {
   return res.status(200).json("Hello");
 });
+
+
+
 
 // GLOBAL ERROR Handler
 function errorHandler(err, req, res, next) {

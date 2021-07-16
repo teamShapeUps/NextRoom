@@ -9,13 +9,18 @@ router.get('/', cookiesControllerSQL.checkCookie, (req, res) => {
   res.status(200).send('This is the user router: successful!');
 });
 
-router.post('/usersignup', userControllerSQL.createUser, (req, res) => {
-  //return res.status(200).send("good");
-  if (res.answer === 'added') {
-    return res.status(200).send('good');
+router.post(
+  '/usersignup',
+  userControllerSQL.createUser,
+  cookiesControllerSQL.setCookie,
+  (req, res) => {
+    //return res.status(200).send("good");
+    if (res.answer === 'added') {
+      return res.status(200).send('good');
+    }
+    return res.status(200).send('no good');
   }
-  return res.status(200).send('no good');
-});
+);
 
 router.get('/check', cookiesControllerSQL.checkCookie, (req, res) => {
   res.status(200);

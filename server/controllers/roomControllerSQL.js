@@ -6,10 +6,12 @@ const roomControllerSQL = {};
 
 // YOU HAVE TO RUN cookiesControllerSQL.checkCookie BEFORE ANY OF THESE MIDDLEWARE FUNCS!
 
-roomControllerSQL.addRoom = async (req, res, next) => {
+roomControllerSQL.addRooms = async (req, res, next) => {
+
   try {
     const { address, zipcode, title, description, imageFileName } = req.body;
     const id = res.locals.token.id;
+
 
     const query = `INSERT INTO rooms (id, title, address, zipcode, description, imageFileName)
     VALUES($1, $2, $3, $4, $5, $6)`;
@@ -23,6 +25,7 @@ roomControllerSQL.addRoom = async (req, res, next) => {
     console.log(err);
     next(err);
   }
+  next();
 };
 
 roomControllerSQL.getRooms = async (req, res, next) => {
@@ -31,8 +34,7 @@ roomControllerSQL.getRooms = async (req, res, next) => {
 
     const query = `SELECT * FROM rooms WHERE id = ($1)`;
     const queryResult = await db.query(query, [id]);
-
-    res.locals.rooms = queryResult.rows[0];
+    res.locals.rooms = queryResult.rows;
     next();
   } catch (err) {
     console.log(err);
@@ -70,7 +72,7 @@ roomControllerSQL.getNearRooms = async (req, res, next) => {
   }
 };
 
-roomControllerSQL.updateBathroom = async (req, res, next) => {
+roomControllerSQL.updateroom = async (req, res, next) => {
   const id = res.locals.token.id;
   try {
     const location = await geocoder.geocode(address);
@@ -85,7 +87,8 @@ roomControllerSQL.updateBathroom = async (req, res, next) => {
     SET type = ($1), coordinates = ($2), formattedAddress = ($3)
     WHERE id = ($4)`;
     const value = [type, coordinates, formattedAddress, id];
-    await db.query(query, value);
+    const result = await db.query(query, value);
+    res.locals.updatedRoom = result.rows[0]; 
     next()
   } catch (err) {
     console.log(err);

@@ -1,4 +1,3 @@
-// REFACTOR INTO 'ADDCOMMODE' COMPONENT?
 import React, { useEffect, useState } from "react";
 import MenuDrawer from "../Components/menuDrawer";
 import {
@@ -77,7 +76,7 @@ export default function HostPage() {
         <HostToiletCard
           handleDeleteBathroom={handleDeleteBathroom}
           handleUpdateBathroom={handleUpdateBathroom}
-          key={bathroom._id}
+          key={res.locals.token.id}
           {...bathroom}
         />
       );
@@ -88,9 +87,16 @@ export default function HostPage() {
 
   // useEffect( (() => null), [bathroomArray])
   const fetchBathrooms = function () {
-    fetch("/mongo/getBathrooms")
-      .then((response) => response.json())
-      .then((response) => setDataFromFetch(response));
+    // fetch("/mongo/getBathrooms")
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     console.log(response)
+    //     setDataFromFetch(response)});
+
+    fetch("/rooms/getroom")
+    .then(data=>data.json())
+    .then(data=>console.log(data));
+      //setDataFromFetch(data));
   };
 
   const handleDeleteBathroom = function (bathroomId) {
@@ -98,7 +104,7 @@ export default function HostPage() {
     const { _id } = bathroomId;
     const deleteId = { _id };
 
-    fetch("/mongo/deleteBathroom", {
+    fetch("/rooms/deleteroom", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -131,7 +137,7 @@ export default function HostPage() {
       imageFileName: updatedBathImg,
     };
 
-    fetch("/mongo/updatebathroom", {
+    fetch("/rooms/updateroom", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -147,6 +153,7 @@ export default function HostPage() {
         console.error("Error:", error);
       });
   };
+
   const addBathroomHandler = function () {
     const newBath = {
       title: newBathTitle,
@@ -157,7 +164,7 @@ export default function HostPage() {
       price: newBathPrice,
     };
 
-    fetch("/mongo/addbathroom", {
+    fetch("/rooms/addroom", {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -167,9 +174,9 @@ export default function HostPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        const newData = [...dataFromFetch];
-        newData.unshift(data);
-        setDataFromFetch(newData);
+        // const newData = [...dataFromFetch];
+        // newData.unshift(data);
+        // setDataFromFetch(newData);
       })
       .catch((error) => {
         console.log("something broke here");
