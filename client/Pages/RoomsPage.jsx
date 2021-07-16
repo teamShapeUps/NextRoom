@@ -248,11 +248,6 @@ export default function RoomsPage() {
     setAddingNewRoom(!addingNewRoom);
   };
 
-  const inclusiveFunc = ()=>{
-    handleSubmit();
-    addRoomHandler();
-  }
-
   return (
     <div className={classes.container}>
       <MenuDrawer />
