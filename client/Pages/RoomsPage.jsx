@@ -119,7 +119,7 @@ export default function RoomsPage() {
 
   //this is the hook solution to lifecycle methods. This is will invoke when the HostPage component mounts
   useEffect(() => {
-    console.log('You mounted!');
+    //console.log('You mounted!');
     //fetch all rooms
     //cookie should be sent with request...right?
     fetch('/users/check')  // <-- NICE this fixed the id issue?
