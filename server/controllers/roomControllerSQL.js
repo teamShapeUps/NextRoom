@@ -14,7 +14,7 @@ roomControllerSQL.addRooms = async (req, res, next) => {
 
 
     const location = await geocoder.geocode(address);
-    console.log(location[0].formattedAddress);
+    //console.log(location[0].formattedAddress);
     const latitude = location[0].latitude
     const longtitude = location[0].longitude
 
@@ -78,20 +78,25 @@ roomControllerSQL.getNearRooms = async (req, res, next) => {
 };
 
 roomControllerSQL.updateroom = async (req, res, next) => {
-  const id = res.locals.token.id;
+  const {id, title, address, description, price} = req.body;
   try {
     const location = await geocoder.geocode(req.body.address);
     //console.log(req.body)
-    // Room info requires id, title, description, address, price, type, logitude, latitude, formattedAddress, imageFileName
+    //Room info requires id, title, description, address, price, type, logitude, latitude, formattedAddress, imageFileName
 
-    const type = 'point';
-    const coordinates = [location[0].longitude, location[0].latitude];
-    const formattedAddress = location[0].formattedAddress;
+    //const coordinates = [location[0].longitude, location[0].latitude];
+    //const formattedAddress = location[0].formattedAddress;
+
+    //console.log(location[0].formattedAddress);
+
+    const latitude = location[0].latitude
+    const longtitude = location[0].longitude
+
 
     const query = `UPDATE rooms
-    SET type = ($1), coordinates = ($2), formattedAddress = ($3)
-    WHERE id = ($4)`;
-    const value = [type, coordinates, formattedAddress, id];
+    SET description = ($1), price = ($2), address = ($3), longitude = ($4), latitude = ($5)
+    WHERE id = ($6) AND title = ($7)`;
+    const value = [description, price, address, longtitude, latitude, id, title];
     const result = await db.query(query, value);
     res.locals.updatedRoom = result.rows[0]; 
     next()

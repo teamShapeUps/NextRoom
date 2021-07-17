@@ -83,6 +83,8 @@ export default function RoomsPage() {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
 
+  const [counter, setcounter] = useState(0);
+
   const arrayOfComponents = [];
 
 
@@ -127,12 +129,13 @@ export default function RoomsPage() {
   }, []);
 
   useEffect(()=>{
-
+    //dataFromFetch is the one that changes
   }, arrayOfComponents)
 
   useEffect(() => {
     //handle new rooms added to array in this rerender
     //create component for each room to be rendered
+    //console.log(dataFromFetch)
     dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
         <HostRoomCard
@@ -238,7 +241,7 @@ export default function RoomsPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         const newData = [...dataFromFetch];
         newData.unshift(data);
         setDataFromFetch(newData);
@@ -257,13 +260,12 @@ export default function RoomsPage() {
 
     await setAddingNewRoom(!addingNewRoom);
     //refreshRoomPage()
-    //setTimeout(refreshRoomPage(), 1000)
+    setTimeout(refreshRoomPage(), 1000)
   }catch(err){
     console.log(err)
   }
   };
   
-
   const refreshRoomPage = ()=>{
     window.location = '/rooms'
   }

@@ -7,7 +7,7 @@ import {makeStyles,
         Button, 
         Typography,
         Collapse} from '@material-ui/core';
-import { CollectionsBookmark } from '@material-ui/icons';
+import { CollectionsBookmark, ContactSupportOutlined } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 
 export default function HostRoomCard(props){
 
-    const {id, available, title, description, imagefilename, price} = props;
+    const {id, available, title, description, imagefilename, price, address} = props;
     //pass in props from query
     const classes = useStyles();
 
@@ -113,9 +113,8 @@ export default function HostRoomCard(props){
     }
   
     const handleUpdateRoom = function(){
-      //delete room using mongo ID. Accessible like this:
-      const update = {id, title: updatedRoomTitle, description: updatedRoomDescription, address:updatedRoomAddress , price: updatedRoomPrice, imagefilename: updatedRoomImg}
-      
+      const update = {id, title, address:updatedRoomAddress, description: updatedRoomDescription, price: updatedRoomPrice}
+
       fetch('/rooms/updateroom', {
         method: 'POST',
         headers: {
@@ -132,11 +131,18 @@ export default function HostRoomCard(props){
       })
 
       setToggleEdit(!toggleEdit);
-     
+      setTimeout(()=>{window.location = '/rooms'} ,1000);
   }
 
   const clickUpdate = function(){
-    const update = {id, title: updatedRoomTitle, description: updatedRoomDescription, address:updatedRoomAddress , price: updatedRoomPrice, imagefilename: updatedRoomImg}
+    const update = {
+      id, 
+      title: updatedRoomTitle, 
+      description: updatedRoomDescription, 
+      address:updatedRoomAddress, 
+      price: updatedRoomPrice, 
+      imagefilename: updatedRoomImg
+    }
     handleUpdateRoom(update);
     setToggleEdit(!toggleEdit);
   }
@@ -179,6 +185,7 @@ export default function HostRoomCard(props){
         </CardContent>
         </div>
       <div className={classes.buttonContainer}>
+        {/* <Button size="small" className={classes.saveButton} onClick={()=>handleUpdateRoom(!toggleEdit)}> */}
         <Button size="small" className={classes.saveButton} onClick={()=>setToggleEdit(!toggleEdit)}>
           Edit
         </Button>
@@ -189,11 +196,11 @@ export default function HostRoomCard(props){
       </Collapse>
       <Collapse in={!toggleEdit} orientation={'horizontal'}>
         <div className = {classes.updateForm}>
-            <TextField fullWidth defaultValue={props.title} variant="outlined" label="Title" onChange={(e)=> setUpdatedRoomTitle(e.target.value)}/>
+            {/* <TextField fullWidth defaultValue={props.title} variant="outlined" label="Title" onChange={(e)=> setUpdatedRoomTitle(e.target.value)}/> */}
         
             <TextField fullWidth defaultValue={description} variant="outlined" label="Description" onChange={(e)=> setUpdatedRoomDescription(e.target.value)}/>
               
-            <TextField fullWidth defaultValue={price} variant="outlined" label="$$$ / 10 mins" onChange={(e)=> setUpdatedRoomPrice(e.target.value)}/>
+            <TextField fullWidth defaultValue={price} variant="outlined" label="Rent Per Hour" onChange={(e)=> setUpdatedRoomPrice(e.target.value)}/>
 
             <TextField fullWidth defaultValue={props.address} variant="outlined" label="Address" onChange={(e)=> setUpdatedRoomAddress(e.target.value)}/>
             
