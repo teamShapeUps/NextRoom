@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     color: "#E63946",
     borderStyle: "solid",
     padding: "0 20px 0 20px",
-    marginBottom: '10px',
+    marginBottom: "10px",
     width: "fit-content",
   },
   available: {
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     color: "#457B9D",
     borderStyle: "solid",
     padding: "0 20px 0 20px",
-    marginBottom: '10px',
+    marginBottom: "10px",
     width: "fit-content",
   },
   buttonContainer: {
@@ -80,6 +80,12 @@ const useStyles = makeStyles({
     fontFamily: "Oswald",
     fontSize: "18px",
     paddingBottom: 20,
+    color: "#1D3557",
+  },
+  titleText: {
+    fontFamily: "Oswald",
+    fontSize: "30px",
+    fontWeight: "Bold",
     color: "#1D3557",
   },
 });
@@ -184,7 +190,12 @@ export default function HostRoomCard(props) {
             title="Room"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography
+              className={classes.titleText}
+              gutterBottom
+              variant="h5"
+              component="h2"
+            >
               {title}
             </Typography>
             <Typography
