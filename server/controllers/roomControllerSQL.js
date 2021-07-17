@@ -9,13 +9,18 @@ const roomControllerSQL = {};
 roomControllerSQL.addRooms = async (req, res, next) => {
 
   try {
-    const { address, zipcode, title, description, imageFileName } = req.body;
+    const { address, zipcode, title, description, imageFileName, price } = req.body;
     const id = res.locals.token.id;
 
 
-    const query = `INSERT INTO rooms (id, title, address, zipcode, description, imageFileName)
-    VALUES($1, $2, $3, $4, $5, $6)`;
-    const values = [id, title, address, zipcode, description, imageFileName]; //imageFileName might be different
+    const location = await geocoder.geocode(address);
+    console.log(location[0].formattedAddress);
+    const latitude = location[0].latitude
+    const longtitude = location[0].longitude
+
+    const query = `INSERT INTO rooms (id, title, address, zipcode, description, imageFileName, longitude, latitude, price)
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+    const values = [id, title, address, zipcode, description, imageFileName, longtitude, latitude, price]; //imageFileName might be different
     const queryResult = await db.query(query, values);
 
     res.locals.rooms = queryResult.rows[0];
@@ -75,8 +80,8 @@ roomControllerSQL.getNearRooms = async (req, res, next) => {
 roomControllerSQL.updateroom = async (req, res, next) => {
   const id = res.locals.token.id;
   try {
-    const location = await geocoder.geocode(address);
-
+    const location = await geocoder.geocode(req.body.address);
+    //console.log(req.body)
     // Room info requires id, title, description, address, price, type, logitude, latitude, formattedAddress, imageFileName
 
     const type = 'point';
@@ -97,15 +102,20 @@ roomControllerSQL.updateroom = async (req, res, next) => {
 };
 
 roomControllerSQL.deleteRooms = async (req, res, next) => {
-  const id = res.locals.token.id;
+  //const id = res.locals.token.id;
+  const id = req.body.id;
+  const title = req.body.title;
+  //console.log(id, title)
+  const values = [id, title]
   try {
-    const query = `DELETE FROM rooms WHERE id = $1`;
-    await db.query(query, [id]);
+    const query = `DELETE FROM rooms WHERE id = $1 AND title = $2`;
+    await db.query(query, values);
     next()
   } catch (err) {
     console.log(err);
     next(err);
   }
+
 };
 
 module.exports = roomControllerSQL;

@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Check cookies every single time
+// Check cookies every single time before going to ANY route
 app.use(cookiesControllerSQL.checkCookie)
 // app.all('*', cookiesControllerSQL.checkCookie, (req, res, next)=>{
 //   next();

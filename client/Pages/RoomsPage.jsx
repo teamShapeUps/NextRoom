@@ -11,6 +11,7 @@ import HostRoomCard from '../Components/HostRoomCard';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 const axios = require('axios');
 
+
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -62,17 +63,6 @@ const theme = createTheme({
   },
 });
 
-async function postImage({ image, description }) {
-  const formData = new FormData();
-  formData.append('image', image);
-  formData.append('description', description);
-
-  const result = await axios.post('/images/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  return result.data;
-}
-
 export default function RoomsPage() {
   const classes = useStyles();
 
@@ -89,10 +79,26 @@ export default function RoomsPage() {
   const [newRoomImg, setNewRoomImg] = useState('');
   const [newKey, setNewKey] = useState('');
   const [file, setFile] = useState();
+  //const [imageId, setImageId] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
 
   const arrayOfComponents = [];
+
+
+  async function postImage({ image, description }) {
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('description', description);
+  
+    const result = await axios.post('/images/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    const tempResult = result.data;
+    setNewRoomImg(tempResult.imagePath.slice(8))
+    //setImageId(tempResult.imagePath)
+    return result.data;
+  }
 
   async function submit(event) {
     const result = await postImage({ image: file, description });
@@ -120,6 +126,10 @@ export default function RoomsPage() {
       .then(() => fetchRooms());
   }, []);
 
+  useEffect(()=>{
+
+  }, arrayOfComponents)
+
   useEffect(() => {
     //handle new rooms added to array in this rerender
     //create component for each room to be rendered
@@ -136,6 +146,7 @@ export default function RoomsPage() {
 
     setRoomArray([arrayOfComponents]);
   }, [dataFromFetch]);
+
 
   // useEffect( (() => null), [roomArray])
   const fetchRooms = function () {
@@ -208,7 +219,7 @@ export default function RoomsPage() {
         console.error('Error:', error);
       });
   };
-  const addRoomHandler = function () {
+  const addRoomHandler = async () => {
     const newRoom = {
       title: newRoomTitle,
       description: newRoomDescription,
@@ -217,7 +228,7 @@ export default function RoomsPage() {
       imageFileName: newRoomImg,
       price: newRoomPrice,
     };
-
+    try{
     fetch('/rooms/addroom', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -234,7 +245,6 @@ export default function RoomsPage() {
       })
       .catch((error) => {
         console.log('something broke here');
-
         console.error('Error:', error);
       });
 
@@ -245,8 +255,18 @@ export default function RoomsPage() {
     setNewRoomAddress('');
     setNewRoomImg('');
 
-    setAddingNewRoom(!addingNewRoom);
+    await setAddingNewRoom(!addingNewRoom);
+    //refreshRoomPage()
+    //setTimeout(refreshRoomPage(), 1000)
+  }catch(err){
+    console.log(err)
+  }
   };
+  
+
+  const refreshRoomPage = ()=>{
+    window.location = '/rooms'
+  }
 
   return (
     <div className={classes.container}>

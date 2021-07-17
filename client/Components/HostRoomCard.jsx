@@ -86,21 +86,21 @@ export default function HostRoomCard(props){
     // }
 
     useEffect(()=>{
-      console.log(props.imagefilename)
-      console.log(updatedRoomImg)
+      //console.log(props.imagefilename)
+      //console.log(updatedRoomImg)
     })
 
     const handleDeleteRoom = function(){
         //delete room using mongo ID. Accessible like this:
         console.log(id);
-        console.log(props.address);
+        console.log(title);
         //console.log(props.location.formattedAddress);
-        fetch('/mongo/deleteBathroom', {
+        fetch('/rooms/deleteroom', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({id}),
+          body: JSON.stringify({id, title}),
         })
         .then(response => response.json())
         .then(data => {
@@ -109,13 +109,14 @@ export default function HostRoomCard(props){
         .catch((error) => {
           console.error('Error:', error);
         })
+        window.location = "/rooms";
     }
   
     const handleUpdateRoom = function(){
       //delete room using mongo ID. Accessible like this:
       const update = {id, title: updatedRoomTitle, description: updatedRoomDescription, address:updatedRoomAddress , price: updatedRoomPrice, imagefilename: updatedRoomImg}
-
-      fetch('/mongo/updatebathroom', {
+      
+      fetch('/rooms/updateroom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,14 +137,14 @@ export default function HostRoomCard(props){
 
   const clickUpdate = function(){
     const update = {id, title: updatedRoomTitle, description: updatedRoomDescription, address:updatedRoomAddress , price: updatedRoomPrice, imagefilename: updatedRoomImg}
-    props.handleUpdateRoom(update);
+    handleUpdateRoom(update);
     setToggleEdit(!toggleEdit);
   }
 
   const clickDelete = function(){
-    const roomId = {id};
-    props.handleDeleteRoom(roomId);
-
+    const data = {id, title};
+    //props.handleDeleteRoom(roomId);
+    handleDeleteRoom(data);
   }
 
     return(
@@ -154,7 +155,7 @@ export default function HostRoomCard(props){
         <CardMedia
           component = "img"
           className={classes.media}
-          image={`/images/show/${props.imagefilename}`} // this should work, does it? Yeah it did. hell yeah!!
+          image={`/images/show/${props.imagefilename}`} 
           // image={props.imagefilename} // This is where image goes I got it - it worked? check the slack chat - ok
           title="Room"
         />
@@ -166,7 +167,7 @@ export default function HostRoomCard(props){
             {available? "Available" : "Booked"}
           </Typography>
           <Typography>
-              Price Goes here 
+            {`$${props.price} / hour`}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {props.address}
@@ -178,7 +179,7 @@ export default function HostRoomCard(props){
         </CardContent>
         </div>
       <div className={classes.buttonContainer}>
-        <Button size="small" className={classes.saveButton} onClick={()=> setToggleEdit(!toggleEdit)}>
+        <Button size="small" className={classes.saveButton} onClick={()=>setToggleEdit(!toggleEdit)}>
           Edit
         </Button>
         <Button  size="small" className={classes.cancelButton} onClick={clickDelete}>
@@ -199,12 +200,13 @@ export default function HostRoomCard(props){
             
             {/* <TextField fullWidth defaultValue={props.location.formattedAddress} variant="outlined" label="Address" onChange={(e)=> setUpdatedRoomAddress(e.target.value)}/> */}
 
-            <TextField fullWidth defaultValue={imagefilename} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedRoomImg(e.target.value)}/>
+            {/* <TextField fullWidth defaultValue={imagefilename} variant="outlined" label="Img URL" onChange={(e)=> setUpdatedRoomImg(e.target.value)}/> */}
             <Typography>Image Preview:</Typography>
             <CardMedia 
             component= "img"
             className={classes.media}
-            image={updatedRoomImg? updatedRoomImg: imagefilename}
+            image={`/images/show/${props.imagefilename}`} 
+            // image={updatedRoomImg? updatedRoomImg: imagefilename}
             label="Room Preview"/>
 
             <div className={classes.buttonContainer}>
