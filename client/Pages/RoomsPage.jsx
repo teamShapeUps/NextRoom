@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useRef} from 'react';
-import MenuDrawer from '../Components/menuDrawer';
+import React, { useEffect, useState, useRef } from "react";
+import MenuDrawer from "../Components/menuDrawer";
 import {
   makeStyles,
   Button,
   Collapse,
   TextField,
   Typography,
-} from '@material-ui/core';
-import HostRoomCard from '../Components/HostRoomCard';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
-const axios = require('axios');
-
+} from "@material-ui/core";
+import HostRoomCard from "../Components/HostRoomCard";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+const axios = require("axios");
 
 const useStyles = makeStyles({
   container: {
@@ -18,8 +17,8 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     backgroundColor: "#F1FAEE",
-    width: '100vw',
-    minHeight: '100vh',
+    width: "100vw",
+    minHeight: "100vh",
   },
   addButton: {
     fontFamily: "Oswald",
@@ -41,25 +40,25 @@ const useStyles = makeStyles({
     color: "#E63946",
   },
   newRoomForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    height: '600px',
-    width: '400px',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    height: "600px",
+    width: "400px",
   },
   roomsTitle: {
-    color: '#1D3557',
-    textShadow: '1px 1px 2px #457B9D',
-    fontSize: '60px',
-    fontFamily: 'Oswald',
-    marginTop: '0px',
-    marginBottom: '6px',
+    color: "#1D3557",
+    textShadow: "1px 1px 2px #457B9D",
+    fontSize: "60px",
+    fontFamily: "Oswald",
+    marginTop: "0px",
+    marginBottom: "6px",
   },
 });
 
 const theme = createTheme({
   typography: {
-    fontFamily: ['Permanent Marker', 'cursive'].join(','),
+    fontFamily: ["Permanent Marker", "cursive"].join(","),
   },
 });
 
@@ -71,16 +70,16 @@ export default function RoomsPage() {
 
   const [addingNewRoom, setAddingNewRoom] = useState(false);
 
-  const [newRoomTitle, setNewRoomTitle] = useState('');
-  const [newRoomDescription, setNewRoomDescription] = useState('');
-  const [newRoomPrice, setNewRoomPrice] = useState('');
-  const [newRoomAddress, setNewRoomAddress] = useState('');
-  const [newRoomZip, setNewRoomZip] = useState('');
-  const [newRoomImg, setNewRoomImg] = useState('');
-  const [newKey, setNewKey] = useState('');
+  const [newRoomTitle, setNewRoomTitle] = useState("");
+  const [newRoomDescription, setNewRoomDescription] = useState("");
+  const [newRoomPrice, setNewRoomPrice] = useState("");
+  const [newRoomAddress, setNewRoomAddress] = useState("");
+  const [newRoomZip, setNewRoomZip] = useState("");
+  const [newRoomImg, setNewRoomImg] = useState("");
+  const [newKey, setNewKey] = useState("");
   const [file, setFile] = useState();
   //const [imageId, setImageId] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
 
   const [counter, setcounter] = useState(dataFromFetch.length);
@@ -89,14 +88,14 @@ export default function RoomsPage() {
 
   async function postImage({ image, description }) {
     const formData = new FormData();
-    formData.append('image', image);
-    formData.append('description', description);
-  
-    const result = await axios.post('/images/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    formData.append("image", image);
+    formData.append("description", description);
+
+    const result = await axios.post("/images/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
     const tempResult = result.data;
-    setNewRoomImg(tempResult.imagePath.slice(8))
+    setNewRoomImg(tempResult.imagePath.slice(8));
     //setImageId(tempResult.imagePath)
     return result.data;
   }
@@ -123,7 +122,7 @@ export default function RoomsPage() {
     //console.log('You mounted!');
     //fetch all rooms
     //cookie should be sent with request...right?
-    fetch('/users/check')  // <-- NICE this fixed the id issue?
+    fetch("/users/check") // <-- NICE this fixed the id issue?
       .then((data) => data.json())
       .then((data) => setNewKey(data.id))
       .then(() => fetchRooms());
@@ -132,7 +131,7 @@ export default function RoomsPage() {
   useEffect(() => {
     //handle new rooms added to array in this rerender
     //create component for each room to be rendered
-    
+
     dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
         <HostRoomCard
@@ -146,17 +145,15 @@ export default function RoomsPage() {
 
     setRoomArray([arrayOfComponents]);
     //console.log(prevcounter.current, counter)
-    if(prevcounter.current < counter){
-      window.location = '/rooms'
+    if (prevcounter.current < counter) {
+      window.location = "/rooms";
     }
-
   }, [dataFromFetch]);
-
 
   // useEffect( (() => null), [roomArray])
   const fetchRooms = function () {
     axios
-      .get('/rooms/getroom')
+      .get("/rooms/getroom")
       .then((res) => res.data)
       .then((data) => setDataFromFetch(data));
   };
@@ -166,17 +163,17 @@ export default function RoomsPage() {
     const id = res.locals.token.id;
     const deleteId = id;
 
-    fetch('/rooms/deleteroom', {
-      method: 'DELETE',
+    fetch("/rooms/deleteroom", {
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(id),
     })
       .then((response) => response.json())
       .then((response) => fetchRooms())
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   };
 
@@ -199,20 +196,20 @@ export default function RoomsPage() {
       imageFileName: updatedRoomImg,
     };
 
-    fetch('/rooms/updateroom', {
-      method: 'POST',
+    fetch("/rooms/updateroom", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(update),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Update Success:', data);
+        console.log("Update Success:", data);
       })
       .then((data) => fetchRooms())
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       });
   };
   const addRoomHandler = async () => {
@@ -224,38 +221,38 @@ export default function RoomsPage() {
       imageFileName: newRoomImg,
       price: newRoomPrice,
     };
-    try{
-    fetch('/rooms/addroom', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newRoom),
-    })
-      //.then((response) => response.json())
-      .then((data) => {
-        //console.log(data);
-        const newData = [...dataFromFetch];
-        setcounter(newData.length + 1);
-        setDataFromFetch(newData);
+    try {
+      fetch("/rooms/addroom", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRoom),
       })
-      .catch((error) => {
-        console.log('something broke here');
-        console.log('Error:', error);
-      });
+        //.then((response) => response.json())
+        .then((data) => {
+          //console.log(data);
+          const newData = [...dataFromFetch];
+          setcounter(newData.length + 1);
+          setDataFromFetch(newData);
+        })
+        .catch((error) => {
+          console.log("something broke here");
+          console.log("Error:", error);
+        });
 
-    setNewRoomTitle('');
-    setNewRoomDescription('');
-    setNewRoomPrice('');
-    setNewRoomZip('');
-    setNewRoomAddress('');
-    setNewRoomImg('');
+      setNewRoomTitle("");
+      setNewRoomDescription("");
+      setNewRoomPrice("");
+      setNewRoomZip("");
+      setNewRoomAddress("");
+      setNewRoomImg("");
 
-    await setAddingNewRoom(!addingNewRoom);
-    //setTimeout(refreshRoomPage(), 1000)
-  }catch(err){
-    console.log(err)
-  }
+      await setAddingNewRoom(!addingNewRoom);
+      //setTimeout(refreshRoomPage(), 1000)
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -272,16 +269,16 @@ export default function RoomsPage() {
       <Collapse in={addingNewRoom}>
         <div className={classes.newRoomForm}>
           <TextField
-            label='Title'
+            label="Title"
             onChange={(e) => setNewRoomTitle(e.target.value)}
           />
           <TextField
-            label='Description'
+            label="Description"
             multiline
             onChange={(e) => setNewRoomDescription(e.target.value)}
           />
           <TextField
-            label='Price Per Hour'
+            label="Price Per Hour"
             onChange={(e) => setNewRoomPrice(e.target.value)}
           />
           <TextField
@@ -296,19 +293,19 @@ export default function RoomsPage() {
             label="Image URL"
             onChange={(e) => setNewRoomImg(e.target.value)}
           /> */}
-          <div className='Uploadpage'>
+          <div className="uploadForm">
             <form onSubmit={handleSubmit}>
               <input
                 onChange={fileSelected}
-                type='file'
-                accept='image/*'
+                type="file"
+                accept="image/*"
               ></input>
               <input
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                type='text'
+                type="text"
               ></input>
-              <button type='submit'>Submit</button>
+              <button type="submit">Upload</button>
             </form>
 
             {images.map((image) => (

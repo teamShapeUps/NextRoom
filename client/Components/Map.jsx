@@ -38,9 +38,6 @@ const useStyles = makeStyles({
   },
 });
 
-
-
-
 export default function UserMap(props) {
   const classes = useStyles();
   //const [allRooms, setAllRooms] = useState([]);
@@ -52,22 +49,23 @@ export default function UserMap(props) {
   const rooms = testRoomSet;
   const allrooms = [];
 
-  for(let i = 0; i<location.length;i++){
+  for (let i = 0; i < location.length; i++) {
     allrooms.push({
-    roomId: i,
-    roomCoords: [location[i].latitude, location[i].longitude],
-    imageUrl: location[i].imagefilename,
-    imageTitle: null,
-    descriptionTitle: location[i].title,
-    descriptionBody: location[i].description,
-    roomAddress: location[i].address,
-    roomAddress2: null,
-    })
+      roomId: i,
+      roomCoords: [location[i].latitude, location[i].longitude],
+      price: location[i].price,
+      imageUrl: location[i].imagefilename,
+      imageTitle: null,
+      descriptionTitle: location[i].title,
+      descriptionBody: location[i].description,
+      roomAddress: location[i].address,
+      roomAddress2: null,
+    });
   }
 
   // let rooms;
 
-  // const [rooms, setRooms] = useState([]); <--- COMMENTED OUT TEMPORARILY 
+  // const [rooms, setRooms] = useState([]); <--- COMMENTED OUT TEMPORARILY
 
   // useEffect(() => {
   //   console.log(`triggered useEffect`);
@@ -83,11 +81,11 @@ export default function UserMap(props) {
     const map = useMapEvents({
       load: (e) => {
         map.locate();
-        // getNewRooms(e.target.getCenter());  <--- COMMENTED OUT TEMPORARILY 
+        // getNewRooms(e.target.getCenter());  <--- COMMENTED OUT TEMPORARILY
       },
       moveend: (e) => {
         //console.log(`Map center latlng is: ${e.target.getCenter()}`)
-        // getNewRooms(e.target.getCenter());   <--- COMMENTED OUT TEMPORARILY 
+        // getNewRooms(e.target.getCenter());   <--- COMMENTED OUT TEMPORARILY
       },
     });
     return null;
