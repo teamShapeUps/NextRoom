@@ -37,7 +37,8 @@ export default function RoomCard(props) {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={imageUrl}
+          image={`/images/show/${imageUrl}`} 
+          // image={imageUrl}
           title={imageTitle}
         />
         <CardContent>

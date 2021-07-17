@@ -1,6 +1,8 @@
 const { MoveToInboxTwoTone } = require('@material-ui/icons');
 const db = require('../models/NextroomModels.js');
 const geocoder = require('../utils/geocoder');
+const fs = require('fs');
+const path = require('path');
 
 const roomControllerSQL = {};
 
@@ -13,10 +15,23 @@ roomControllerSQL.addRooms = async (req, res, next) => {
     const id = res.locals.token.id;
 
 
-    const location = await geocoder.geocode(address);
+    //const location = await geocoder.geocode(address);
     //console.log(location[0].formattedAddress);
-    const latitude = location[0].latitude
-    const longtitude = location[0].longitude
+
+    let location = [];
+    const geocoderesult = await geocoder.geocode(req.body.address)
+    if(geocoderesult.length > 0){
+      location = geocoderesult;
+    }
+    
+    let latitude = '';
+    if(location[0].latitude){
+      latitude = location[0].latitude
+    }
+    let longtitude = '' 
+    if(location[0].longitude){
+      longtitude = location[0].longitude
+    }
 
     const query = `INSERT INTO rooms (id, title, address, zipcode, description, imageFileName, longitude, latitude, price)
     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
@@ -40,6 +55,32 @@ roomControllerSQL.getRooms = async (req, res, next) => {
     const query = `SELECT * FROM rooms WHERE id = ($1)`;
     const queryResult = await db.query(query, [id]);
     res.locals.rooms = queryResult.rows;
+    next();
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+roomControllerSQL.getAllRooms = async (req, res, next) => {
+  try {
+    //const id = res.locals.token.id;
+
+    const query = `SELECT * FROM rooms`;
+    const queryResult = await db.query(query);
+    res.locals.allrooms = queryResult.rows;
+    
+    //const stringResult = queryResult.rows.toString();
+    const stringArray = JSON.stringify(queryResult.rows);
+
+    fs.writeFile(path.resolve(__dirname, '../../client/Components/location.json'), `${stringArray}`,  err => {
+      if (err) {
+        console.error(err)
+        return
+      }
+    })
+
+
     next();
   } catch (err) {
     console.log(err);
@@ -80,7 +121,13 @@ roomControllerSQL.getNearRooms = async (req, res, next) => {
 roomControllerSQL.updateroom = async (req, res, next) => {
   const {id, title, address, description, price} = req.body;
   try {
-    const location = await geocoder.geocode(req.body.address);
+    
+    let location = [];
+    const geocoderesult = await geocoder.geocode(req.body.address)
+    if(geocoderesult.length > 0){
+      location = geocoderesult;
+    }
+    
     //console.log(req.body)
     //Room info requires id, title, description, address, price, type, logitude, latitude, formattedAddress, imageFileName
 
@@ -89,8 +136,14 @@ roomControllerSQL.updateroom = async (req, res, next) => {
 
     //console.log(location[0].formattedAddress);
 
-    const latitude = location[0].latitude
-    const longtitude = location[0].longitude
+    let latitude = 0;
+    if(location.length>0){
+      latitude = location[0].latitude
+    }
+    let longtitude = 0;
+    if(location.length>0){
+      longtitude = location[0].longitude
+    }
 
 
     const query = `UPDATE rooms

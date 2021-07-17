@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import MenuDrawer from '../Components/menuDrawer';
 import {
   makeStyles,
@@ -83,10 +83,9 @@ export default function RoomsPage() {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
 
-  const [counter, setcounter] = useState(0);
+  const [counter, setcounter] = useState(dataFromFetch.length);
 
   const arrayOfComponents = [];
-
 
   async function postImage({ image, description }) {
     const formData = new FormData();
@@ -117,6 +116,8 @@ export default function RoomsPage() {
     setFile(file);
   };
 
+  const prevcounter = useRef(0);
+
   //this is the hook solution to lifecycle methods. This is will invoke when the HostPage component mounts
   useEffect(() => {
     //console.log('You mounted!');
@@ -128,14 +129,10 @@ export default function RoomsPage() {
       .then(() => fetchRooms());
   }, []);
 
-  useEffect(()=>{
-    //dataFromFetch is the one that changes
-  }, arrayOfComponents)
-
   useEffect(() => {
     //handle new rooms added to array in this rerender
     //create component for each room to be rendered
-    //console.log(dataFromFetch)
+    
     dataFromFetch.forEach((room) => {
       arrayOfComponents.push(
         <HostRoomCard
@@ -148,24 +145,20 @@ export default function RoomsPage() {
     });
 
     setRoomArray([arrayOfComponents]);
+    //console.log(prevcounter.current, counter)
+    if(prevcounter.current < counter){
+      window.location = '/rooms'
+    }
+
   }, [dataFromFetch]);
 
 
   // useEffect( (() => null), [roomArray])
   const fetchRooms = function () {
-    // fetch("/mongo/getBathrooms")
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     console.log(response)
-    //     setDataFromFetch(response)});
-
     axios
       .get('/rooms/getroom')
       .then((res) => res.data)
       .then((data) => setDataFromFetch(data));
-
-    //.then(data=>data.json())
-    //.then(data=>setDataFromFetch(data));
   };
 
   const handleDeleteRoom = function (roomId) {
@@ -239,16 +232,16 @@ export default function RoomsPage() {
       },
       body: JSON.stringify(newRoom),
     })
-      .then((response) => response.json())
+      //.then((response) => response.json())
       .then((data) => {
         //console.log(data);
         const newData = [...dataFromFetch];
-        newData.unshift(data);
+        setcounter(newData.length + 1);
         setDataFromFetch(newData);
       })
       .catch((error) => {
         console.log('something broke here');
-        console.error('Error:', error);
+        console.log('Error:', error);
       });
 
     setNewRoomTitle('');
@@ -259,16 +252,11 @@ export default function RoomsPage() {
     setNewRoomImg('');
 
     await setAddingNewRoom(!addingNewRoom);
-    //refreshRoomPage()
-    setTimeout(refreshRoomPage(), 1000)
+    //setTimeout(refreshRoomPage(), 1000)
   }catch(err){
     console.log(err)
   }
   };
-  
-  const refreshRoomPage = ()=>{
-    window.location = '/rooms'
-  }
 
   return (
     <div className={classes.container}>

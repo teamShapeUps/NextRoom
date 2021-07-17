@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {makeStyles, 
         Card, 
         TextField, 
@@ -80,16 +80,6 @@ export default function HostRoomCard(props){
     //const [updatedRoomZip, setUpdatedRoomZip] = useState('');
     const [updatedRoomImg, setUpdatedRoomImg] = useState(imagefilename);
 
-    // const getImageFileName = ()=>{
-    //   fetch('/images/getimage')
-    //   .then(data=>)
-    // }
-
-    useEffect(()=>{
-      //console.log(props.imagefilename)
-      //console.log(updatedRoomImg)
-    })
-
     const handleDeleteRoom = function(){
         //delete room using mongo ID. Accessible like this:
         console.log(id);
@@ -131,7 +121,8 @@ export default function HostRoomCard(props){
       })
 
       setToggleEdit(!toggleEdit);
-      setTimeout(()=>{window.location = '/rooms'} ,1000);
+      //setTimeout(()=>{window.location = '/rooms'} ,1000);
+      window.location = '/rooms'
   }
 
   const clickUpdate = function(){

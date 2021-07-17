@@ -1,5 +1,5 @@
 const express = require('express');
-const cookieControllerSQL = require('../controllers/cookieControllerSQL');
+const cookiesControllerSQL = require('../controllers/cookieControllerSQL');
 const sessionControllerSQL = require('../controllers/sessionControllerSQL');
 const roomControllerSQL = require('../controllers/roomControllerSQL');
 
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   res.status(200).json("works");
 });
 
-router.post('/addroom', roomControllerSQL.addRooms, (req, res) => {
+router.post('/addroom', cookiesControllerSQL.checkCookie, roomControllerSQL.addRooms, (req, res) => {
   res.status(200).json(res.locals.rooms);
 });
 
@@ -23,11 +23,11 @@ router.post('/addroom', roomControllerSQL.addRooms, (req, res) => {
 //     res.send('rated')
 // })
 
-router.delete('/deleteroom', roomControllerSQL.deleteRooms, (req, res) => {
+router.delete('/deleteroom', cookiesControllerSQL.checkCookie, roomControllerSQL.deleteRooms, (req, res) => {
   res.status(200).json('bathroom deleted');
 });
 
-router.get('/getroom', roomControllerSQL.getRooms, (req, res) => {
+router.get('/getroom', cookiesControllerSQL.checkCookie, roomControllerSQL.getRooms, (req, res) => {
   // console.log(res.locals.bathrooms)
   res.status(200).json(res.locals.rooms);
 });
@@ -38,13 +38,17 @@ router.get('/getroom', roomControllerSQL.getRooms, (req, res) => {
 //     res.status(200).send(res.locals.bathroomPics)
 // })
 
-router.post('/getnearooms', roomControllerSQL.getNearRooms, (req, res) => {
+router.post('/getnearooms', cookiesControllerSQL.checkCookie, roomControllerSQL.getNearRooms, (req, res) => {
   res.status(200).send(res.locals.nearBathrooms);
 });
 
-router.post('/updateroom', roomControllerSQL.updateroom, (req, res) => {
+router.post('/updateroom', cookiesControllerSQL.checkCookie, roomControllerSQL.updateroom, (req, res) => {
   res.status(200).json(res.locals.updatedRoom);
 });
+
+router.get('/getallrooms', cookiesControllerSQL.checkCookie, roomControllerSQL.getAllRooms, (req, res)=>{
+  res.status(200).json(res.locals.allrooms);
+})
 
 // router.get('/appointments', getAppointments, (req, res) => {
 //   res.status(200).send(res.locals.getAppointments);

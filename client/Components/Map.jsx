@@ -14,6 +14,7 @@ import RoomMarker from "./roomMarker.jsx";
 
 // room dependency injection goes here:
 import testRoomSet from "./testRoomSet.js";
+import location from "./location.json";
 
 // const L = window.L;
 
@@ -37,15 +38,32 @@ const useStyles = makeStyles({
   },
 });
 
-export default function UserMap() {
+
+
+
+export default function UserMap(props) {
   const classes = useStyles();
+  //const [allRooms, setAllRooms] = useState([]);
 
   // default coordinates
   const coords = [40.785091, -73.968285];
-
-
+  //console.log(props.allrooms)
   // TEST ROOM SET FUNCTIONALITY
   const rooms = testRoomSet;
+  const allrooms = [];
+
+  for(let i = 0; i<location.length;i++){
+    allrooms.push({
+    roomId: i,
+    roomCoords: [location[i].latitude, location[i].longitude],
+    imageUrl: location[i].imagefilename,
+    imageTitle: null,
+    descriptionTitle: location[i].title,
+    descriptionBody: location[i].description,
+    roomAddress: location[i].address,
+    roomAddress2: null,
+    })
+  }
 
   // let rooms;
 
@@ -180,7 +198,8 @@ export default function UserMap() {
         <UserMarker position={coords} />
         <MapDrag />
         {/* {roomMarkers} */}
-        {rooms.map((elem) => (
+        {/* {rooms.map((elem) => ( */}
+        {allrooms.map((elem) => (
           <RoomMarker room={elem} key={elem.roomId} />
         ))}
       </MapContainer>
