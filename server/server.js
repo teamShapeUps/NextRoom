@@ -26,8 +26,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Check cookies every single time
-app.use(cookiesControllerSQL.checkCookie)
+// Check cookies every single time before going to ANY route
+//app.use(cookiesControllerSQL.checkCookie) //---> issue signing up if first time user
 // app.all('*', cookiesControllerSQL.checkCookie, (req, res, next)=>{
 //   next();
 // })

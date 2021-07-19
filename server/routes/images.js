@@ -21,16 +21,15 @@ router.get('/show/:key', (req, res) => {
 router.post(
   '/upload',
   cookiesControllerSQL.checkCookie,
-  upload.single('image'),
+  upload.single('image'), //Accept a single file with the name 'image'. The single file will be stored in req.file
   async (req, res) => {
-    const file = req.file;
-    const id = res.locals.token.id;
-    //console.log(id);
-    const query = `UPDATE rooms
-  SET imagefilename = ($1)
-  WHERE id = ($2)`;
-    const values = [file.filename, id];
-    await db.query(query, values);
+     const file = req.file;
+  //   const id = res.locals.token.id;
+  //   const query = `UPDATE rooms
+  // SET imagefilename = ($1)
+  // WHERE id = ($2)`;
+  //   const values = [file.filename, id];
+  //   await db.query(query, values);
 
     const result = await uploadFile(file); //Upload the file
     await unlikeFile(file.path); //Delete the file after uploading it to s3

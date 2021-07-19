@@ -27,7 +27,7 @@ cookiesControllerSQL.setCookie = async (req, res, next) => {
         id: id,
       },
       process.env.JWT_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     );
 
     res.locals.token = {
