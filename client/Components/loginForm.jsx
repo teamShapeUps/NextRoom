@@ -1,36 +1,49 @@
 // login form
 import React, { Component, useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+
+//Import Material-UI components
 import {
   makeStyles,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core/styles";
+
 import {
   Button,
   Box,
   TextField,
   Collapse,
-  Switch,
   Typography,
 } from "@material-ui/core";
-import { Redirect, useHistory } from "react-router-dom";
+
+import axios from "axios";
 
 const useStyles = makeStyles({
   text: {
-    ontSize: 15,
-    fontFamily: ["Eurostile", "cursive"].join(","),
+    fontSize: 15,
+    fontFamily: ["Oswald"],
+  },
+  logo: {
+    display: "grid",
+    placeItems: "center",
+    paddingTop: "4%",
   },
   button: {
     // display:'flex',
     // flexDirection: 'row',
+    fontFamily: "Oswald",
+    fontSize: "18px",
     justify: "center",
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    color: "#F1FAEE",
+    background: "linear-gradient(45deg, #1D3557 20%, #457B9D 90%)",
     border: 0,
     borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    color: "white",
+    boxShadow: "0 3px 5px 2px #457B9D",
     height: 48,
+    width: 220,
     textAlign: "center",
+    marginTop: 25,
   },
   box: {
     display: "grid",
@@ -42,33 +55,44 @@ const useStyles = makeStyles({
     display: "grid",
     placeItems: "center",
     paddingTop: "5%",
-    color: "#FE6B8B",
+    color: "#E63946",
   },
   signup: {
+    marginTop: "5%",
     cursor: "pointer",
     textDecoration: "underline",
     "&:hover": {
-      color: "#FE6B8B",
+      color: "#E63946",
     },
   },
+  element: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingTop: 20,
+  },
   div: {
+    fontFamily: "Oswald",
+    color: '#1D3557',
     display: "flex",
-    marginTop: "5%",
+    marginTop: "2%",
+    paddingTop: 10,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    background: "#B6D0E2",
+    background: "#a8dadc",
     margin: "0 40% 0 40%",
     borderRadius: "5%",
-    boxShadow: "0 3px 5px 2px #FE6B8B",
+    boxShadow: "0 3px 5px 2px #457B9D",
   },
 });
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     // fontSize: '300px',
     fontSize: 75,
-    fontFamily: ["Permanent Marker", "cursive"].join(","),
+    fontFamily: ["Oswald"],
   },
 });
 
@@ -77,6 +101,7 @@ export default function LoginForm() {
 
   const classes = useStyles();
 
+  // React hooks
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [count, setCount] = useState(0);
@@ -84,44 +109,36 @@ export default function LoginForm() {
   const [isUser, setUser] = useState(true);
   const [createUsername, setCreateUsername] = useState("");
   const [createPassword, setCreatePassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState("");
 
   function loginClickHandler(e) {
-    // handle authentication here
-    // console.log(`Username is ${username} and Password is ${password}`);
-    const userInfo = { username, password };
     e.preventDefault();
+    //logs if post was called on click
+    console.log("post called successfully");
+    console.log(typeof username);
     if (isUser) {
-      fetch("/mongo/userlogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/user");
+      // still need to implement user or host logic
+      axios
+        .post("/users/userlogin", {
+          data: {
+            username: username,
+            password: password,
+          },
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      fetch("/mongo/hostlogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-
-        .then((response) => {
-          if (response) history.push("/host");
+        .then((res) => {
+          if (res.data === "good") {
+            setLoggedIn(true);
+          }
+          console.log(res.data);
         })
         .catch((error) => {
           console.error("Error:", error);
         });
     }
+  }
+
+  if (loggedIn) {
+    history.push("/map");
   }
 
   // disables buttons if length of required fields is 0
@@ -132,35 +149,25 @@ export default function LoginForm() {
     return createUsername.length > 0 && createPassword.length > 0;
   };
 
-  const handleCreate = function () {
-    const userInfo = { username: createUsername, password: createPassword };
-    console.log(userInfo);
+  const handleCreate = function (e) {
+    // Obtaines username/pw from state
+    const username = createUsername;
+    const password = createPassword;
+    e.preventDefault();
+    console.log("Create user post called");
     if (isUser) {
-      fetch("/mongo/usersignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/user");
+      axios
+        .post("/users/usersignup", {
+          data: {
+            username: username,
+            password: password,
+          },
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      fetch("/mongo/hostsignup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response) history.push("/host");
+        .then((res) => {
+          if (res.data === "good") {
+            setLoggedIn(true);
+          }
+          console.log(res.data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -169,69 +176,61 @@ export default function LoginForm() {
   };
 
   return (
-    <section>
-      <ThemeProvider theme={theme}>
+    <section className='mapPageBackground'>
+      {/* <ThemeProvider theme={theme}>
         <div className={classes.title}>
-          {/* <Typography>Potty Over Here</Typography> */}
-          <Typography>NEXT room</Typography>
+          <Typography>NEXT/ROOM</Typography>
         </div>
-      </ThemeProvider>
+      </ThemeProvider> */}
+      <Box className={classes.logo}>
+        <img src='../Assets/NEXTROOM_LOGO_2.0.png' width='240px'></img>
+      </Box>
       <div className={classes.div}>
-        <h1>{checked ? "Sign Up" : "Login"}</h1>
-        <Switch onChange={() => setUser(!isUser)} className={classes.toggle} />
-        <p>{isUser ? "User Login" : "Host Login"}</p>
+        <h1>{checked ? "SIGN UP" : "LOG IN"}</h1>
         <Box className={classes.box}>
           <Collapse in={!checked} orientation="horizontal">
             <TextField
+              className={classes.element}
               placeholder="username"
               onChange={(e) => setUsername(e.target.value)}
             />
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <br />
-            <br />
             <Button
               type="submit"
               className={classes.button}
               disabled={!validateSignIn()}
               onClick={loginClickHandler}
             >
-              {isUser ? "When you gotta go..." : "Relieved to see you!"}
+              {"Click to Login as User"}
             </Button>
           </Collapse>
-
-          <br />
-
           <a className={classes.signup} onClick={() => setChecked(!checked)}>
-            {checked ? "Back to Login" : "Sign up!?"}
+            {checked ? "Back to Login" : "Sign up"}
           </a>
           <Collapse in={checked} orientation="horizontal">
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="username"
               onChange={(e) => setCreateUsername(e.target.value)}
             />
-            <br />
-            <br />
             <TextField
+              className={classes.element}
               placeholder="password"
+              type="password"
               onChange={(e) => setCreatePassword(e.target.value)}
             />
-            <br />
-            <br />
             <Button
               className={classes.button}
               disabled={!validateSignUp()}
               onClick={handleCreate}
             >
               Create New
-              {isUser ? "User" : "Host"}
+              {" User"}
             </Button>
           </Collapse>
         </Box>

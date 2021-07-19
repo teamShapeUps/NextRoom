@@ -1,0 +1,19 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.mapPageBackground {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f1faee;
+}
+
+.mapPageHead {
+  color: #1d3557;
+  text-shadow: 1px 1px 2px #457b9d;
+  font-size: 36px;
+  font-family: "Oswald";
+  margin-top: 0px;
+  margin-bottom: 6px;
+}

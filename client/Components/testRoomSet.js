@@ -1,0 +1,66 @@
+// COMPARE WITH CURRENT SCHEMA?
+
+const testRoomSet = [
+  {
+    roomId: 1,
+    roomCoords: [40.7415095, -73.9569751],
+    imageUrl: '../Assets/railroad.jpg',
+    imageTitle: null,
+    descriptionTitle: 'A Room for Rent',
+    descriptionBody: 'You\'ll be working on the railroad, just to pass the time away.',
+    roomAddress: 'Some Raiload Tracks down at Long Island City, Queens, NYC',
+    roomAddress2: null,
+  },
+  {
+    roomId: 2,
+    roomCoords: [40.7477112,-73.9563172],
+    imageUrl: '../Assets/stoner.jpg',
+    imageTitle: null,
+    descriptionTitle: `Sit and Like, Think, Man`,
+    descriptionBody: `It's less like a room and more like an out-of-body experience.`,
+    roomAddress: `4545 Center Blvd, Long Island City, NY 11109`,
+    roomAddress2: `Apt 9001`,
+  },
+  {
+    roomId: 3,
+    roomCoords: [40.7472011, -73.9566542],
+    imageUrl: '../Assets/theRoom.png',
+    imageTitle: null,
+    descriptionTitle: 'A Place to Room',
+    descriptionBody: 'A place to room when you need a room to room in.',
+    roomAddress: '4610 Center Blvd, Long Island City, NY 11109',
+    roomAddress2: `Apt 2`,
+  },
+  {
+    roomId: 4,
+    roomCoords: [40.74257401667589, -73.96178139585714],
+    imageUrl: '../Assets/eastRiver.jpg',
+    imageTitle: null,
+    descriptionTitle: 'A great view of the East River',
+    descriptionBody: 'A great view of the East River because the room is literally in the river.',
+    roomAddress: 'East River, NYC',
+    roomAddress2: null,
+  },
+  {
+    roomId: 5,
+    roomCoords: [40.74249680676719, -73.96053128637011],
+    imageUrl: '../Assets/park.jpg',
+    imageTitle: null,
+    descriptionTitle: 'Room in the Park',
+    descriptionBody: `You're in the park. There is no roof. There are no walls. Total freedom.`,
+    roomAddress: 'A park in LIC',
+    roomAddress2: `Grass and fresh air`,
+  },
+  {
+    roomId: 6,
+    roomCoords: [40.73974725150603, -73.95925757295892],
+    imageUrl: '../Assets/cityHarvest.jpg',
+    imageTitle: null,
+    descriptionTitle: 'Room @ CityHarvest',
+    descriptionBody: `Yes, this is a room at CityHarvest. Yes, I know it's weird. Pay me.`,
+    roomAddress: 'LIC City Harvest',
+    roomAddress2: `Walk In Freezer`,
+  },
+];
+
+export default testRoomSet;

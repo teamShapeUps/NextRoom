@@ -1,31 +1,24 @@
-import React,{useState} from 'react'
-
-<<<<<<< HEAD
-
-const App = () => (
-    <div>
-        <h1>Hello React</h1>
-    </div>
-)
-
-export default App;
-=======
-import React, { useState } from 'react';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-import LoginForm from './Components/loginForm.jsx';
-import HostPage from './Pages/HostPage.jsx';
-import LoginPage from './Pages/LoginPage.jsx';
-import UserPage from './Pages/UserPage.jsx';
-// import UserMap from './Pages/UserMap.jsx';
+// Module imports
+import React, { useState } from "react";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import LandingPage from "./Pages/LandingPage.jsx";
+import SignupPage from "./Pages/SignupPage.jsx";
+import LoginPage from "./Pages/LoginPage.jsx";
+import RoomsPage from "./Pages/RoomsPage.jsx";
+import FavesPage from "./Pages/FavesPage.jsx";
+import MapPage from "./Pages/MapPage.jsx";
+import ImagePage from "./Pages/ImagePage.jsx";
 
 const App = () => (
   <Router>
-    <Route path="/" exact component={LoginPage}/>
-    <Route path="/user" component={UserPage}/>
-    <Route path="/host" component={HostPage}/>
-    {/* <Route path="/secretMap" component={UserMap}/> */}
+    <Route path="/" exact component={LandingPage} />
+    <Route path="/signup" component={SignupPage} />
+    <Route path="/login" component={LoginPage} />
+    <Route path="/rooms" component={RoomsPage} />
+    <Route path="/faves" component={FavesPage} />
+    <Route path="/map" component={MapPage} />
+    <Route path="/images" component={ImagePage} />
   </Router>
 );
 
 export default App;
->>>>>>> d3bc90e7dc504aa17129370f3944d19a8effde26
